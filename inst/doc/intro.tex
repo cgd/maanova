@@ -1,0 +1,175 @@
+\section{Introduction}
+{\em R/maanova} is an extensible, 
+interactive environment for the analysis of microarray experiments. 
+It is implemented as an add-on
+package for the freely available statistical language R (www.r-project.org).
+The engine functions were written in C for better performance.
+
+MAANOVA stands for MicroArray ANalysis Of VAriance. It provides a complete 
+work flow for microarray data analysis including:
+\begin{itemize}
+\item Data quality checks and visualization
+\item Data transformation
+\item ANOVA model fitting for both fixed and mixed effects models
+\item Statistical tests including permutation
+\item Cluster analysis with bootstrapping
+\end{itemize}
+
+{\em R/maanova} can be applied to any microarray data but it is
+specially tailored for multiple factor experimental designs.
+Mixed effects models are implemented to estimate variance components 
+and perform F and T tests for differential expressions.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Installation section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Installation}
+\subsection{System requirements}
+This package was developed under {\em R 1.8.0} in the 
+{\em Linux Redhat 8.0} operating system. The programs have been 
+observed to work under {\em Windows NT/98/2000}. The memory requirement
+depends on the size of the input data but a minimum of 256Mb memory
+is recommended. 
+
+\subsection{Obtaining R}
+R is available in the Comprehensive R Archive Network (CRAN).
+Visit \\{\tt http://cran.r-project.org} or a local mirror site.
+Source code is available for UNIX/LINUX, and binaries are 
+available for Windows, MacOS, and many versions of Linux.  
+
+\subsection{Installation - Windows(9x/NT/2000)}
+\begin{itemize}
+
+\item Install {\em R/maanova} from Rgui
+\begin{enumerate}
+\item Start Rgui
+\item Select Menu {\tt Packages}, 
+click {\tt Install package from local zip file}. 
+Choose the file \\{\tt maanova\_*.tar.gz} and click 'OK'. 
+\end{enumerate}
+
+\item Install {\em R/maanova} outside Rgui
+\begin{enumerate}
+\item Unzip the {\tt maanova\_*.tar.gz} file into the directory 
+{\tt \$RHOME/library} ({\tt \$RHOME} is something like 
+{\tt c:/Program Files/R/rw1081}).
+Note that this should create a directory \\{\tt \$RHOME/library/maanova} 
+containing the R source code and the compiled dlls.
+\item Start Rgui.
+\item Type \Rfunction{link.html.help()} to get the help files for 
+the maanova package added to the help indices.
+\end{enumerate}
+
+\end{itemize}
+
+\subsection{Installation - Linux/Unix}
+\begin{enumerate}
+\item Go into the directory containing {\tt maanova\_*.tar.gz}.
+\item Type \Rfunction{R CMD INSTALL maanova} to have the package installed
+in the standard location such like
+{\tt /usr/lib/R/library}. You will have to
+be the superuser to do this. As a normal user, you can install the
+package in your own local directory. To do this, type 
+\Rfunction{R CMD INSTALL --library=\$LOCALRLIB maanova\_*.tar.gz}, 
+where {\tt \$LOCALRLIB} is something like {\tt /home/user/Rlib/}. Then you 
+will need to create a file {\tt .Renviron} in your home directory to contain
+the line {\tt R\_LIBS=/home/user/Rlib} so that R will know to search for
+packages in that directory.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Function list
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Data and function list}
+The following is a list of the available functions. 
+For more information about 
+the function usage use the online help by typing ``{\tt ?functionname}''
+in {\em R} environment or typing {\tt help.start()} to get the html help in 
+a web browser.
+
+\begin{enumerate}
+
+% sample data
+\item Sample data available with the package
+\begin{description}
+\item[{\tt abf1}] A 18-array affymetric experiment. 500 hand picked genes are 
+included in the data set
+\item[{\tt kidney}] A 6-array kidney data set from CAMDA (Critical Assessment 
+of Microarray Data Analysis). 
+\item[{\tt paigen}] A multiple factor 28-array experiment from Bev
+Paigen's lab in The Jackson Lab. Only 300 hand picked genes are 
+included in this data set
+\end{description}
+
+% File IO
+\item File I/O
+\begin{description}
+\item[{\tt read.madata}] Read microarray data from TAB delimited simplex 
+text file.
+\item[{\tt write.madata}] Write microarray data to a TAB delimited simple
+text file.
+\end{description}
+
+% quality check
+\item Data quality check
+\begin{description}
+\item[{\tt arrayview}] View the layout of the arrays 
+\item[{\tt riplot}] Ratio intensity plot for arrays 
+\item[{\tt gridcheck}] Plot grid-by-grid data comparison for arrays
+\item[{\tt dyeswapfilter}] Flag the bad spots in dye swap experiment
+Note that these data quality check functions only work for 2-dye
+arrays at this time.
+\end{description}
+
+% normalization
+\item Data transformation
+\begin{description}
+\item[{\tt createData}] Create a data object with options to 
+collapse the replicated spots and do log2 transformation
+\item[{\tt transform.madata}] Data transformation with options to use any of
+several methods
+\end{description}
+
+% model fitting
+\item ANOVA model fitting 
+\begin{description}
+\item[{\tt makeModel}] Make model object to represent the 
+experimental design
+\item[{\tt fitmaanova}] Fit ANOVA model
+\item[{\tt resiplot}] Residual plot on a given ANOVA model
+\end{description}
+
+% tests
+\item Hypothesis testing
+\begin{description}
+\item[{\tt matest}] F-test or T-test with permutation
+\item[{\tt adjPval}] Calculate FDR adjusted P values given the 
+result of [{\tt matest}]
+\item[{\tt volcano}] Volcano plot for summarizing F or T test results
+\end{description}
+
+% clustering
+\item Clustering
+\begin{description}
+\item[{\tt macluster}] Bootstrap clustering.
+\item[{\tt consensus}] Build consensus tree out of bootstrap cluster result
+\item[{\tt fom}] Use figure of merit to determine the number of groups
+in K-means cluster
+\item[{\tt geneprofile}] Plot the estimated relative expression
+for a given list of genes
+\end{description}
+% utility functions
+\item Utility functions
+\begin{description}
+\item[{\tt fill.missing}] Fill in missing data.
+\item[{\tt summary.madata}] Summarize the data object.
+\item[{\tt summary.mamodel}] Summarize the model object.
+\item[{\tt subset.madata}] Subsetting the data objects.
+\item[{\tt exprSet2Rawdata}] Convert an object of exprSet to an object of Rawdata.
+\end{description}
+
+\end{enumerate}
+ 

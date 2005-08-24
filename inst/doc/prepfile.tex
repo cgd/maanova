@@ -1,0 +1,106 @@
+%%%%%%%%%%%%%%%%%%%
+% prepare the files
+%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Preparing the input files}
+Before using the package, the user must manually prepare
+a data file and a design file.
+
+\subsection{Preparing the data file}
+There is only ONE data file for all of the slides in
+an experiment. Most gridding software produces
+one file for each slide. Thus you will
+have multiple files for a multiple array experiment and you
+have to combine these files to one data file as the input 
+for {\em R/maanova}. 
+
+The data file is a TAB delimited text file. Each rows corresponds
+to the data for a gene. 
+In the first a few columns, you can put some gene information,
+e.g., the Clone ID, Gene Bank ID, etc. and the grid location of the spot.
+Note that some gridding softwares return Block numbers instead of
+metarow and metacol. Then you must manually compute metarow 
+and metacol from block and put them in the file.
+After that you need to put the scanned data for all arrays in the rest 
+of the columns.
+(You need to make the decision what data you want to
+use in analysis, e.g., mean versus median, background subtracted 
+or not, etc.) 
+For N-dye arrays, the N channel intensity data for one array
+need to be adjacent to each other (in consecutive columns). 
+The order (dye1, dye2, ...) must be consistent across all of the slides.
+You can put the spot flag as a column after intensity data
+for each array. (Note that if you have flag, you will have N+1
+columns of data for each array. Again, this must be consistent
+for all arrays in the data set.) If you have duplicated spots 
+within one array, replicated
+measurements of the same clone on the same array should appear in
+adjacent rows. This can be easily done by sorting on cloneid. 
+The number of replicates must be constant for all genes.
+
+As an example, you have four slides for a 2-dye array experiment 
+scanned by GenePix. Then you will have four
+output files. Following the steps to create your data file:
+\begin{enumerate}
+\item Open your favorite spread sheet editor, e.g., MS Excel and 
+create a new file;
+\item Paste your clone ID, Gene names, Cluster ID and whatever
+information you want to keep into the first several columns;
+\item Open your first GenePix file in another window, 
+copy the grid location into next 4 columns 
+(you only need to do this once because they are all the same for
+four slides);
+\item Copy the two columns of foreground mean value 
+(if you want to use it) and one column of flag to the file in
+the order of Cy5, Cy3, flag;
+\item Open your other 3 files and repeat step 4;
+\item Select the whole file and row sort it according to Clone ID;
+\item Save the file as tab delimited text file and you are done. 
+\end{enumerate}
+
+The data file must be ``full'', that is, all rows have to have same number of
+columns. Sometimes leading and trailing TAB in the text file can cause
+problems, depending on the operating system. So the user should be careful
+about that. Sometimes the special characters in gene description can
+cause reading problem. I don't encourage you to put the gene description
+in the data file. If you have to do that, you must be careful (sometimes
+you need to remove the special characters manually).
+
+\subsection{Preparing the design file}
+The design file is another TAB delimited text file. 
+The number of rows in this file
+equals the number of arrays times N(the number of dyes) plus one 
+(for the column headers). 
+The number of columns in this file depends
+on the experimental design. For example, you can have ``Strain'', ``Diet'',
+``Sex'', etc. in your design file. 
+You must have the following columns in the design file (column headers
+are case sensitive):
+\begin{itemize}
+\item Array: for array name
+\item Dye: for dye name
+\item Sample: Sample ID number
+\end{itemize}
+Array and Dye columns are easy to understand. Sample column 
+contains integers used to identify biological replicates 
+and reference samples. Usually you should assign each biological
+individual a unique Sample number. Reference samples are 
+represented by zero(0). Reference sample are treated differently.
+They will always be treated as fixed factor in the model
+and not involved in statistical tests.
+
+You must not have the following columns in the design file:
+\begin{itemize}
+\item Spot: reserved for spot effect
+\item Label: reserved for labelling effect
+\end{itemize}
+
+Sample column in design file need to be continuous integer. 
+All other columns can be either integers or characters. 
+
+You don't have to USE all factors in design file. When making the
+model object in {\tt makeModel}, the experimental design will be determined by
+the design and a formula. You can put all factors in design file but turn
+them on/off in formula. 
+
+

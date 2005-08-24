@@ -1,0 +1,407 @@
+######################################################################
+#
+# volcano.R
+#
+# copyright (c) 2001, Hao Wu and Gary A. Churchill, The Jackson Lab.
+# written Nov, 2001
+# Modified Apr, 2004
+#
+# Licensed under the GNU General Public License version 2 (June, 1991)
+#
+# Part of the R/maanova package
+#
+#
+######################################################################
+
+
+volcano <-
+  function(matestobj, threshold=c(0.001,0.05,0.05, 0.05),
+           method=c("unadj","unadj", "unadj", "unadj"), title="Volcano Plot",
+           highlight.flag=TRUE, onScreen=TRUE)
+{
+  if(class(matestobj)[1] != "matest")
+    stop("The first input variable is not an object of class matest.")
+
+  #must have F1
+  if( !("F1" %in% names(matestobj)) )
+    stop("No F1 test result in input object. Cannot do volcano plot")
+  #must have F3
+  if( !("F3" %in% names(matestobj)) )
+    stop("No F3 test result in input object. Cannot do volcano plot")
+       
+  if(class(matestobj)[2] == "ttest")
+    # this is a T-test result
+    result <- volcano.ttest(matestobj, threshold, method, title,
+                            highlight.flag, onScreen)
+  else
+    # this is a F test volcano plot
+    result <- volcano.ftest(matestobj, threshold, method, title,
+                            highlight.flag)
+}
+
+
+######################################################################
+# function to do f-test volcano plot
+######################################################################
+volcano.ftest <- function(matestobj, threshold, method, title,
+                          highlight.flag)
+{
+  anovaobj <- matestobj$obsAnova
+  
+  if(length(method) == 1)
+    method <- rep(method, 4)
+  
+  # local variables
+  th.f1 <- threshold[1]
+  th.f2 <- threshold[2]
+  th.f3 <- threshold[3]
+  th.fs <- threshold[4]
+  ngenes <- length(anovaobj$G)
+  
+  # get P values for all F tests according to method
+  # for F1
+  p1 <- getPval.volcano(matestobj, method, 1)
+  idx1 <- p1 < th.f1
+  # for F2
+  p2 <- getPval.volcano(matestobj, method, 2)
+  idx2 <- p2 < th.f2
+  # for F3
+  p3 <- getPval.volcano(matestobj, method, 3)
+  idx3 <- p3 < th.f3
+  # for Fs
+  ps <- getPval.volcano(matestobj, method, 4)
+  idxs <- ps < th.fs
+
+  
+  # calculate the x axis value
+  # the x-axis value should be the numerator of the test, e.g.,
+  # (Lb)'*pinv((L*pinv(X'X)*L')*(Lb)
+  xvalue <- calVolcanoXval(matestobj)
+  # use F3$Fobs as the x-axis value
+  #xvalue <- matestobj$F3$Fobs
+
+  # y-axis value
+  yvalue <- -log10(p1)
+  
+  # plot the figure
+  xlabel <- "" #F3 test F value"
+  plot(xvalue, yvalue, xlab=xlabel, ylab="-log10(Ptab)",
+       col="blue", pch=4, cex=0.5, main=title)
+
+  # draw a reference line based on the threshold of f1
+  abline(h=-log10(th.f1))
+  
+  # replot the significant genes from F2 (if there) in red
+  if("F2" %in% names(matestobj))
+    points(xvalue[idx2], yvalue[idx2], col="red", pch=4, cex=0.5)
+
+  # replot the significant genes from F3 (if there) in green
+  if("F3" %in% names(matestobj))
+    points(xvalue[idx3], yvalue[idx3], col="green", pch=4, cex=0.5)
+  
+  # plot the significant genes from Fs (if there) in orange
+  if("Fs" %in% names(matestobj))
+    points(xvalue[idxs], yvalue[idxs], col="orange", pch=4, cex=0.5)
+
+
+  # draw the reference line based on F3 test (if there)
+#  vshape <- 0
+#  if("F3" %in% names(matestobj)) {
+#    if(sum(idx3) != 0) {
+      # find the location of the reference line
+#      l <- min(abs(xvalue[idx3]))
+#      if(vshape == 1) {
+#        abline(v=l)
+#        abline(v=-l)
+#      }
+#      else {
+#        abline(v=l)
+#      }
+#    }
+#    else
+#      warning("There is no significant genes from F3 test.")
+#  }
+  
+  # circle the flaged genes (if any)
+  if(highlight.flag) {
+    if(!is.null(anovaobj$flag)) {
+      idx.flag <- which(anovaobj$flag==1)
+      points(xvalue[idx.flag], yvalue[idx.flag])
+    }
+  }
+  
+  # find the significant genes from all three F tests
+  result <- NULL
+  result$idx.F1 <- which(idx1)
+  idx <- result$idx.F1
+  if("F2" %in% names(matestobj)) {
+    result$idx.F2 <- which(idx2)
+    idx <- intersect(idx, result$idx.F2)
+  }
+  if("F3" %in% names(matestobj)) {
+    result$idx.F3 <- which(idx3)
+    idx <- intersect(idx, result$idx.F3)
+  }
+  if("Fs" %in% names(matestobj)) {
+    result$idx.Fs <- which(idxs)
+      idx <- intersect(idx, result$idx.Fs)
+  }
+
+  result$idx.all <- idx
+
+  result
+}
+
+
+
+######################################################################
+# function to do T-test volcano plot
+# this will generate multiple plots
+######################################################################
+volcano.ttest <- function(matestobj, threshold, method, title,
+                          highlight.flag, onScreen)
+{
+  anovaobj <- matestobj$obsAnova
+  
+  if(length(method) == 1)
+    method <- rep(method, 4)
+  
+  # local variables
+  th.f1 <- threshold[1]
+  th.f2 <- threshold[2]
+  th.f3 <- threshold[3]
+  th.fs <- threshold[4]
+  ngenes <- length(anovaobj$G)
+  
+  # get P values for all F tests according to method
+  # for F1
+  p1 <- getPval.volcano(matestobj, method, 1)
+  idx1 <- p1 < th.f1
+  # for F2
+  p2 <- getPval.volcano(matestobj, method, 2)
+  idx2 <- p2 < th.f2
+  # for F3
+  p3 <- getPval.volcano(matestobj, method, 3)
+  idx3 <- p3 < th.f3
+  # for Fs
+  ps <- getPval.volcano(matestobj, method, 4)
+  idxs <- ps < th.fs
+  
+  #############################
+  # calculate the x axis value
+  #############################
+  # the term(s) tested
+  diff.terms <- matestobj$term
+  Contrast <- matestobj$Contrast
+  # number of plots to be generated
+  nplots <- dim(Contrast)[1]
+
+  # init result
+  result <- NULL
+
+  # calculate x-axis values
+  xvalue.all <- calVolcanoXval(matestobj)
+  #xvalue.all <- matestobj$F3$Fobs
+
+  # loop for contrasts
+  for(icon in 1:nplots) {
+    levels <- NULL
+    for(i in 1:length(diff.terms)) {
+      # level names
+      levels <- c(levels, anovaobj[[paste(diff.terms[i], ".level", sep="")]])
+    }
+    # xvalue for this contrast
+    xvalue <- xvalue.all[,icon]
+    
+    ######### make x-axis labels
+    # first term
+#    if(L[1] == 0) xlabel <- NULL
+#    if(L[1] == 1) xlabel <- levels[1]
+#    else if(L[1] == -1) xlabel <- paste("-", level[1]j, sep="")
+#    else xlabel <- paste(L[1], level[1], sep="*")
+    # rest of them
+#    for(i in 2:length(L)) {
+#      xlabel <- paste(xlabel, "+")}
+#    xlabel <- paste(paste(L, levels, sep="*"), collapse="+")
+    xlabel <- "F3 test F values"
+
+    # figure title
+    title <- paste("comparison", icon)
+
+    # start to plot
+    if(onScreen) {
+      # open a window on screen
+      get(getOption("device"))()
+ #    if(.Platform$GUI == "AQUA")
+ #       quartz()
+ #     else
+ #       x11()
+    }
+    # y-axis value
+    yvalue <- -log10(p1[,icon])
+    # plot the figure
+    plot(xvalue, yvalue, xlab=xlabel, ylab="-log10(Ptab)",
+         col="blue", pch=4, cex=0.5, main=title)
+  
+    # draw a reference line based on the threshold of f1
+    abline(h=-log10(th.f1))
+    idx1 <- p1[,icon] < th.f1
+    # replot the significant genes from F2 (if there) in red
+    if("F2" %in% names(matestobj)) {
+      idx2 <- p2[,icon] < th.f2
+      points(xvalue[idx2], yvalue[idx2], col="red", pch=4, cex=0.5)
+    }
+    # replot the significant genes from F3 (if there) in green
+    if("F3" %in% names(matestobj)) {
+      idx3 <- p3[,icon] < th.f3
+      points(xvalue[idx3], yvalue[idx3], col="green", pch=4, cex=0.5)
+    }
+    # plot the significant genes from Fs (if there) in orange
+    if("Fs" %in% names(matestobj)) {
+      idxs <- ps[,icon] < th.fs
+      points(xvalue[idxs], yvalue[idxs], col="orange", pch=4, cex=0.5)
+    }
+
+    # draw the reference line based on F3 test (if there)
+    # note that this is alway vshape
+#    vshape <- 0
+#    if("F3" %in% names(matestobj)) {
+#      idx3 <- p3[,icon] < th.f3
+#      if(sum(idx3) != 0) {
+        # find the location of the reference line
+#        l <- min(abs(xvalue[idx3]))
+#        if(vshape == 1) {
+#          abline(v=l)
+#          abline(v=-l)
+#        }
+#        else {
+#          abline(v=l)
+#        }
+#      }
+#      else
+#        warning("There is no significant genes from F3 test.")
+#    }
+  
+    # circle the flaged genes (if any)
+    if(highlight.flag) {
+      if(!is.null(anovaobj$flag)) {
+        idx.flag <- which(anovaobj$flag==1)
+        points(xvalue[idx.flag], yvalue[idx.flag])
+      }
+    }
+  
+    # find the significant genes from all three F tests
+    result.tmp <- NULL
+    result.tmp$idx.F1 <- which(idx1)
+    idx <- result.tmp$idx.F1
+    if("F2" %in% names(matestobj)) {
+      result.tmp$idx.F2 <- which(idx2)
+      idx <- intersect(idx, result.tmp$idx.F2)
+    }
+    if("F3" %in% names(matestobj)) {
+      result.tmp$idx.F3 <- which(idx3)
+      idx <- intersect(idx, result.tmp$idx.F3)
+    }
+    if("Fs" %in% names(matestobj)) {
+      result.tmp$idx.Fs <- which(idxs)
+      idx <- intersect(idx, result.tmp$idx.Fs)
+    }
+    
+    result.tmp$idx.all <- idx
+    result.name <- paste("comparison", icon, sep="")
+    result[[result.name]] <- result.tmp
+  }
+  
+  result
+}
+
+
+
+###########################################
+# function to get P values from matest object
+###########################################
+getPval.volcano <- function(matestobj, method, idx)
+{
+  # field name
+  if(idx == 4)
+    whichF <- "Fs"
+  else
+    whichF <- paste("F", idx, sep="")
+
+  if( !(whichF %in% names(matestobj)) )
+    return(NULL)
+
+  # get the P values
+  Fobj <- matestobj[[whichF]]
+  method <- method[idx]
+  
+  if(method == "unadj")
+    p <- Fobj$Ptab
+  else if(method == "nominal")
+    p <- Fobj$Pvalperm
+  else if(method[1] == "fwer")
+    p <- Fobj$Pvalmax
+  else if(method[1] == "fdr")
+    p <- Fobj$adjPtab
+  else if(method[1] == "fdrperm")
+    p <- Fobj$adjPvalperm
+  else
+    stop(paste("Unrecognized method for F test P value,", method))
+
+  if(is.null(p))
+    stop(paste(method, "P value is not available for", whichF))
+
+  # change zeros to 1e-17
+  p[p==0] <- 1e-17
+  # return
+  p
+}
+
+
+##############################################
+# function to calculate the x-axis value
+# on the volcano plot
+# basic it's from Lb
+# If L is one row,it's just Lb
+# IF L has multiple rows, use sqrt((Lb)' * Lb))
+##############################################
+calVolcanoXval <- function(matestobj)
+{
+  model <- matestobj$model
+  
+  # get the estimates from ANOVA object on observed data
+  term <- matestobj$term
+  parsed.formula <- model$parsed.formula
+  fixed.term <- parsed.formula$labels[parsed.formula$random==0]
+  termidx <- locateTerm(fixed.term, term)
+
+  b <- NULL
+  for(i in 1:length(termidx)) {
+    tmpterm <- term[i]
+    # get the estimates
+    tmpb <- matestobj$obsAnova[[tmpterm]]
+    b <- cbind(b, tmpb)
+  }
+
+  # Contrast
+  L <- matestobj$Contrast
+  
+  # calculate x values
+  if(class(matestobj)[2] == "ftest") {
+    # this is a F-test object
+    Lb <- L %*% t(b)
+   # browser()
+    if(nrow(L) == 1)
+      xval <- Lb
+    else
+      xval <- apply(Lb, 2, function(x) sqrt(sum(x^2)))
+  }
+  else if(class(matestobj)[2] == "ttest") {
+    # this is a T-test object
+    # The volcano will always be 2-sided
+    xval <- apply(L, 1, function(x) x%*%t(b))
+  }
+  
+          
+  xval
+}

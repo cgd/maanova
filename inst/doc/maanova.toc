@@ -1,0 +1,28 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
+\contentsline {section}{\numberline {2}Installation}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}System requirements}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Obtaining R}{3}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Installation - Windows(9x/NT/2000)}{3}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Installation - Linux/Unix}{3}{subsection.2.4}
+\contentsline {section}{\numberline {3}Data and function list}{5}{section.3}
+\contentsline {section}{\numberline {4}Preparing the input files}{7}{section.4}
+\contentsline {subsection}{\numberline {4.1}Preparing the data file}{7}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Preparing the design file}{8}{subsection.4.2}
+\contentsline {section}{\numberline {5}A quick tour of the functions}{9}{section.5}
+\contentsline {subsection}{\numberline {5.1}CAMDA kidney experiment}{9}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Paigen's 300-gene experiment}{20}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}An affymetric experiment}{22}{subsection.5.3}
+\contentsline {section}{\numberline {A}Running R/maanova on computer cluster}{25}{section.A}
+\contentsline {subsection}{\numberline {A.1}System requirements}{25}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}System setup}{25}{subsection.A.2}
+\contentsline {subsection}{\numberline {A.3}Install and test clusters in R}{26}{subsection.A.3}
+\contentsline {section}{\numberline {B}Basic Algorithms}{27}{section.B}
+\contentsline {subsection}{\numberline {B.1}ANOVA model for microarray experiment}{27}{subsection.B.1}
+\contentsline {subsubsection}{\numberline {B.1.1}Model}{27}{subsubsection.B.1.1}
+\contentsline {subsubsection}{\numberline {B.1.2}Fixed model versus Mixed model}{27}{subsubsection.B.1.2}
+\contentsline {subsection}{\numberline {B.2}Hypothesis tests}{28}{subsection.B.2}
+\contentsline {subsubsection}{\numberline {B.2.1}F test in matrix notation}{28}{subsubsection.B.2.1}
+\contentsline {subsubsection}{\numberline {B.2.2}Building $L$ matrix}{29}{subsubsection.B.2.2}
+\contentsline {subsubsection}{\numberline {B.2.3}Four flavors of F-tests}{29}{subsubsection.B.2.3}
+\contentsline {subsection}{\numberline {B.3}Data shuffling in permutation test}{30}{subsection.B.3}
+\contentsline {section}{\numberline {C}Frequently Asked Questions}{31}{section.C}

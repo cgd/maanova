@@ -1,0 +1,319 @@
+
+Library maanova
+================
+Version 0.98-7, Mar 4, 2005
+I lost track of some changes. But:
+1. Added function fill.missing to do missing data imputation
+using KNN;
+2. Added function exprSet2Rawdata to convert an object of
+exprSet from BioConductor to an object or rawdata
+3. Fix a small bug (dot color) in volcano
+4. Other misc changes for submitting R/maanova to BioConductor
+5. Wrote a Swave style vignette 
+
+---------------------------------------------------
+
+Version 0.98-4, Mar 4, 2005
+Add a new option test.type in matest function.
+Then user can specify a contrast matrix for F test
+
+---------------------------------------------------
+
+Version 0.98-3, Jan 6, 2005
+Correct a bug in shuffle.maanova
+
+---------------------------------------------------
+
+Version 0.98-2, Dec 10, 2004
+
+Made lots of misc changes on R and Rd files to pass 
+"R CMD check". Read to submit to CRAN.
+
+---------------------------------------------------
+
+Version 0.98-1, Dec 6, 2004
+
+Minor changes are:
+1. Modify data shuffling method in matestutil.R.
+Array and Dye structure need to be kept.
+
+---------------------------------------------------
+Version 0.97-7 Sep 16, 2004
+Minor changes are:
+1. Modify several plot functions for new R version (1.9.1)
+under Mac OSX. Basically the earlier R use macintosh()
+function to plot but the newer version use quartz().
+
+---------------------------------------------------
+Version 0.97-5 Aug 31, 2004
+Minor changes are:
+1. Modify matest.R to remove the possible correlation
+problem in random number generation for clusters.
+
+---------------------------------------------------
+
+Version 0.97-5 Aug 13, 2004
+
+Minor changes are:
+1. Add function Rmaanova.version
+2. Modify matest.R and matestutil.R to reduce the memory usage
+
+---------------------------------------------------
+
+Version 0.97-4 May 17, 2004
+
+Minor changes are:
+1. allow having no bootstrap (n.perm=1) in macluster function
+Then consensus will draw cluster plots on observed data
+2. Modify the calculation of x-axis value in volcano plot 
+
+---------------------------------------------------
+
+Version 0.97-2 June 20, 2004
+
+Major changes are:
+1. Rewrite mixed using method of scoring;
+
+
+---------------------------------------------------
+
+Version 0.97-1 May 17, 2004
+
+Major changes are:
+
+1. Remove adjdata field in "madata" object 
+2. Replace "ftest" functino by new function "matest", which
+is a combination of "ftest" and "test.Contrast". Modify data
+shuffling method. 
+3. Rename "smooth" "transform.madata".
+4. Modify (simplify) the syntax for several functions, e.g., 
+macluster, consensus, etc.
+5. Add new option log.trans in "createData" to log transform
+the raw data or not.
+5. Misc changes for other functions, e.g., subset.madata, 
+read.madata, write.madata, etc...
+
+
+
+--------------------------
+Version 0.96-1 
+Change the package to work for N-dye system. The major changes include:
+
+1. Input files:
+
+o Data file
+  - There's no change for data file format.
+o Design file
+  - User must have "Array" and "Dye" columns in the design file. 
+  - User must have a "Sample" column in the design file. This is equivelent
+    to "SampleID" in the older version.
+  - User must not have columns called "Spot" or "Label" in design file.
+  - All fields are treated as factors. They don't need to be
+    continous integers.
+
+2. Functions:
+
+o read.madata:
+  - ArrayName field is removed from rawdata and madata objects
+
+o riplot and arrayview work only for 2-dye system.
+
+o makeModel:
+   - covairate can be fixed or random
+   - terms in formula must be in the design file, except "Spot"
+     for spot effect and "Label" for labelling effect.
+
+o fitmaanova:
+  - levels are made for all terms
+
+
+
+
+-----------------------------------------------
+
+Version 0.95-3 11/21/2003
+Minor changes:
+o fix a bug in ftest.mixed.engine
+
+---------------------------------------------------
+
+Version 0.95-2 11/21/2003
+
+I lost track of some of the changes. 
+
+The major changes are:
+o Implement parallel computing stuff
+o Implement mixed model permutation
+o Add a new Fs test based on shrinked variance components
+
+The minor changes are:
+o modify macluster and consensus for mixed model clustering
+o Add a new pooled permutation P value (per gene) in ftest
+
+---------------------------------------------------
+
+Version 0.92-1 3/12/2003
+
+o Fix bugs in makeModel, fitmaanova to take null model (y~1)
+
+o Add function bioc2maanova and maanova2bioc
+
+o fix a bug in caldf (the function to calcualte degree of freedom in a test)
+
+---------------------------------------------------
+
+Version 0.91-3 2/6/03
+
+Major changes:
+
+o New function geneprofile to plot expression level for selected genes.
+
+o Output the indices for all three F 
+
+o Output tabulated P values (in Chi2) for F2 and F3 in ftest.fixed.
+
+o Modify volcano, add options for choosing 5 different P values 
+in all 3 F tests.
+
+o fix a bug in ftest (for sample permutation)
+
+o covariate is implemented. Covariate will be a continuous variable
+functions makeModel, fitmaanova, ftest are changed.
+
+o fix a bug in fitmaanova, e.g., if there's no enough df for fitting,
+issue error msg and stop. In mixed model fitting, if there's no enough
+df for corresponding fixed model in variance components calculation,
+skip it and use default initial value for variances.
+
+Minor changes:
+
+o Fix a bug in write.madata (nreps=1 for rawdata)
+
+o Fix a bug in smooth (shift for rawdata)
+
+---------------------------------------------------
+
+Version 0.91-1 1/9/03
+
+Major changes:
+
+o Implement mixed model ANOVA
+
+o Seperate AG to AG and SG
+
+o Make new function gridcheck for quality check
+
+o Make new function test.Contrast fot t test in mixed model
+
+Minor changes:
+
+o rename make.CI to boot.CI
+
+o rename make.Ftest to ftest
+
+---------------------------------------------------
+
+Version 0.8-2, 9/30/02
+Minor changes:
+o fix bug in makeModel() for uneven experimental design.
+
+Version 0.8-1, 6/12/02
+Major change(s):
+
+---------------------------------------------------
+
+Version 0.6-4, 12/27/01
+
+Major change(s):
+
+o Add make.bayesian() to implement Lonnstedt and Speed's idea.
+  (without man page. This function could be buggy)
+
+Minor changes:
+
+o Correct bugs in subset.madata
+
+o Correct bugs in shift(), method LOWESS
+
+o Add read.spotfinder() function to read data from TIGR's spotfind output.
+
+o Add make.cleandata() function to clean the data from TIGR's spotfinder
+
+-----------------------
+Version 0.6-3, 12/19/01
+
+Minor changes:
+
+o Correct bugs in makeFtest.c for multi-replicate case
+
+o Correct bugs in createData (line 36, fixed field is "metarow"
+  instead of "metaraw")
+
+o Write dbldyeflip.R for demonstration
+
+
+-----------------------
+Version 0.6-2, 12/11/01
+
+Minor changes:
+
+o Modified make.Ftest() to take multiple significant levels.
+
+o Modified make.CI() to take multiple significant levels.
+
+Note:
+
+o Rewrite shift in C, done but didn't improve the performance much.
+  R version will be kept.
+
+----------------------
+Version 0.6-1, 12/8/01
+
+Major changes:
+
+o Add function arrayview() to visualize the data on slides
+
+o Add function volcano() to do volcano plot for flip dye experiments
+
+o Add function make.ratio() to calculate the log ratio for raw data
+
+o Add function Simulation() to generate the simulated data
+
+o Add function subset.madata() to subset the madata object
+
+o Add "lowess" as a method to do data shift in shift() function
+
+o Add one option avgreps in createData() to average the replicates.
+
+o Modify the madata data structure, add metarow, metacol, row and col
+  as required fields. If these values are not provided, default value
+  will be set. Made corresponding changes in read.madata() and 
+  createdata() functions.
+  
+
+----------------------
+Version 0.5-1, 12/3/01
+
+Initial release. Software contains most of the functions in Matlab
+version of MAANOVA. Here's a list of the functions
+
+o createData
+o fitmaanova
+o make.CI
+o make.Ftest
+o makeModel
+o read.madata
+o resiplot
+o riplot
+o shift
+o summary.madata
+o summary.mamodel
+
+
+----------------------------------------------------------------------
+copyright (c) 2001-2004, Hao Wu, The Jackson Laboratory
+Licensed under the GNU General Public License version 2 (June, 1991)
+----------------------------------------------------------------------
+end of STATUS.txt
+
+

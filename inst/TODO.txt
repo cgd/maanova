@@ -1,0 +1,27 @@
+
+Things to do for R/maanova
+--------------------------
+
+July 12, 2005
+----------------------------------------------------------------------
+I'm going to make R/maanova a part of BioConductor. 
+The things need to do are mainly the data structure
+convertion. I should to:
+1. Make functions madata2exprSet and exprSet2madata
+2. Modify numerous functions to take input of
+either madata or exprSet
+
+
+
+
+----------------------------------------------------------------------
+This file is intended to contain a list of many of the additions that
+are planned for the R/maanova package.
+
+If you any additions to suggest, please send an email to Hao Wu,
+hao@jax.org
+----------------------------------------------------------------------
+end of TODO.txt
+
+
+
