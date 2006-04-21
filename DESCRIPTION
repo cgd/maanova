@@ -7,4 +7,5 @@ Maintainer: Lei Wu <lei.wu@jax.org>
 Description: Analysis of N-dye Micro Array experiment using mixed model effect. Containing anlysis of variance, permutation and bootstrap, cluster and consensus tree. 
 License: GPL version 2 or later
 URL: http://www.jax.org/staff/churchill/labsite/software/Rmaanova/
+biocViews: Microarray, DifferentialExpression, Clustering
 
