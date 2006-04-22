@@ -1,4 +1,7 @@
+\author{Hao Wu;  Hyuna Yang, \email{hyuna.yang@jax.org}}
+
 \name{maanova-internal}
+
 \alias{JS}
 \alias{JSshrinker}
 \alias{buildtree}
@@ -99,7 +102,7 @@ matest.engine(anovaobj, term, mv, test.method, Contrast,
               is.ftest, partC, verbose=FALSE)
 matest.perm(n.perm, FobsObj, data, model, term, Contrast, inits20,
             mv, is.ftest, partC, MME.method, test.method,
-            shuffle.method, pool.pval)
+            shuffle.method, pool.pval, ngenes)
 meanvarlog(df)
 plot.consensus.hc(x, title, \dots)
 plot.consensus.kmean(x, \dots)
@@ -207,7 +210,5 @@ blkdiag(a,b,c(1,2))
 # others examples are omitted
 
 }
-
-\author{Hao Wu, \email{hao@jax.org} }
 
 \keyword{internal}

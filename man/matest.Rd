@@ -1,4 +1,4 @@
-\author{Hao Wu \email{hao@jax.org} }
+\author{Hao Wu;  Hyuna Yang, \email{hyuna.yang@jax.org} }
 
 \name{matest}
 \alias{matest}
@@ -31,10 +31,10 @@
 
 \usage{
 matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
-       test.type = c("ttest", "ftest"),
+       critical=.9, test.type = c("ttest", "ftest"),
        shuffle.method=c("sample", "resid"),
        MME.method=c("REML","noest","ML"),
-       test.method=c(1,0,1,1),
+       test.method=c(1,0,0,1),
        pval.pool=TRUE, verbose=TRUE)
 }
 
@@ -53,6 +53,10 @@ matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
   \item{n.perm}{An integer for number of permuatations.}
   \item{nnodes}{Number of nodes in the MPI cluster. If 1, the
     permutation test will be running on the local computer.}
+  \item{critical}{percentile of F-distribution used to get a subset to 
+    calculate p-value. Default is 90th percentile of F-distribution, and 
+    permutation analysis is conducted based on genes whose test statistics 
+    are smaller than 90th percentile of the F-distribution.}  
   \item{test.type}{Test type. It could be F-test or T-test. If the
     Contrast matrix is missing, this should be a "ftest" and the 
     contrast matrix is generated automatically to conver the whole

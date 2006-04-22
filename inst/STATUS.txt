@@ -1,6 +1,20 @@
-
 Library maanova
 ================
+
+Version 1.2.0, Apr 22, 2006
+1. Hyuna Yang made these changes:
+Instead of pooled p-value, p-value based on subset method 
+is implemented in matest.R. Include option critical. 
+2. Correct several places in the manual files from "transform" 
+to "transform.madata"
+3. Changed the La.svd(X,method="dgesvd") to La.svd(X,method="dgesdd")
+in util.R since the La.svd(X, method="dgesvd" is deprecated from 
+R-2.3.0.
+4. version number jumps from 0.98.8 to 1.2.0 in order to 
+keep up with bioconductor version number
+
+---------------------------------------------------
+
 Version 0.98-7, Mar 4, 2005
 I lost track of some changes. But:
 1. Added function fill.missing to do missing data imputation

@@ -1,11 +1,14 @@
-This is pdfTeX, Version 3.14159-14h-released-20010417 (Web2C 7.3.3.1) (format=pdflatex 2003.2.17)  22 AUG 2005 11:04
-**\nonstopmode \input /home/haowu/develop/Rmaanova/maanova/inst/doc/maanova.tex
-
-(/home/haowu/develop/Rmaanova/maanova/inst/doc/maanova.tex
-(/usr/share/texmf/tex/latex/base/article.cls
-Document Class: article 2000/05/19 v1.4b Standard LaTeX document class
-(/usr/share/texmf/tex/latex/base/size12.clo
-File: size12.clo 2000/05/19 v1.4b Standard LaTeX file (size option)
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (MiKTeX 2.4) (preloaded format=latex 2006.4.9)  21 APR 2006 09:21
+entering extended mode
+**maanova.tex
+(maanova.tex
+LaTeX2e <2003/12/01>
+Babel <v3.8g> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman, ngerman, french, loaded.
+(C:\texmf\tex\latex\base\article.cls
+Document Class: article 2004/02/16 v1.4f Standard LaTeX document class
+(C:\texmf\tex\latex\base\size12.clo
+File: size12.clo 2004/02/16 v1.4f Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -18,38 +21,31 @@ File: size12.clo 2000/05/19 v1.4b Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-)
-(/usr/share/texmf/tex/latex/graphics/graphics.sty
-Package: graphics 1999/02/16 v1.0l Standard LaTeX Graphics (DPC,SPQR)
-
-(/usr/share/texmf/tex/latex/graphics/trig.sty
+) (C:\texmf\tex\latex\graphics\graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+(C:\texmf\tex\latex\graphics\trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+) (C:\texmf\tex\latex\00miktex\graphics.cfg
+File: graphics.cfg 2005/12/29 v1.2 MiKTeX 'graphics' configuration
 )
-(/usr/share/texmf/tex/latex/config/graphics.cfg)
 Package graphics Info: Driver file: pdftex.def on input line 80.
-
-(/usr/share/texmf/tex/latex/graphics/pdftex.def
-File: pdftex.def 2001/11/29 v0.03i graphics/color for pdftex
+(C:\texmf\tex\latex\graphics\pdftex.def
+File: pdftex.def 2006/03/02 v0.03p Graphics/color for pdfTeX
 \Gread@gobject=\count87
-))
-(/usr/share/texmf/tex/latex/amsmath/amsmath.sty
+)) (C:\texmf\tex\latex\amsmath\amsmath.sty
 Package: amsmath 2000/07/18 v2.13 AMS math features
 \@mathmargin=\skip43
-
 For additional information on amsmath, use the `?' option.
-(/usr/share/texmf/tex/latex/amsmath/amstext.sty
+(C:\texmf\tex\latex\amsmath\amstext.sty
 Package: amstext 2000/06/29 v2.01
-
-(/usr/share/texmf/tex/latex/amsmath/amsgen.sty
+(C:\texmf\tex\latex\amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks14
 \ex@=\dimen103
-))
-(/usr/share/texmf/tex/latex/amsmath/amsbsy.sty
+)) (C:\texmf\tex\latex\amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
 \pmbraise@=\dimen104
-)
-(/usr/share/texmf/tex/latex/amsmath/amsopn.sty
+) (C:\texmf\tex\latex\amsmath\amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count88
@@ -89,12 +85,10 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 \mathdisplay@stack=\toks18
 LaTeX Info: Redefining \[ on input line 2666.
 LaTeX Info: Redefining \] on input line 2667.
-)
-(/usr/share/texmf/tex/generic/pstricks/pstricks.sty
-Package: pstricks 1997/03/25 package wrapper for PSTricks pstricks.tex
-
-(/usr/share/texmf/tex/generic/pstricks/pstricks.tex
-`PSTricks' v97 patch 10  <1999/03/24> (tvz)
+) (C:\texmf\tex\latex\pstricks\pstricks.sty
+Package: pstricks 2005/12/19 v0.31 LaTeX wrapper for `PSTricks' (RN,HV)
+(C:\texmf\tex\generic\pstricks\pstricks.tex
+`PSTricks' v1.14a  <2006/02/06> (tvz)
 \pst@dima=\dimen112
 \pst@dimb=\dimen113
 \pst@dimc=\dimen114
@@ -110,7 +104,7 @@ Package: pstricks 1997/03/25 package wrapper for PSTricks pstricks.tex
 \pst@cntg=\count104
 \pst@cnth=\count105
 \pst@toks=\toks19
-(/usr/share/texmf/tex/generic/pstricks/pstricks.con)
+(C:\texmf\tex\generic\pstricks\pstricks.con)
 \psunit=\dimen118
 \psxunit=\dimen119
 \psyunit=\dimen120
@@ -120,113 +114,113 @@ Package: pstricks 1997/03/25 package wrapper for PSTricks pstricks.tex
 \everypsbox=\toks21
 \psframesep=\dimen123
 \pslabelsep=\dimen124
+\psk@shift=\dimen125
+\pst@shift=\dimen126
 \theoverlaybox=\box30
-))
-(/usr/share/texmf/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2000/11/05 v6.71a Hypertext links for LaTeX
-
-(/usr/share/texmf/tex/latex/graphics/keyval.sty
+)
+File: pstricks.tex 2006/02/06 v1.14a `PSTricks' (tvz)
+(C:\texmf\tex\latex\xcolor\xcolor.sty
+Package: xcolor 2005/12/21 v2.09 LaTeX color extensions (UK)
+(C:\texmf\tex\latex\00miktex\color.cfg
+File: color.cfg 2005/12/29 v1.1 MiKTeX 'color' configuration
+)
+Package xcolor Info: Package option `override' ignored on input line 211.
+Package xcolor Info: Driver file: pdftex.def on input line 220.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1328.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1332.
+Package xcolor Info: Model `RGB' extended on input line 1344.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1346.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1347.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1348.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1349.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1350.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1351.
+)) (C:\texmf\tex\latex\hyperref\hyperref.sty
+Package: hyperref 2003/11/30 v6.74m Hypertext links for LaTeX
+(C:\texmf\tex\latex\graphics\keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks22
 )
-\@linkdim=\dimen125
+\@linkdim=\dimen127
 \Hy@linkcounter=\count106
 \Hy@pagecounter=\count107
-
-(/usr/share/texmf/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2000/11/05 v6.71a Hyperref: PDFDocEncoding definition (HO)
+(C:\texmf\tex\latex\hyperref\pd1enc.def
+File: pd1enc.def 2003/11/30 v6.74m Hyperref: PDFDocEncoding definition (HO)
+) (C:\texmf\tex\latex\00miktex\hyperref.cfg
+File: hyperref.cfg 2006/02/14 v1.1 MiKTeX 'hyperref' configuration
 )
-Package hyperref Info: Bookmarks ON on input line 1661.
-Package hyperref Info: Hyper figures OFF on input line 1680.
-Package hyperref Info: Link nesting OFF on input line 1685.
-Package hyperref Info: Hyper index ON on input line 1688.
-Package hyperref Info: Plain pages ON on input line 1693.
-Package hyperref Info: Backreferencing OFF on input line 1700.
-
+Package hyperref Info: Hyper figures OFF on input line 1880.
+Package hyperref Info: Link nesting OFF on input line 1885.
+Package hyperref Info: Hyper index ON on input line 1888.
+Package hyperref Info: Plain pages ON on input line 1893.
+Package hyperref Info: Backreferencing OFF on input line 1900.
 Implicit mode ON; LaTeX internals redefined
-(/usr/share/texmf/tex/latex/html/url.sty
-Package: url 1999/03/02  ver 1.4  Verb mode for urls, email addresses, and file
- names
+Package hyperref Info: Bookmarks ON on input line 2004.
+(C:\texmf\tex\latex\ltxmisc\url.sty
+\Urlmuskip=\muskip11
+Package: url 2005/06/27  ver 3.2  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 1905.
+LaTeX Info: Redefining \url on input line 2143.
 \Fld@menulength=\count108
-\Field@Width=\dimen126
-\Fld@charsize=\dimen127
+\Field@Width=\dimen128
+\Fld@charsize=\dimen129
 \Choice@toks=\toks23
 \Field@toks=\toks24
-Package hyperref Info: Hyper figures OFF on input line 2351.
-Package hyperref Info: Link nesting OFF on input line 2356.
-Package hyperref Info: Hyper index ON on input line 2359.
-Package hyperref Info: backreferencing OFF on input line 2366.
-Package hyperref Info: Link coloring OFF on input line 2371.
+Package hyperref Info: Hyper figures OFF on input line 2618.
+Package hyperref Info: Link nesting OFF on input line 2623.
+Package hyperref Info: Hyper index ON on input line 2626.
+Package hyperref Info: backreferencing OFF on input line 2633.
+Package hyperref Info: Link coloring OFF on input line 2638.
 \c@Item=\count109
 \c@Hfootnote=\count110
 )
 *hyperref using default driver hpdftex*
-(/usr/share/texmf/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2000/11/05 v6.71a Hyperref driver for pdfTeX
-
-(/usr/share/texmf/tex/latex/psnfss/pifont.sty
-Package: pifont 2000/01/12 PSNFSS-v8.1 Pi font support (SPQR) 
-LaTeX Font Info:    Try loading font information for U+pzd on input line 62.
-
-(/usr/share/texmf/tex/latex/psnfss/upzd.fd
-File: upzd.fd 2000/01/12 PSNFSS-v8.1 font definitions for U/pzd.
+(C:\texmf\tex\latex\hyperref\hpdftex.def
+File: hpdftex.def 2003/11/30 v6.74m Hyperref driver for pdfTeX
+(C:\texmf\tex\latex\psnfss\pifont.sty
+Package: pifont 2005/04/12 PSNFSS-v9.2a Pi font support (SPQR) 
+LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
+(C:\texmf\tex\latex\psnfss\upzd.fd
+File: upzd.fd 2001/06/04 font definitions for U/pzd.
 )
-LaTeX Font Info:    Try loading font information for U+psy on input line 63.
-
-(/usr/share/texmf/tex/latex/psnfss/upsy.fd
-File: upsy.fd 2000/01/12 PSNFSS-v8.1 font definitions for U/psy.
+LaTeX Font Info:    Try loading font information for U+psy on input line 64.
+(C:\texmf\tex\latex\psnfss\upsy.fd
+File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
 \Fld@listcount=\count111
 \@outlinefile=\write3
-)
-(/usr/share/texmf/tex/latex/natbib/natbib.sty
-Package: natbib 1999/05/28 7.0 (PWD)
+) (C:\texmf\tex\latex\natbib\natbib.sty
+Package: natbib 2006/03/22 7.3 (PWD)
 \bibhang=\skip46
 \bibsep=\skip47
-LaTeX Info: Redefining \cite on input line 508.
+LaTeX Info: Redefining \cite on input line 541.
 \c@NAT@ctr=\count112
-)
-(/usr//lib/R/share/texmf/Sweave.sty
-
-LaTeX Warning: You have requested package `/usr//lib/R/share/texmf/Sweave',
-               but the package provides `Sweave'.
-
+) (C:\texmf\tex\latex\Sweave\Sweave.sty
 Package: Sweave 
-(/usr/share/texmf/tex/latex/base/ifthen.sty
-Package: ifthen 1999/09/10 v1.1b Standard LaTeX ifthen package (DPC)
-)
-(/usr/share/texmf/tex/latex/base/fontenc.sty
-Package: fontenc 2000/08/30 v1.91 Standard LaTeX package
-
-(/usr/share/texmf/tex/latex/base/t1enc.def
-File: t1enc.def 2000/08/30 v1.91 Standard LaTeX file
-LaTeX Font Info:    Redeclaring font encoding T1 on input line 38.
-))
-(/usr/share/texmf/tex/latex/graphics/graphicx.sty
+(C:\texmf\tex\latex\base\ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+) (C:\texmf\tex\latex\base\fontenc.sty
+Package: fontenc 2004/02/22 v1.99f Standard LaTeX package
+(C:\texmf\tex\latex\base\t1enc.def
+File: t1enc.def 2004/02/22 v1.99f Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+)) (C:\texmf\tex\latex\graphics\graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
-\Gin@req@height=\dimen128
-\Gin@req@width=\dimen129
+\Gin@req@height=\dimen130
+\Gin@req@width=\dimen131
+) (C:\texmf\tex\latex\ae\ae.sty
+Package: ae 2001/02/12 1.3 Almost European Computer Modern
+(C:\texmf\tex\latex\base\fontenc.sty
+Package: fontenc 2004/02/22 v1.99f Standard LaTeX package
+(C:\texmf\tex\latex\base\t1enc.def
+File: t1enc.def 2004/02/22 v1.99f Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 )
-(/usr/share/texmf/tex/latex/ae/ae.sty
-Package: ae 1998/11/17 1.0 Almost European Computer Modern
-
-(/usr/share/texmf/tex/latex/base/fontenc.sty
-Package: fontenc 2000/08/30 v1.91 Standard LaTeX package
-
-(/usr/share/texmf/tex/latex/base/t1enc.def
-File: t1enc.def 2000/08/30 v1.91 Standard LaTeX file
-LaTeX Font Info:    Redeclaring font encoding T1 on input line 38.
-)
-LaTeX Font Info:    Try loading font information for T1+aer on input line 96.
-
-(/usr/share/texmf/tex/latex/ae/t1aer.fd
+LaTeX Font Info:    Try loading font information for T1+aer on input line 100.
+(C:\texmf\tex\latex\ae\t1aer.fd
 File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
-)))
-(/usr/share/texmf/tex/latex/fancyvrb/fancyvrb.sty
+))) (C:\texmf\tex\latex\fancyvrb\fancyvrb.sty
 Package: fancyvrb 1998/07/17
-
 Style option: `fancyvrb' v2.6, with DG/SPQR fixes <1998/07/17> (tvz)
 \FV@CodeLineNo=\count113
 \FV@InFile=\read1
@@ -234,20 +228,76 @@ Style option: `fancyvrb' v2.6, with DG/SPQR fixes <1998/07/17> (tvz)
 \c@FancyVerbLine=\count114
 \FV@StepNumber=\count115
 \FV@OutFile=\write4
-
 No file fancyvrb.cfg.
-) (/usr/lib/R/share/texmf/upquote.sty
+) (C:\texmf\tex\latex\Sweave\upquote.sty
 Package: upquote 2003/08/11 v1.1 Covington's upright-quote modification to verb
 atim and verb
+(C:\texmf\tex\latex\base\textcomp.sty
+Package: textcomp 2004/02/22 v1.99f Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 71.
+(C:\texmf\tex\latex\base\ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+)
+LaTeX Info: Redefining \oldstylenums on input line 266.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 281.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 282.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 283.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 284.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 285.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 286.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 287.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 288.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 289.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 290.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 291.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 292.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 293.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 294.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 295.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 296.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 297.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 298.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 299.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 300.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 301.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 302.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 303.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 304.
 
-(/usr/share/texmf/tex/latex/base/textcomp.sty
-Package: textcomp 2000/08/30 v1.91 Standard LaTeX package
-
-(/usr/share/texmf/tex/latex/base/ts1enc.def
-File: ts1enc.def 1998/06/12 v3.0d (jk/car/fm) Standard LaTeX file
-)))) (./maanova.aux)
-\openout1 = `maanova.aux'.
-
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 305.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 306.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 307.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 308.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 309.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 310.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 311.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 312.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 313.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 314.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 315.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 316.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 317.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 318.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 319.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 320.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 321.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 322.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 323.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 324.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 325.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 326.
+))) (maanova.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
 LaTeX Font Info:    ... okay on input line 29.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
@@ -264,63 +314,62 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
 LaTeX Font Info:    ... okay on input line 29.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 29.
-
-(/usr/share/texmf/tex/latex/base/ts1cmr.fd
+(C:\texmf\tex\latex\base\ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 29.
-
-(/usr/share/texmf/tex/context/base/supp-pdf.tex
-(/usr/share/texmf/tex/context/base/supp-mis.tex
-loading : Context Support Macros / Missing
+(C:\texmf\tex\context\base\supp-pdf.tex (C:\texmf\tex\context\base\supp-mis.tex
+loading : Context Support Macros / Miscellaneous (2004.10.26)
 \protectiondepth=\count116
 \scratchcounter=\count117
 \scratchtoks=\toks25
-\scratchdimen=\dimen130
+\scratchdimen=\dimen132
 \scratchskip=\skip48
-\scratchmuskip=\muskip11
+\scratchmuskip=\muskip12
 \scratchbox=\box32
 \scratchread=\read2
 \scratchwrite=\write5
-\zeropoint=\dimen131
+\zeropoint=\dimen133
+\onepoint=\dimen134
+\onebasepoint=\dimen135
+\minusone=\count118
+\thousandpoint=\dimen136
+\onerealpoint=\dimen137
+\emptytoks=\toks26
 \nextbox=\box33
-\nextdepth=\dimen132
-\everyline=\toks26
-\!!counta=\count118
-\!!countb=\count119
-\recursecounter=\count120
+\nextdepth=\dimen138
+\everyline=\toks27
+\!!counta=\count119
+\!!countb=\count120
+\recursecounter=\count121
 )
-loading : Context Support Macros / PDF
-\nofMPsegments=\count121
-\nofMParguments=\count122
-\everyMPtoPDFconversion=\toks27
+loading : Context Support Macros / PDF (2004.03.26)
+\nofMPsegments=\count122
+\nofMParguments=\count123
+\MPscratchCnt=\count124
+\MPscratchDim=\dimen139
+\MPnumerator=\count125
+\everyMPtoPDFconversion=\toks28
 )
 Package hyperref Info: Link coloring OFF on input line 29.
- (/usr/share/texmf/tex/latex/hyperref/nameref.sty
-Package: nameref 2000/05/08 v2.18 Cross-referencing by name of section
-\c@section@level=\count123
-) (./maanova.out)
-(./maanova.out)
-\openout3 = `maanova.out'.
-
+(C:\texmf\tex\latex\hyperref\nameref.sty
+Package: nameref 2003/12/03 v2.21 Cross-referencing by name of section
+\c@section@level=\count126
+)
 LaTeX Info: Redefining \ref on input line 29.
 LaTeX Info: Redefining \pageref on input line 29.
- (./maanova.toc
+(maanova.out) (maanova.out) (maanova.toc
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [1
 Non-PDF special ignored!
 Non-PDF special ignored!
 
-{/usr/share/texmf/dvips/config/pdftex.map}])
+{psfonts.map}])
 \tf@toc=\write6
-\openout6 = `maanova.toc'.
-
-
-(./intro.tex
+(intro.tex
 LaTeX Font Info:    Try loading font information for TS1+aer on input line 11.
- (/usr/lib/R/share/texmf/ts1aer.fd
+(C:\texmf\tex\latex\Sweave\ts1aer.fd
 File: ts1aer.fd 
 )
 LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <12> not available
@@ -328,130 +377,104 @@ LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <12> not available
 
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
 [2]
 LaTeX Font Info:    Try loading font information for T1+aett on input line 38.
- (/usr/share/texmf/tex/latex/ae/t1aett.fd
+(C:\texmf\tex\latex\ae\t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 )
 Overfull \hbox (31.67097pt too wide) in paragraph at lines 37--41
-/aett12/http://cran.r-project.org /aer12/or a lo-cal mir-ror site. Source code 
-is avail-able for UNIX/LINUX,
+\T1/aett/m/n/12 http://cran.r-project.org \T1/aer/m/n/12 or a lo-cal mir-ror si
+te. Source code is avail-able for UNIX/LINUX,
  []
 
 
 Overfull \hbox (12.77904pt too wide) in paragraph at lines 48--51
-[]/aer12/Select Menu /aett12/Pack-ages/aer12/, click /aett12/In-stall pack-age 
-from lo-cal zip file/aer12/. Choose
+[]\T1/aer/m/n/12 Select Menu \T1/aett/m/n/12 Pack-ages\T1/aer/m/n/12 , click \T
+1/aett/m/n/12 In-stall pack-age from lo-cal zip file\T1/aer/m/n/12 . Choose
  []
 
 
 Overfull \hbox (2.0066pt too wide) in paragraph at lines 70--80
-/aer12/file /aett12/.Ren-v-i-ron /aer12/in your home di-rec-tory to con-tain th
-e line /aett12/R_LIBS=/home/user/Rlib
+\T1/aer/m/n/12 file \T1/aett/m/n/12 .Ren-v-i-ron \T1/aer/m/n/12 in your home di
+-rec-tory to con-tain the line \T1/aett/m/n/12 R_LIBS=/home/user/Rlib
  []
 
 
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
 [3]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [4]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[5]) (./prepfile.tex
+[5]) (prepfile.tex
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [6]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[7]) (./Rtour.tex
+[7]) (Rtour.tex
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[8]) (./camda.tex <gridcheck.png, id=223, 481.8pt x 481.8pt>
+[8]) (camda.tex <gridcheck.png, id=225, 481.8pt x 481.8pt>
 File: gridcheck.png Graphic file (type png)
-
-<use gridcheck.png> <riplot.png, id=224, 481.8pt x 481.8pt>
+<use gridcheck.png> <riplot.png, id=226, 481.8pt x 481.8pt>
 File: riplot.png Graphic file (type png)
- <use riplot.png>
-<arrayview.png, id=225, 481.8pt x 481.8pt>
+<use riplot.png> <arrayview.png, id=227, 481.8pt x 481.8pt>
 File: arrayview.png Graphic file (type png)
- <use arrayview.png>
+<use arrayview.png>
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [9]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[10 <./gridcheck.png>]
+[10 <gridcheck.png>]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[11 <./riplot.png>]
+[11 <riplot.png>]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[12 <./arrayview.png>] <rlowess.png, id=256, 481.8pt x 481.8pt>
+[12 <arrayview.png>] <rlowess.png, id=258, 481.8pt x 481.8pt>
 File: rlowess.png Graphic file (type png)
-
 <use rlowess.png>
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[13 <./rlowess.png>] <volcano.png, id=267, 481.8pt x 481.8pt>
+[13 <rlowess.png>] <volcano.png, id=269, 481.8pt x 481.8pt>
 File: volcano.png Graphic file (type png)
-
 <use volcano.png>
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [14]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[15 <./volcano.png>] <vgprofile.pdf, id=281, 433.62pt x 466.74374pt>
+[15 <volcano.png>] <vgprofile.pdf, id=283, 433.62pt x 466.74374pt>
 File: vgprofile.pdf Graphic file (type pdf)
-
-<use vgprofile.pdf> <hckidney.pdf, id=282, 462.72874pt x 476.78125pt>
+<use vgprofile.pdf> <hckidney.pdf, id=284, 476.78125pt x 462.72874pt>
 File: hckidney.pdf Graphic file (type pdf)
-
 <use hckidney.pdf>
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [16]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[17 <./vgprofile.pdf>]
+[17 <vgprofile.pdf>]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[18 <./hckidney.pdf>]) (./paigen.tex
+[18 <hckidney.pdf, page is rotated 90 degrees>]) (paigen.tex
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[19] <paigen.pdf, id=331, 297.11pt x 122.4575pt>
+[19] <paigen.pdf, id=335, 297.11pt x 122.4575pt>
 File: paigen.pdf Graphic file (type pdf)
- <use paigen.pdf>
+<use paigen.pdf>
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[20 <./paigen.pdf>]
+[20 <paigen.pdf>]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[21]) (./abf1.tex <abf1.pdf, id=357, 335.2525pt x 94.3525pt>
+[21]) (abf1.tex <abf1.pdf, id=362, 335.2525pt x 94.3525pt>
 File: abf1.pdf Graphic file (type pdf)
- <use abf1.pdf>
+<use abf1.pdf>
 Underfull \hbox (badness 10000) in paragraph at lines 26--27
 
  []
@@ -459,47 +482,40 @@ Underfull \hbox (badness 10000) in paragraph at lines 26--27
 
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[22 <./abf1.pdf>]) (./maanova.bbl
+[22 <abf1.pdf>]) (maanova.bbl
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [23])
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[24] (./MPI.tex
+[24] (MPI.tex
 Overfull \hbox (6.32286pt too wide) in paragraph at lines 16--21
-[]/aer12/Here I pro-vide some tips for sys-tem and soft-ware con-fig-u-ra-tions
- for run-ning R/maanova
+[]\T1/aer/m/n/12 Here I pro-vide some tips for sys-tem and soft-ware con-fig-u-
+ra-tions for run-ning R/maanova
  []
 
 
 Overfull \hbox (5.97821pt too wide) in paragraph at lines 23--27
-/aer12/The com-puter clus-ter need to be Unix/Linux clus-ter with LAM/MPI in-st
-alled. LAM/MPI
+\T1/aer/m/n/12 The com-puter clus-ter need to be Unix/Linux clus-ter with LAM/M
+PI in-stalled. LAM/MPI
  []
 
 
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [25]
 Underfull \hbox (badness 10000) in paragraph at lines 82--83
 
  []
 
-) (./algorithm.tex
+) (algorithm.tex
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [26]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
 [27]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [28]
 
@@ -513,35 +529,34 @@ Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
 
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[29]) (./faq.tex
+[29]) (faq.tex
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
 
 [30]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
 [31])
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
-
-[32] (./maanova.aux) ) 
+[32] (maanova.aux) ) 
 Here is how much of TeX's memory you used:
- 5430 strings out of 50460
- 68934 string characters out of 690585
- 127990 words of memory out of 1500001
- 8129 multiletter control sequences out of 10000+25000
- 32629 words of font info for 75 fonts, out of 400000 for 1000
- 14 hyphenation exceptions out of 10000
- 35i,9n,39p,308b,438s stack positions out of 3000i,500n,3000p,50000b,5000s
-</usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr
-/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/blue
-sky/cm/cmsy8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/shar
-e/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1/bluesky/
-cm/cmsltt10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt12.pfb> </var/lib/
-texmf/pk/ljfour/jknappen/tc/tcrm1200.600pk></usr/share/texmf/fonts/type1/bluesk
-y/cm/cmti12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi12.pfb></usr/share
-/texmf/fonts/type1/bluesky/cm/cmbx12.pfb></usr/share/texmf/fonts/type1/bluesky/
-cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on maanova.pdf (32 pages, 336321 bytes).
+ 6394 strings out of 95515
+ 76727 string characters out of 1189490
+ 144766 words of memory out of 1144453
+ 8989 multiletter control sequences out of 60000
+ 32629 words of font info for 75 fonts, out of 1000000 for 2000
+ 14 hyphenation exceptions out of 8191
+ 35i,9n,39p,224b,373s stack positions out of 5000i,500n,10000p,200000b,32768s
+PDF statistics:
+ 500 PDF objects out of 300000
+ 173 named destinations out of 300000
+ 286 words of extra memory for PDF output out of 65536
+<C:\texmf\fonts\type1\bluesky\cm\cmsy10.pfb><C:\texmf\fonts
+\type1\bluesky\cm\cmr8.pfb><C:\texmf\fonts\type1\bluesky\cm\cmsy8.pfb><C:\texmf
+\fonts\type1\bluesky\cm\cmex10.pfb><C:\texmf\fonts\type1\bluesky\cm\cmmi8.pfb><
+C:\texmf\fonts\type1\bluesky\cm\cmsltt10.pfb><C:\texmf\fonts\type1\bluesky\cm\c
+mtt12.pfb>{cm-super-ts1.enc}<C:\texmf\fonts\type1\public\cm-super\sfrm1200.pfb>
+<C:\texmf\fonts\type1\bluesky\cm\cmti12.pfb><C:\texmf\fonts\type1\bluesky\cm\cm
+mi12.pfb><C:\texmf\fonts\type1\bluesky\cm\cmbx12.pfb><C:\texmf\fonts\type1\blue
+sky\cm\cmr12.pfb><C:\texmf\fonts\type1\bluesky\cm\cmr17.pfb>
+Output written on maanova.pdf (32 pages, 349934 bytes).

@@ -18,8 +18,8 @@ either madata or exprSet
 This file is intended to contain a list of many of the additions that
 are planned for the R/maanova package.
 
-If you any additions to suggest, please send an email to Hao Wu,
-hao@jax.org
+If you any additions to suggest, please send an email to Lei Wu,
+leiwu@jax.org
 ----------------------------------------------------------------------
 end of TODO.txt
 

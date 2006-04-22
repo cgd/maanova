@@ -1,5 +1,4 @@
-
-\author{Hao Wu \email{hao@jax.org} }
+\author{Hao Wu}
 
 \name{transform.madata}
 \alias{transform.madata}
@@ -52,7 +51,7 @@
 }
 
 \usage{
-transform.madata(x,method=c("shift","glowess","rlowess","linlog","linlogshift"),
+transform.madata($\_$data,method=c("shift","glowess","rlowess","linlog","linlogshift"),
        lolim, uplim, f=0.1, iter=3, degree=1, cg=0.3, cr=0.3, n.bin=10,
        draw=c("screen", "dev", "off"), \dots)
 }
@@ -106,27 +105,27 @@ transform.madata(x,method=c("shift","glowess","rlowess","linlog","linlogshift"),
 data(kidney)
 # do regional loess on raw data
 \dontrun{
-raw.lowess <- transform(kidney.raw, method="rlowess")
+raw.lowess <- transform.madata(kidney.raw, method="rlowess")
 graphics.off()
 
 # make data object and do normalization on it
 # create data object with collapsing replicates
 data1<-createData(kidney.raw)
 # do shift without displaying the plot
-data1.shift <- transform(data1, method="shift", lolim=-50, uplim=50,
+data1.shift <- transform.madata(data1, method="shift", lolim=-50, uplim=50,
          draw="off")
 
 # do global lowess and output the plots to a postscript file
 postscript(file="glowess.ps")
-data1.glowess <- transform(data1, method="glowess", draw="dev")
+data1.glowess <- transform.madata(data1, method="glowess", draw="dev")
 graphics.off()
 
 # do linear-log
-data1.linlog <- transform(data1, method="linlog")
+data1.linlog <- transform.madata(data1, method="linlog")
 graphics.off()
 
 # do linear-log shift
-data1.linlogshift <- transform(data1, method="linlogshift", lolim=-50,
+data1.linlogshift <- transform.madata(data1, method="linlogshift", lolim=-50,
   uplim=50)
 graphics.off()
 }

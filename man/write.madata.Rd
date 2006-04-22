@@ -1,4 +1,4 @@
-\author{Hao Wu \email{hao@jax.org} }
+\author{Hao Wu}
 
 \name{write.madata}
 \alias{write.madata}

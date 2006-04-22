@@ -49,7 +49,7 @@ graphics.off()
 kidney <- createData(kidney.raw);
 summary(kidney)
 # smooth the data using intensity lowess
-kidney <- transform(kidney, method="glowess")
+kidney <- transform.madata(kidney, method="glowess")
 graphics.off()
 
 # make model object for fixed model
