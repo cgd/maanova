@@ -1,16 +1,18 @@
 Library maanova
 ================
 
-Version 1.2.0, Apr 22, 2006
+Version 1.2.0, Apr 23, 2006
 1. Hyuna Yang made these changes:
 Instead of pooled p-value, p-value based on subset method 
 is implemented in matest.R. Include option critical. 
-2. Correct several places in the manual files from "transform" 
-to "transform.madata"
-3. Changed the La.svd(X,method="dgesvd") to La.svd(X,method="dgesdd")
+2. Rename "transform.madata" to "transformMadata"
+   Rename "transform.rawdata" to "transformRawdata"
+3. Change several places in the manual files from "transform" 
+to "transformMadata"
+4. Changed the La.svd(X,method="dgesvd") to La.svd(X,method="dgesdd")
 in util.R since the La.svd(X, method="dgesvd" is deprecated from 
 R-2.3.0.
-4. version number jumps from 0.98.8 to 1.2.0 in order to 
+5. Version number jumps from 0.98.8 to 1.2.0 in order to 
 keep up with bioconductor version number
 
 ---------------------------------------------------

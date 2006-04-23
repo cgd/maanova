@@ -528,10 +528,9 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
 #######################################################################
 matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, inits20, mv,
                         is.ftest, partC, MME.method, test.method,
-                        shuffle.method, pool.pval)
+                        shuffle.method, pool.pval, ngenes)
 {
   # local variables
-  ngenes <- data$n.gene
 
   # number of contrasts
   if(is.ftest) # this is F-test
@@ -650,7 +649,6 @@ matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, inits20, m
     nresid <- length(resid0)
     data.perm <- data
   }
-
   ##############################
   # permutation loop
   ##############################
@@ -716,7 +714,6 @@ matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, inits20, m
     else
       ftest.perm <- matest.engine(anovaobj.perm, term, mv, test.method,
                                   Contrast, is.ftest, verbose=FALSE)
-
     # update the result
     ffields <- c("F1","F2","F3","Fs")
     for(icon in 1:nContrast) { # loop for multiple contrasts
@@ -733,9 +730,9 @@ matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, inits20, m
           # for P value count
           if(pool.pval) { # use pooled p value
             Fobs.rank <- rank(fobs)
-            Fstar.rank <- rank(cbind(fobs, fstar))
+            Fstar.rank <- rank(c(fobs, fstar))
             Pval[[ffields[i]]]$Pperm[,icon] <- Pval[[ffields[i]]]$Pperm[,icon] +
-              ngenes - (Fstar.rank[1:ngenes]-Fobs.rank)
+              data$n.gene - (Fstar.rank[1:ngenes]-Fobs.rank)
           }
           else { # not pool
             tmp <- fstar > fobs

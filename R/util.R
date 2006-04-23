@@ -197,7 +197,7 @@ matrank <- function(X)
     # rank is 1 for vectors
     return(1)
   else if(is.matrix(X)) {
-    s <- La.svd(X,0,0, method="dgesvd")
+    s <- La.svd(X,0,0, method="dgesdd")
     tol <- max(dim(X)) * s$d[1] * .Machine$double.eps
     r <- sum(s$d>tol)
     return(r)
@@ -398,6 +398,9 @@ findgroup <- function(varid, ndye)
 # I couldn't figure out why. I'm using "dgesvd" instead. Seems it generates
 # the exact same result as in Matlab. But What's the disadvantage of it?
 #
+# From R-2.3.0 La.svd(X,method="dgesvd") is deprecated, so change 
+# it to "dgesdd". Hopefully it will not have problem like before.
+#
 ###############################################################
   
 pinv <- function(X, tol)
@@ -406,7 +409,7 @@ pinv <- function(X, tol)
     stop("X must be a numeric matrix")
   if (!is.matrix(X)) 
     X <- as.matrix(X)
-  Xsvd <- La.svd(X, method="dgesvd")
+  Xsvd <- La.svd(X, method="dgesdd")
   
   # find the tolerance
   if(missing(tol))

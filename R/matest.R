@@ -1,9 +1,10 @@
 #####################################################################
 #
 # matest.R
-#
-# copyright (c) 2001-2004, Hao Wu and Gary A. Churchill, The Jackson Lab.
+# copyright (c) 2001-2004, Hao Wu, Hyuna Yang and Gary A. Churchill, 
+# The Jackson Lab.
 # Written Apr, 2004
+# Modified Apr, 2006
 #
 # Licensed under the GNU General Public License version 2 (June, 1991)
 #
@@ -14,17 +15,17 @@
 ######################################################################
 
 matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
-                   test.type=c("ttest","ftest"),
+                   critical=.9, test.type=c("ttest","ftest"),
                    shuffle.method=c("sample", "resid"),
                    MME.method=c("REML","noest","ML"),
-                   test.method=c(1,0,1,1),
-                   pval.pool=TRUE, verbose=TRUE)
-{
+                   test.method=c(1,0,0,1),
+                   pval.pool=TRUE, verbose=TRUE){
   if (class(data) != "madata")
     stop("data is not an object of class madata.")
   if (class(model) != "mamodel")
     stop("model is not an object of class mamodel.")
-
+  if(critical <= 0 || critical >1) 
+    stop(" Critical value is between 0 to 1: Recommended value =.9")
   # get the methods
   shuffle.method <- match.arg(shuffle.method)
   MME.method <- match.arg(MME.method)
@@ -89,8 +90,7 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
   }
 
   ##########################################
-  # for contrast matrix -
-  # make one if not given,
+  # for contrast matrix - make one if not given,
   # check the validity if given
   ##########################################
   # for backward compatibility, if user provide Contrast matrix
@@ -134,6 +134,7 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
   anovaobj <- fitmaanova(data, model, method=MME.method, verbose=FALSE)
   ftest.obs <- matest.engine(anovaobj, term, test.method=test.method, 
                              Contrast=Contrast, is.ftest=is.ftest, verbose=FALSE)
+
   # get the results
   mv <- ftest.obs$mv
   dfnu <- ftest.obs$dfnu; dfFtest <- ftest.obs$dfFtest
@@ -142,6 +143,7 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
   # initialize output object
   ftest <- NULL
   # general info in the output object
+  ftest$critical = critical 
   ftest$model <- model
   ftest$term <- term
   ftest$dfde <- ftest.obs$dfFtest
@@ -162,7 +164,7 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
     if(n.perm > 1) {
       ftest$F1$Pvalperm <- array(0, c(ngenes, nContrast))
       ftest$F1$Pvalmax <- array(0, c(ngenes, nContrast))
-    }
+   }
   }
 
   #F2
@@ -204,9 +206,28 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
   ########################################
   # start to do permutation test
   ########################################
+  
   if(verbose)
     cat("Doing permutation. This may take a long time ... \n")
-
+  sdata=data; sS2=anovaobj$S2;
+  #hsidx = sqrt(ftest$F1$Fobs) <=qt(.95,ftest$dfde); 
+  if(critical <1){
+    if(nContrast==1){
+      hsidx = ftest$F1$Fobs <=qf(critical,ftest$dfnu ,ftest$dfde)
+    }
+    else{
+      tmp=as.matrix(apply(ftest$F1$Fobs, 1, min))
+      hsidx= tmp <=qf(critical,ftest$dfnu ,ftest$dfde)
+    }
+    if(ncol(sS2)==1) sS2=as.matrix(sS2[hsidx==1,])
+    else sS2=sS2[hsidx==1,]
+    sdata$n.gene = nrow(sS2)
+    sdata$data = sdata$data[hsidx==1,]; 
+    sdata$metarow = sdata$metarow[hsidx==1]
+    sdata$metacol = sdata$metacol[hsidx==1]
+    sdata$cloneid = sdata$cloneid[hsidx==1]
+    sdata$colmeans = apply(sdata$data, 2, mean)
+  }
   # permutation - use MPI cluster if specified
   if(nnodes > 1) { # use MPI cluster
     # use cluster call to do permutation
@@ -224,16 +245,18 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
     # is ftest.mixed.perm. So in ftest.mixed.perm I put nperm 
     # as the first argument so I can use clusterApply
     cat(paste("Doing permutation on", nnodes, "cluster nodes ... \n"))
-    pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm, ftest, data,
-                                model, term, Contrast, anovaobj$S2, mv,
-                                is.ftest, partC, MME.method, test.method,
-                                shuffle.method, pval.pool)
+   
+    pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm, ftest,sdata,   
+    				model, term,Contrast, sS2,mv, is.ftest, partC, 
+    				MME.method, test.method, shuffle.method, pval.pool, ngenes)
+
     # how to display permutation number?
     # after it's done, gather the results from nodes
     ffields <- c("F1","F2","F3","Fs")
     for(i in 1:nnodes) {
       if(nperm.cluster[i] > 0) {
         pstar <- pstar.nodes[[i]]
+#        pstar1 <- pstar1.nodes[[i]]
         for(itest in 1:4) {
           if(test.method[itest] == 1) {
             ftest[[ffields[itest]]]$Pvalperm <-
@@ -245,15 +268,23 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
       }
     }
     # clear cluster results to save some memory
-    rm(pstar.nodes)
+    rm(pstar.nodes);
+#    rm(pstar1.nodes)
+
     # stop the cluster
     stopCluster(cl)
   }
 
   else { # no cluster, do it on single node
-    pstar <- matest.perm(n.perm, ftest, data, model, term, Contrast, anovaobj$S2,
-                         mv, is.ftest, partC, MME.method, test.method, shuffle.method,
-                         pval.pool)
+    # original pooling
+
+###### using subset of data, Fs should be included and Fs only. 
+###It can not handle a situation that one array is toally missing.
+    
+    pstar <- matest.perm(n.perm, ftest, sdata, model, term,
+      Contrast, sS2,mv, is.ftest, partC, MME.method, test.method,
+      shuffle.method,pval.pool,ngenes)
+
     # update the pvalues
     ffields <- c("F1","F2","F3","Fs")
     for(itest in 1:4) {
@@ -272,9 +303,10 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
   for(itest in 1:4) {
     if(test.method[itest] == 1) {
       # Pvalperm
-      if(pval.pool)
+      if(pval.pool){
         ftest[[ffields[itest]]]$Pvalperm <-
-          ftest[[ffields[itest]]]$Pvalperm / (n.perm*ngenes)
+          ftest[[ffields[itest]]]$Pvalperm / (n.perm*sdata$n.gene)
+      }
       else
         ftest[[ffields[itest]]]$Pvalperm <-
           ftest[[ffields[itest]]]$Pvalperm / n.perm
@@ -292,5 +324,4 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
   # return
   ftest
 }
-  
 

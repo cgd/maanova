@@ -1,21 +1,18 @@
 \author{Hao Wu}
 
-\name{transform.madata}
-\alias{transform.madata}
-\alias{transform.rawdata}
+\name{transformMadata}
+\alias{transformMadata}
+\alias{transformRawdata}
 
-\title{Deprecated function in maanova package}
+\title{Micro Array experiment data transformation}
 
 \description{
-  These functions are provided for compatibility with older versions
-  of R only, and may be defunct as soon as the next release.
-  
   This is the function to transform the Micro Array experiment data
-  based on the given method.  
+  based on the given method. 
 }
 
 \details{
-  The smoothing methods include:  
+  The smoothing methods include:
   
   shift -- the calculation of offset is based on the minimum
   sum of absolute deviations (SAD). Each array will have its own offset
@@ -23,48 +20,46 @@
 
   glowess -- Intensity-based lowess. This method is to smooth the scatter
   plot of Ratio (R/G) versus Intensity (R*G). The formula in the fitting
-  is ratio ~ intensity.  
+  is ratio ~ intensity. 
 
   rlowess -- Joint lowess. This method is to smooth the scatter plot
   of Ratio versus Intensity and grid locations. It is the joint of
   intensity-based lowess and spatial loess. You have to have the grid
   location for every spot in order to use this method. The formula in
-  fitting is ratio ~ intesity + row + col.  
+  fitting is ratio ~ intesity + row + col. 
 
-  linlog -- Linear-log transformation.  
+  linlog -- Linear-log transformation.
 
-  linlogshift -- Linear-log shift transformation.  
+  linlogshift -- Linear-log shift transformation.
   
   Previously, intensity lowess was called global lowess and joint lowess
   was called regional lowess. So I use "glowess" and "rlowess" in the
   method. Although the method names doesn't make too much sense, I will
-  keep them for the reason of backward compatibility.  
+  keep them for the reason of backward compatibility.
   
   If you have replicated spots and want to collapse them in
   \code{\link[maanova]{createData}} by providing avgreps=1 or 2, you will
-  lose grid information and joint lowess will be unavailable.  
+  lose grid information and joint lowess will be unavailable.
 
   This function works on both \code{rawdata} and \code{madata} objects.
   For \code{rawdata}, the result transformed data will be on the raw
   scale. For \code{madata}, the result transformed data will be on log2
-  based scale.  
+  based scale.
 
   Note that this function is only working for two-dye array at this
-  time.   
+  time. 
 }
 
-\usage{  
-transform.rawdata(x,method=c("shift","glowess","rlowess",
-       "linlog", "linlogshift"), lolim, uplim, f=0.1, iter=3, 
-       degree=1, cg=0.3, cr=0.3, n.bin=10, draw=c("screen", 
-       "dev", "off"), \dots)
-transform.madata(x,method=c("shift","glowess","rlowess",
-       "linlog","linlogshift"), lolim, uplim, f=0.1, iter=3, 
-       degree=1, cg=0.3, cr=0.3, n.bin=10, draw=c("screen", 
-       "dev", "off"), \dots)
+\usage{
+transformRawdata(x,method=c("shift","glowess","rlowess","linlog","linlogshift"),
+       lolim, uplim, f=0.1, iter=3, degree=1, cg=0.3, cr=0.3, n.bin=10,
+       draw=c("screen", "dev", "off"), \dots)
+transformMadata(x,method=c("shift","glowess","rlowess","linlog","linlogshift"),
+       lolim, uplim, f=0.1, iter=3, degree=1, cg=0.3, cr=0.3, n.bin=10,
+       draw=c("screen", "dev", "off"), \dots)
 }
 
-\arguments{  
+\arguments{
   \item{x}{An object of class \code{madata} or \code{rawdata}.}
   \item{method}{The smoothing method.}
   \item{lolim}{Low shift limit. If this argument is missing, the negative
@@ -100,11 +95,11 @@ transform.madata(x,method=c("shift","glowess","rlowess",
 \section{Value}{
   The return value is an object of class \code{madata} or
   \code{rawdata}. Compared with the input object, the following fields
-  are changed:  
+  are changed:
   \itemize{
     \item Field \code{data} is the transformed data.
     \item Field \code{TransformMethod} will be the transformation method
-    applied.  
+    applied.
   }
 }
 
@@ -113,29 +108,28 @@ transform.madata(x,method=c("shift","glowess","rlowess",
 data(kidney)
 # do regional loess on raw data
 \dontrun{
-raw.lowess <- transform.madata(kidney.raw, method="rlowess")
+raw.lowess <- transformMadata(kidney.raw, method="rlowess")
 graphics.off()
 
 # make data object and do normalization on it
 # create data object with collapsing replicates
 data1<-createData(kidney.raw)
 # do shift without displaying the plot
-data1.shift <- transform.madata(data1, method="shift", 
-         lolim=-50, uplim=50, draw="off")
+data1.shift <- transformMadata(data1, method="shift", lolim=-50, uplim=50,
+         draw="off")
 
 # do global lowess and output the plots to a postscript file
 postscript(file="glowess.ps")
-data1.glowess <- transform.madata(data1, method="glowess", 
-         draw="dev")
+data1.glowess <- transformMadata(data1, method="glowess", draw="dev")
 graphics.off()
 
 # do linear-log
-data1.linlog <- transform.madata(data1, method="linlog")
+data1.linlog <- transformMadata(data1, method="linlog")
 graphics.off()
 
 # do linear-log shift
-data1.linlogshift <- transform.madata(data1, method="linlogshift", 
-         lolim=-50, uplim=50)
+data1.linlogshift <- transformMadata(data1, method="linlogshift", lolim=-50,
+  uplim=50)
 graphics.off()
 }
 }
