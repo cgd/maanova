@@ -1,6 +1,6 @@
 ######################################################################
 #
-# transform.madata.R
+# transformMadata.R
 # This is the function to do data transformation
 # This function was called smooth before.
 #
@@ -18,21 +18,19 @@
 require("stats")
 
 # for rawdata
-transform.rawdata <- function(x, ...)
+transformRawdata <- function(x, ...)
 {
-  .Deprecated("transformRawdata")
-  transform.madata(x, ...)
+  transformMadata(x, ...)
 }
 
 # for madata
-transform.madata <- function(x, method=c("shift","glowess","rlowess","linlog","linlogshift"),
+transformMadata <- function(x, method=c("shift","glowess","rlowess","linlog","linlogshift"),
            lolim, uplim,
            f=0.1, iter=3, degree=1,
            cg=0.3, cr=0.3, n.bin=10,
            draw=c("screen", "dev", "off"), ...)
   
 {
-  .Deprecated("transformMadata")
   object <- x
   if( !(class(object) %in% c("madata", "rawdata")) )
     stop("The input variable must be an object of madata or rawdata")
