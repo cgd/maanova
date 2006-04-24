@@ -1,0 +1,109 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% for using of MPI cluster
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Running R/maanova on computer cluster}
+
+%\begin{center}
+%{\large\bf Appendix A: Running R/maanova on computer clusters}
+%\end{center}
+
+Due to the intensive computation needed by the permutation test
+(especially for mixed effects models), parallel computing is
+implemented in R/maanova. The permutation tests can run on
+multiple computer nodes at the same time and the toal
+computational time will be greatly reduced.  
+
+Here I provide some tips for system and software configurations for
+running R/maanova on clusters. My system is a 32-node beowulf
+cluster running Redhat linux 8.0 and R 1.8.0. 
+You might encounter problems on different system
+following the steps. 
+
+\subsection{System requirements}
+The computer cluster need to be Unix/Linux cluster with LAM/MPI
+installed. LAM/MPI can be download from {\tt http://www.lam-mpi.org}. 
+R and {\tt R/maanova} need to be installed on all nodes (or they
+can be exported from a network file system). 
+
+The following R packages are required (you can obtain them
+from {\tt http://cran.r-project.org}:
+\begin{itemize}
+\item SNOW (Simple Network Of Workstations). Obtain this one from\\
+{\tt http://www.stat.uiowa.edu/\~{}luke/R/cluster/cluster.html}.
+\item Rmpi
+\item serialize (this is required by Rmpi)
+\end{itemize}
+
+\subsection{System setup}
+You might need to ask your system administrator to do this. 
+But basically,
+you need to install LAM/MPI software in your system with correct
+configuration. Here are some tips for using rsh as remote shell program.
+If you want to use ssh, things will be slightly different. I assume
+LAM/MPI has been installed on your system.
+
+\begin{enumerate}
+\item First thing to do is to check if you can ``rsh'' to other machine
+without being asked for a password. If it does, add a file called
+``.rhosts'' in your home directory. Each line of the file should be
+mahine names and your user name. For a 2-node system, that file could
+look like (assume my account name is hao):\\
+node1 hao\\
+node2 hao\\
+Then set the mode of this file to be 644 by doing ``chmod 644 .rhosts''.
+After setting it up, do ``rsh node1''. If it still asks for password,
+contact your system administrator.
+
+\item Configurate LAM to use rsh as the remote shell program by adding
+the following lines in your startup script (.bashrc, .cshrc, etc.)\\
+LAMRSH="rsh"\\
+export LAMRSH\\
+(I found it's okay if you don't do this!)
+
+\item Start LAM/MPI by typing "lamboot -v". You should see something
+like:\\
+LAM 6.5.6/MPI 2 C++/ROMIO - University of Notre Dame\\
+Executing hboot on n0 (node1 - 1 CPU)...\\
+Executing hboot on n1 (node2 - 1 CPU)...\\
+topology done
+
+If you see some error messages, contact your system administrator.
+
+\end{enumerate}
+
+
+% 
+\subsection{Install and test clusters in R}
+Here are the steps to install and use clusters in R.
+
+\begin{enumerate}
+\item Install all required package in R. 
+\item Start R, load in snow by doing "library(snow)".
+\item To test if cluster is working, do the following:\\
+\begin{Sinput}
+R> library(snow)
+R> cl <- makeCluster(2) # to make a cluster with two nodes
+R> # to see if your cluster is correct
+R> clusterCall(cl, function() Sys.info()[c("nodename","machine")])
+\end{Sinput}
+You're supposed to see the node names and machine
+types like what I got here:
+\begin{Sinput}
+[[1]]
+nodename               machine
+"node1"                "i686"
+[[2]]
+nodename           machine
+"node2"            "i686"
+\end{Sinput}
+
+\item Check the random number generations by running 
+\begin{Sinput}
+clusterCall(cl, runif, 3)
+\end{Sinput}
+If there is correlation 
+problem, you must install rsprng.
+\end{enumerate}
+
+That's it! Now you can start to enjoy the parallel computing.
+
