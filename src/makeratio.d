@@ -1,0 +1,1 @@
+makeratio.o: makeratio.c

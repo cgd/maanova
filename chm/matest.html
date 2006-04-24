@@ -1,0 +1,294 @@
+<html><head><title>Statistical test for Microarray experiment</title>
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>matest(maanova)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   matest">
+<param name="keyword" value=" Statistical test for Microarray experiment">
+</object>
+
+
+<h2>Statistical test for Microarray experiment</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This is the function to perform F or T test on one or multiple
+experimental factor(s). Permutation test will be carried upon request.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
+       critical=.9, test.type = c("ttest", "ftest"),
+       shuffle.method=c("sample", "resid"),
+       MME.method=c("REML","noest","ML"),
+       test.method=c(1,0,0,1),
+       pval.pool=TRUE, verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+An object of class <code>madata</code>.</td></tr>
+<tr valign="top"><td><code>model</code></td>
+<td>
+An object of class <code>mamodel</code>.</td></tr>
+<tr valign="top"><td><code>term</code></td>
+<td>
+The term(s) to be tested. It can be multiple terms. Note
+that the tested term must be fixed. If the term to be tested is a
+random term, it will be converted to a fixed term than do test.</td></tr>
+<tr valign="top"><td><code>Contrast</code></td>
+<td>
+The contrast matrix for the term. The number of
+columns equals to the number of levels in the term. The number of
+rows is the number of T-test you want to carry. Note that it must
+be a matrix. Use <code><a onclick="findlink('base', 'matrix.html')" style="text-decoration: underline; color: blue; cursor: hand">matrix</a></code> command to make it. Note
+that the the hypothesis test can be formulated as H0: Lb=0 versus
+alternative. This contrast matrix is L.</td></tr>
+<tr valign="top"><td><code>n.perm</code></td>
+<td>
+An integer for number of permuatations.</td></tr>
+<tr valign="top"><td><code>nnodes</code></td>
+<td>
+Number of nodes in the MPI cluster. If 1, the
+permutation test will be running on the local computer.</td></tr>
+<tr valign="top"><td><code>critical</code></td>
+<td>
+percentile of F-distribution used to get a subset to 
+calculate p-value. Default is 90th percentile of F-distribution, and 
+permutation analysis is conducted based on genes whose test statistics 
+are smaller than 90th percentile of the F-distribution.</td></tr>
+<tr valign="top"><td><code>test.type</code></td>
+<td>
+Test type. It could be F-test or T-test. If the
+Contrast matrix is missing, this should be a "ftest" and the 
+contrast matrix is generated automatically to conver the whole
+linear space. If the Contrast matrix is given, this could be "ftest"
+or "ttest". The default is "ttest" (for backward compatability).
+For T-test, the code will do a series of T-test, where each T-test
+corresponds to a row in the contrast matrix.</td></tr>
+<tr valign="top"><td><code>shuffle.method</code></td>
+<td>
+Data shuffling method. "sample" for sample
+shuffling and "resid" for residual shuffling. Read "Data Shuffling"
+section for detail.</td></tr>
+<tr valign="top"><td><code>MME.method</code></td>
+<td>
+The method used to solve the Mixed Model Equations. See
+<code><a fitmaanova.html>fitmaanova</a></code> for detail. This parameter only
+applies for mixed effects model permutation test. Default method is
+"REML". The variance components for observed data will be used
+for permuted data. It will greatly increase the speed but you may
+lose power in statistical test in some cases.</td></tr>
+<tr valign="top"><td><code>test.method</code></td>
+<td>
+An integer vector of four elements to indicate
+which F test to carry. Default is c(1,0,1,1), which means do F1, F3
+and Fs test.</td></tr>
+<tr valign="top"><td><code>pval.pool</code></td>
+<td>
+A logical value to indicate whether to use pooled
+permutation F values to calculate the P values.</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+A logical value to indicate whether to display some
+message for calculation progress.</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+If user provide a comparision matrix, this function will perform T-test
+on the given comparison(s). Otherwise, this function will perform
+F-test for the given term.
+</p>
+<p>
+There are four types of tests available. All four tests are based on the
+gene-specific ANOVA model.  F1 is the usual F statistic. F3 assumes
+common error variance across all genes. F2 is the hybrid of the F1 and
+F3 tests. Fs is based on the James-Stein shrinkage estimates of the
+error variance.
+</p>
+<p>
+Permutation tests can run on MPI cluster. 
+This feature is only available for Unix/Linux system. Several
+other R packages (such like SNOW, Rmpi, etc.) are needed for using
+cluster. You may need help from your system administrator to setup LAM-MPI
+correctly. For detailed information on LAM-MPI cluster setup and the
+cluster usage in R, read "MPI_README" distributed with the package.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+An object of class <code>matest</code>, which is a list of the following
+components:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+Input model object.</td></tr>
+<tr valign="top"><td><code>term</code></td>
+<td>
+The input term(s) to be tested.</td></tr>
+<tr valign="top"><td><code>dfde</code></td>
+<td>
+Denominator's degree of freedom for the test.</td></tr>
+<tr valign="top"><td><code>dfnu</code></td>
+<td>
+Numerator's degree of freedom for the test. Note that this
+is always 1 for T-test.</td></tr>
+<tr valign="top"><td><code>obsAnova</code></td>
+<td>
+An object of <code>maanova</code>, which is the ANOVA model
+fitting result on the original data.</td></tr>
+<tr valign="top"><td><code>Contrast</code></td>
+<td>
+The contrast matrix used in the test.</td></tr>
+<tr valign="top"><td><code>n.perm</code></td>
+<td>
+Number of permutations.</td></tr>
+<tr valign="top"><td><code>shuffle</code></td>
+<td>
+Shuffle style</td></tr>
+<tr valign="top"><td><code>pval.pool</code></td>
+<td>
+Use pooled P value or not.</td></tr>
+<tr valign="top"><td><code>F1, F2, F3, Fs</code></td>
+<td>
+Objects of four different F tests results. All or
+any of them could be there according to the requested F test
+method. Each of them contains the following fields:
+<ul>
+<dt>Fobs</dt><dd>F value for the observed data.</dd>
+<dt>Ptab</dt><dd>Tabulated P values for the observed data.</dd>
+<dt>Pvalperm</dt><dd>Nominal permutation P values for each gene. This
+field will be unavailable if user didnot do permutation test.</dd>
+<dt>Pvalmax</dt><dd>FWER one-step adjusted P values from the permutation
+test.</dd>
+</ul>
+All the F values and P values are matrices. The number of rows in
+the matrices equals to the number of genes. For F-test, the number
+of columns will be one. For T-test, the number of columns equals
+to the number of tests carried.
+</td></tr>
+</table>
+
+<h3>Data Shuffling</h3>
+
+<p>
+Data shuffling method is a crucial part in the permutation
+test. Currently there are two shuffling method available, residual
+shuffing and sample shuffing. Fixed-effects models permutation test
+can use either of the method. For mixed-effects models, residual
+shuffing will be incorrect so only sample shuffing is available. 
+</p>
+<p>
+Residual shuffing is to shuffle the null model residuals globally
+without replacement. 
+</p>
+<p>
+Sample shuffing is to shuffle the samples based on the nesting
+relationship among the experimental factors in the model. For sample
+shuffling, you need to make sure you have a 
+good sample size. Otherwise the result may be biased.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>
+Hao Wu;  Hyuna Yang, <a href="mailto:hyuna.yang@jax.org">hyuna.yang@jax.org</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Cui, X. and Churchill,GA (2003), Statistical tests for differential
+expression in cDNA Microarray Expeirments, <EM>Genome Biology</EM> 4:210. 
+</p>
+<p>
+Cui, X., Hwang, J.T.G., Blades N., Qiu J. and Churchill GA (2003),
+Improved statistical tests for differential gene expression by
+shrinking variance components, to be submitted.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a makeModel.html>makeModel</a></code>, <code><a fitmaanova.html>fitmaanova</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# load in Paigen's data
+data(paigen)
+# make data object with rep 2
+paigen &lt;- createData(paigen.raw, 2)
+# Note that the data is normalized so normalization is skipped
+
+##################################
+# fixed model test
+##################################
+# make an additive model
+model.add.fix &lt;- makeModel(data=paigen, formula=~Dye+Array+Strain+Diet)
+# test strain effect
+## Not run: test.Strain.fix &lt;- matest(paigen, model.add.fix, term="Strain", n.perm=100)
+# volcano plot
+## Not run: idx &lt;- volcano(test.Strain.fix)
+
+# test pairwise comparisions for Strain, using a MPI cluster with 8 nodes
+## Not run: C &lt;- matrix(c(1,-1,0,1,0,-1, 0,1,-1), nrow=3, byrow=TRUE)
+## Not run: 
+ttest.strain.fix &lt;- matest(paigen, model.add.fix,
+         term="Strain", Contrast=C, n.perm=100, nnodes=8)
+## End(Not run)
+## Not run: volcano(ttest.strain.fix)
+
+# a user specified F-test on Strain
+# note that the F- and P-values generated in this test is exactly the
+# same as the above F-test. But the volcano plot looks a little
+# different because the X-axis values are different
+## Not run: 
+C &lt;- matrix(c(1,-1/2,-1/2,1,0,-1), nrow=2, byrow=TRUE)
+test.Strain.fix &lt;- matest(paigen, model.add.fix, term="Strain",
+Contrast=C, test.type="ftest", n.perm=100)
+## End(Not run)
+
+##################################
+# mixed model test
+##################################
+# mixed model permutation test is very slow
+# I will skip the example for that
+# the syntax of the function will be the same
+# except the input model object is for mixed effects model
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>maanova</em> version 1.2.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

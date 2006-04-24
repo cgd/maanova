@@ -1,0 +1,119 @@
+<html><head><title>Figure of Merit</title>
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>fom(maanova)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   fom">
+<param name="keyword" value=" Figure of Merit">
+</object>
+
+
+<h2>Figure of Merit</h2>
+
+
+<h3>Description</h3>
+
+<p>
+K-means clustering needs a given number of groups, which is difficult to
+guess in most of the cases. This function calculates the Figure of
+Merit values for different number of groups and generates the FOM
+plot (FOM value versus number of groups). Lower FOM value means
+better grouping. User can decide the number of groups in kmeans
+cluster based on that result.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fom(anovaobj, idx.gene, term, ngroups)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>anovaobj</code></td>
+<td>
+An object of class <code>maanova</code>.</td></tr>
+<tr valign="top"><td><code>idx.gene</code></td>
+<td>
+The index of genes to be clustered.</td></tr>
+<tr valign="top"><td><code>term</code></td>
+<td>
+The factor (in formula) used in clustering. The expression
+level for this term will be used in clustering. This term has to 
+correspond to the gene list, e.g, idx.gene in this function. The
+gene list should be the significant hits in testing this term.</td></tr>
+<tr valign="top"><td><code>ngroups</code></td>
+<td>
+The number of groups for K-means cluster. This could be
+a vector or an integer.</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+A vector of FOM values for the given number of groups</p>
+
+<h3>Author(s)</h3>
+
+<p>
+Hao Wu
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Yeung, K.Y., D.R. Haynor, and W.L.Ruzzo (2001). Validating clustering
+for gene expression data. <EM>Bioinformatics</EM>, <B>17:309-318</B>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a macluster.html>macluster</a></code>,
+<code><a consensus.html>consensus</a></code>,
+<code><a onclick="findlink('mva', 'kmeans.html')" style="text-decoration: underline; color: blue; cursor: hand">kmeans</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# load in data
+data(paigen)
+# make data object with rep 2
+paigen &lt;- createData(paigen.raw, 2)
+# make interactive model
+model.int.fix &lt;- makeModel(data=paigen,
+      formula=~Dye+Array+Strain+Diet+Strain:Diet)
+# fit ANOVA model
+## Not run: 
+anova.int &lt;- fitmaanova(paigen, model.int.fix)
+# test interaction effect 
+test.int.fix &lt;- matest(paigen, model.int.fix, term="Strain:Diet", n.perm=100)
+# pick significant genes - pick the genes selected by Fs test
+idx &lt;- volcano(test.int.fix)$idx.Fs
+# generate FOM
+m &lt;- fom(anova.int, idx, "Strain:Diet", 10)
+## End(Not run)
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>maanova</em> version 1.2.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

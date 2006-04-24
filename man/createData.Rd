@@ -23,7 +23,7 @@
   collapsing could be wrong.  Also note that once
   the replicated spots are collapsed, you will lose the grid location
   and spatial loess ("rlowess" option in
-  \code{\link[maanova]{transformMadata}} will be unapplicable for it.
+  \code{\link[maanova]{transform.madata}} will be unapplicable for it.
 }
 
 \usage{

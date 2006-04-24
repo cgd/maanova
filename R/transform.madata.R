@@ -18,22 +18,22 @@
 require("stats")
 
 # for rawdata
-transform.rawdata <- function(x, ...)
+transform.rawdata <- function(`_data`, ...)
 {
-  .Deprecated("transformRawdata")
-  transform.madata(x, ...)
+  transform.madata(`_data`, ...)
 }
 
 # for madata
-transform.madata <- function(x, method=c("shift","glowess","rlowess","linlog","linlogshift"),
+transform.madata <-
+  function(`_data`,
+           method=c("shift","glowess","rlowess","linlog","linlogshift"),
            lolim, uplim,
            f=0.1, iter=3, degree=1,
            cg=0.3, cr=0.3, n.bin=10,
            draw=c("screen", "dev", "off"), ...)
   
 {
-  .Deprecated("transformMadata")
-  object <- x
+  object <- `_data`
   if( !(class(object) %in% c("madata", "rawdata")) )
     stop("The input variable must be an object of madata or rawdata")
 

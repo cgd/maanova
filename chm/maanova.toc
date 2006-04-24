@@ -1,0 +1,507 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HEAD></HEAD><HTML><BODY>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package maanova:  Contents">
+<param name="Local" value="00Index.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package maanova:  R objects">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="abf1">
+<param name="Local" value="abf1.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="abf1.raw">
+<param name="Local" value="abf1.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="adjPval">
+<param name="Local" value="adjPval.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="arrayview">
+<param name="Local" value="arrayview.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="blkdiag">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="buildtree">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="caldf">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="calPval">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="calVolcanoXval">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="check.confounding">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="checkContrast">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="cluster2num">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="colmax">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="colmin">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="consensus">
+<param name="Local" value="consensus.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="consensus.hc">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="consensus.kmean">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="createData">
+<param name="Local" value="createData.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="dist.cor">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="dyeswapfilter">
+<param name="Local" value="dyeswapfilter.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="exprSet2Rawdata">
+<param name="Local" value="exprSet2Rawdata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fdr">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fill.missing">
+<param name="Local" value="fill.missing.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="findgroup">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fitmaanova">
+<param name="Local" value="fitmaanova.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="fom">
+<param name="Local" value="fom.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="geneprofile">
+<param name="Local" value="geneprofile.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="getPval.volcano">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="glowess">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="gridcheck">
+<param name="Local" value="gridcheck.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="intprod">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="JS">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="JSshrinker">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="kidney">
+<param name="Local" value="kidney.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="kidney.raw">
+<param name="Local" value="kidney.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="linlog">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="linlog.engine">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="linlogshift">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="locateTerm">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="macluster">
+<param name="Local" value="macluster.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="make.ratio">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeAB">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeCompMat">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeContrast">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeD">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeDesign">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeHq">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makelevel">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeModel">
+<param name="Local" value="makeModel.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeShuffleGroup">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="makeZiZi">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="matest">
+<param name="Local" value="matest.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="matest.engine">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="matest.perm">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="matrank">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="matsort">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="meanvarlog">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="mixed">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="norm">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="num2yn">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="ones">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="paigen">
+<param name="Local" value="paigen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="paigen.raw">
+<param name="Local" value="paigen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="parseformula">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="pinv">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.consensus.hc">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="plot.consensus.kmean">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.maanova">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.madata">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.summary.madata">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.summary.mamodel">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="ratioVarplot">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="read.madata">
+<param name="Local" value="read.madata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="repmat">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="resiplot">
+<param name="Local" value="resiplot.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="riplot">
+<param name="Local" value="riplot.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rlowess">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Rmaanova.version">
+<param name="Local" value="Rmaanova.version.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rowmax">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="rowmin">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="shift">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="shuffle.maanova">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="solveMME">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="subset.madata">
+<param name="Local" value="subset.madata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summary.madata">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summary.mamodel">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="sumrow">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="transform.madata">
+<param name="Local" value="transform.madata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="transform.rawdata">
+<param name="Local" value="transform.madata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="varplot">
+<param name="Local" value="varplot.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="volcano">
+<param name="Local" value="volcano.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="volcano.ftest">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="volcano.ttest">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="write.madata">
+<param name="Local" value="write.madata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="zeros">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package maanova:  Titles">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Build consensus tree out of bootstrap cluster result">
+<param name="Local" value="consensus.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Calculate and create a data object for Micro Array experiment">
+<param name="Local" value="createData.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Clustering analysis for Micro Array experiment ">
+<param name="Local" value="macluster.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Convert an object of exprSet to an object of Rawdata">
+<param name="Local" value="exprSet2Rawdata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Data for a 18-array affymetrix experiment">
+<param name="Local" value="abf1.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Data for a multiple factor 28-array expeirment">
+<param name="Local" value="paigen.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Display the current version of the package">
+<param name="Local" value="Rmaanova.version.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Expression plot for selected genes">
+<param name="Local" value="geneprofile.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Figure of Merit">
+<param name="Local" value="fom.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Fill in missing data">
+<param name="Local" value="fill.missing.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Fit ANOVA model for Micro Array experiment">
+<param name="Local" value="fitmaanova.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Gene filter for dye-swap experiment">
+<param name="Local" value="dyeswapfilter.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Generate FDR adjusted P values for F test result.">
+<param name="Local" value="adjPval.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Internal maanova functions">
+<param name="Local" value="maanova-internal.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Kidney Data from CAMDA">
+<param name="Local" value="kidney.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Make model object for N-dye Micro Array experiment">
+<param name="Local" value="makeModel.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Micro Array experiment data transformation">
+<param name="Local" value="transform.madata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Plot grid-by-grid data comparison for arrays">
+<param name="Local" value="gridcheck.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Ratio intensity plot for 2-dye Micro Array experiment">
+<param name="Local" value="riplot.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Read Micro Array data from TAB delimited simple text file">
+<param name="Local" value="read.madata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Residual plot for Micro Array Experiment">
+<param name="Local" value="resiplot.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Statistical test for Microarray experiment">
+<param name="Local" value="matest.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Subsetting Micro Array data objects">
+<param name="Local" value="subset.madata.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Variance component plot">
+<param name="Local" value="varplot.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="View the layout of input data">
+<param name="Local" value="arrayview.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Volcano plot for F test results">
+<param name="Local" value="volcano.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Write Micro Array data to a TAB delimited simple text file">
+<param name="Local" value="write.madata.html">
+</OBJECT>
+</UL>
+</UL>
+</BODY></HTML>

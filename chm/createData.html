@@ -1,0 +1,133 @@
+<html><head><title>Calculate and create a data object for Micro Array experiment</title>
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>createData(maanova)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   createData">
+<param name="keyword" value=" Calculate and create a data object for Micro Array experiment">
+</object>
+
+
+<h2>Calculate and create a data object for Micro Array experiment</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This is the function to create a <code>madata</code> object based on the
+given <code>rawdata</code> and some parameters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+createData(rawdata, n.rep=1, avgreps=0, log.trans=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rawdata</code></td>
+<td>
+An object of class <code>rawdata</code>, which should be the result
+from <code><a read.madata.html>read.madata</a></code>.</td></tr>
+<tr valign="top"><td><code>n.rep</code></td>
+<td>
+An integer to represent the number of replicates.</td></tr>
+<tr valign="top"><td><code>avgreps</code></td>
+<td>
+An integer to indicate whether to average the
+replicates or not. 0 means no average; 1 means to take the mean of the
+replicates; 2 means to take the median of the replicates.</td></tr>
+<tr valign="top"><td><code>log.trans</code></td>
+<td>
+A logical value to indicate whether to take log2
+transformation on the raw data or not. It is TRUE by default. But
+in the case that your data is pre-transformed, you need to set it to
+FALSE. If this is TRUE, <code>TransformMethod</code> field will be set to
+"log2".</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The data integrity is checked before making the object. The number of
+rows for the data must be consistent with the number of replicates; the
+number of columns for the data must be consistent with the number of
+dyes, etc.
+</p>
+<p>
+Users have the option to collapse the replicated spots. Collapsing
+will be done by taking mean or median of the intensity values for the
+replicated spots. This function assumes the input data is on raw scale.
+So if your data is pre-transformed and on a log2 based,
+collapsing could be wrong.  Also note that once
+the replicated spots are collapsed, you will lose the grid location
+and spatial loess ("rlowess" option in
+<code><a transform.madata.html>transform.madata</a></code> will be unapplicable for it.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+An object of class <code>madata</code>, which is a list of following components:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>n.gene</code></td>
+<td>
+Total number of genes in the experiment.</td></tr>
+<tr valign="top"><td><code>n.rep</code></td>
+<td>
+Number of replicates in the experiment.</td></tr>
+<tr valign="top"><td><code>n.spot</code></td>
+<td>
+Number of spots for each gene.</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+data field. It is either the log2 transformed
+rawdata (if log.trans=TRUE), or just the rawdata (if
+log.trans=FALSE).</td></tr>
+<tr valign="top"><td><code>Others</code></td>
+<td>
+All other fields in the input object of class <code>rawdata</code>.</td></tr>
+</table>
+
+<h3>Author(s)</h3>
+
+<p>
+Hao Wu
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#################
+# 2-dye arrays
+#################
+data(paigen)
+# create data object with replicate
+data2 &lt;- createData(paigen.raw, n.rep=2)
+# summarize the data object
+summary(data2)
+# create data with averaging of replicates
+data1 &lt;- createData(paigen.raw, n.rep=2, avgreps=1)
+summary(data1)
+
+####################################################################
+# affy array - data is pre-transformed so log2 is skipped
+####################################################################
+data(abf1)
+abf1 &lt;- createData(abf1.raw, n.rep=1, log.trans=FALSE)
+summary(abf1)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>maanova</em> version 1.2.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

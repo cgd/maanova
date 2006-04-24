@@ -1,0 +1,87 @@
+<html><head><title>Variance component plot</title>
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>varplot(maanova)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   varplot">
+<param name="keyword" value=" Variance component plot">
+</object>
+
+
+<h2>Variance component plot</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This function plots the density curve of each variance component of a
+result from <code><a fitmaanova.html>fitmaanova</a></code>.
+</p>
+<p>
+If the input is from fixed model ANOVA, it will plot one curve for
+error variance component. If the input is from mixed model ANOVA, it
+will plot multiple curves, one for a random term (including error).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+varplot(anovaobj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>anovaobj</code></td>
+<td>
+An object of class <code>maanova</code>.</td></tr>
+</table>
+
+<h3>Author(s)</h3>
+
+<p>
+Hao Wu
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a fitmaanova.html>fitmaanova</a></code>,
+<code><a onclick="findlink('base', 'density.html')" style="text-decoration: underline; color: blue; cursor: hand">density</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# load in Paigen's data
+data(paigen)
+# make data object with rep 2
+paigen &lt;- createData(paigen.raw, 2)
+## Not run: 
+model.full.mix &lt;- makeModel(data=paigen,
+      formula=~Dye+Array+Spot+Strain+Diet+Strain:Diet+Sample,
+      random=~Array+Spot+Sample)
+anova.full.mix &lt;- fitmaanova(paigen, model.full.mix, method="REML")
+varplot(anova.full.mix)
+## End(Not run)
+</pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>maanova</em> version 1.2.0 <a href="00Index.html">Index]</a></div>
+
+</body></html>

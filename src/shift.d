@@ -1,0 +1,1 @@
+shift.o: shift.c

@@ -1,0 +1,3 @@
+makeratio.o: makeratio.c
+shift.o: shift.c
+util.o: util.c
