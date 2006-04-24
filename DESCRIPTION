@@ -1,6 +1,6 @@
 Package: maanova
-Version: 1.1.6
-Date: 2006-04-23
+Version: 1.1.7
+Date: 2006-04-24
 Title: Tools for analyzing Micro Array experiments
 Author: Hao Wu <hao@jax.org>, with ideas from Gary Churchill, Katie Kerr and Xiangqin Cui
 Maintainer: Lei Wu <lei.wu@jax.org>
