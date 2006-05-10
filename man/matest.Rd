@@ -49,7 +49,8 @@ matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
     rows is the number of T-test you want to carry. Note that it must
     be a matrix. Use \code{\link[base]{matrix}} command to make it. Note
     that the the hypothesis test can be formulated as H0: Lb=0 versus
-    alternative. This contrast matrix is L.}
+    alternative. This contrast matrix is L. For testing a covariate,
+    use a one by one contrast matrix of 1.}
   \item{n.perm}{An integer for number of permuatations.}
   \item{nnodes}{Number of nodes in the MPI cluster. If 1, the
     permutation test will be running on the local computer.}
@@ -59,11 +60,11 @@ matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
     are smaller than 90th percentile of the F-distribution.}  
   \item{test.type}{Test type. It could be F-test or T-test. If the
     Contrast matrix is missing, this should be a "ftest" and the 
-    contrast matrix is generated automatically to conver the whole
-    linear space. If the Contrast matrix is given, this could be "ftest"
-    or "ttest". The default is "ttest" (for backward compatability).
-    For T-test, the code will do a series of T-test, where each T-test
-    corresponds to a row in the contrast matrix.}
+    contrast matrix is generated automatically to cover the whole
+    linear space except for testing covariates. If the Contrast matrix 
+    is given, this could be "ftest" or "ttest". The default is "ttest" 
+    (for backward compatability). For T-test, the code will do a series 
+    of T-test, where each T-test corresponds to a row in the contrast matrix.}
   \item{shuffle.method}{Data shuffling method. "sample" for sample
     shuffling and "resid" for residual shuffling. Read "Data Shuffling"
     section for detail.}
