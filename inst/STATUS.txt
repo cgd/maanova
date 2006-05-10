@@ -1,6 +1,15 @@
 Library maanova
 ================
 
+Version 1.2.1, May 9, 2006
+1. Changed the La.svd(X, method="dgesdd") to La.svd(X) since
+La.svd(X, method="dgesdd" or "dgesvd") is deprecated. La.svd(X)'s 
+default method is "dgesdd" from R-2.3.0.
+2. Add comments in matest.Rd about test covariate in "contrast" and
+"test type" section.
+
+---------------------------------------------------
+
 Version 1.2.0, Apr 23, 2006
 1. Hyuna Yang made these changes:
 Instead of pooled p-value, p-value based on subset method 
@@ -12,6 +21,22 @@ in util.R since the La.svd(X, method="dgesvd" is deprecated from
 R-2.3.0.
 4. Version number jumps from 0.98.8 to 1.2.0 in order to 
 keep up with bioconductor version number
+5. For R-2.3.0, In transform.madata.R file: 
+Changed	transform.rawdata <- function(x, ...) 
+     to	transform.rawdata <- function(`_data`, ...)
+Changed transform.madata <- function(x,
+	method=c("shift","glowess","rlowess","linlog","linlogshift"),
+	lolim, uplim,
+	f=0.1, iter=3, degree=1,
+	cg=0.3, cr=0.3, n.bin=10,
+	draw=c("screen", "dev", "off"), ...) to
+     to transform.madata <- function(`_data`,
+	method=c("shift","glowess","rlowess","linlog","linlogshift"),
+	lolim, uplim,
+	f=0.1, iter=3, degree=1,
+	cg=0.3, cr=0.3, n.bin=10,
+        draw=c("screen", "dev", "off"), ...)
+  and the corresponding transform.madata.Rd file.           
 
 ---------------------------------------------------
 
