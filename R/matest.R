@@ -18,7 +18,7 @@ matest <- function(data, model, term, Contrast, n.perm=1000, nnodes=1,
                    critical=.9, test.type=c("ttest","ftest"),
                    shuffle.method=c("sample", "resid"),
                    MME.method=c("REML","noest","ML"),
-                   test.method=c(1,0,0,1),
+                   test.method=c(1,0,1,1),
                    pval.pool=TRUE, verbose=TRUE){
   if (class(data) != "madata")
     stop("data is not an object of class madata.")
