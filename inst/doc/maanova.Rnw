@@ -46,32 +46,32 @@
 % abf1data
 \input abf1.tex
 
-%%%%% bibliography
-%\bibliographystyle{plainnat}
-%\bibliography{maanova}
-%% there's no citation in the document
-%\nocite{benjamin:1995}
-%\nocite{benjamin:2001}
-%\nocite{churchill:2002}
-%\nocite{cui:2003a}
-%\nocite{cui:2003b}
-%\nocite{cui:2005}
-%\nocite{felsenstein:1985}
-%\nocite{Kerr:2001a}
-%\nocite{kerr:2001b}
-%\nocite{kerr:2001c}
-%\nocite{kerr:2000}
-%\nocite{kerr:2002}
-%\nocite{littell:1996}
-%\nocite{margush:1981}
-%\nocite{mclean:1991}
-%\nocite{prichard:2001}
-%\nocite{witk:2001}
-%\nocite{wolfinger:2001}
-%\nocite{yang:2002}
-%\nocite{searle:1992}
-%\nocite{sas:1999}
-%
+%%%% bibliography
+\bibliographystyle{plainnat}
+\bibliography{maanova}
+% there's no citation in the document
+\nocite{benjamin:1995}
+\nocite{benjamin:2001}
+\nocite{churchill:2002}
+\nocite{cui:2003a}
+\nocite{cui:2003b}
+\nocite{cui:2005}
+\nocite{felsenstein:1985}
+\nocite{Kerr:2001a}
+\nocite{kerr:2001b}
+\nocite{kerr:2001c}
+\nocite{kerr:2000}
+\nocite{kerr:2002}
+\nocite{littell:1996}
+\nocite{margush:1981}
+\nocite{mclean:1991}
+\nocite{prichard:2001}
+\nocite{witk:2001}
+\nocite{wolfinger:2001}
+\nocite{yang:2002}
+\nocite{searle:1992}
+\nocite{sas:1999}
+
 %%%% appendix %%%%%
 \newpage
 \begin{center}
