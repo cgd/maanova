@@ -18,8 +18,9 @@
 #include <R_ext/PrtUtil.h>
 #include <R_ext/Applic.h>
 #include <R_ext/Random.h>
+#include "../src/util.h"
 
-void shift(double *r, double *g, int *nrows, double *c, 
+void shift(double *r, double *g, int *nrows, double *c,
 	   double *sad, double *offset)
 {
   /* local variables */
@@ -49,8 +50,8 @@ void shift(double *r, double *g, int *nrows, double *c,
 
   /* sort sad with index */
   rsort_with_index(sad, idx, 100);
- 
+
   *offset = c[idx[0]];
 
 }
-      
+
