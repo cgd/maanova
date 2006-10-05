@@ -51,7 +51,7 @@
 }
 
 \usage{
-transform.madata(`_data`,method=c("shift","glowess","rlowess","linlog","linlogshift"),
+\method{transform}{madata}(`_data`,method=c("shift","glowess","rlowess","linlog","linlogshift"),
        lolim, uplim, f=0.1, iter=3, degree=1, cg=0.3, cr=0.3, n.bin=10,
        draw=c("screen", "dev", "off"), \dots)
 }
