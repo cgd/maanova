@@ -6,7 +6,7 @@
 \title{Subsetting Micro Array data objects}
 
 \usage{
-subset.madata(x, arrays, genes, \dots)
+\method{subset}{madata}(x, arrays, genes, \dots)
 }
 
 \description{
