@@ -9,5 +9,4 @@ License: GPL version 2 or later
 URL: http://www.jax.org/staff/churchill/labsite/software/Rmaanova/
 Depends: R (>= 2.3.0)
 Suggests: snow
-Packaged: Fri May 9 20:18:17 2006; lei
 biocViews: Microarray, DifferentialExpression, Clustering
