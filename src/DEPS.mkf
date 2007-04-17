@@ -1,0 +1,4 @@
+makeratio.o: makeratio.c 
+masvd.o: masvd.c masvd.h 
+shift.o: shift.c 
+util.o: util.c util.h

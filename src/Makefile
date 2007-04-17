@@ -1,0 +1,22 @@
+pkg = maanova
+
+## we use the LAPACK library:
+PKG_LIBS = $(LAPACK_LIBS) 
+include SOURCES_C.mkf
+
+OBJECTS = $(SOURCES_C:.c=.o)
+SHLIB = $(pkg)$(SHLIB_EXT)
+
+$(SHLIB):$(OBJECTS)
+	$(SHLIB_LINK) -o $@ $(OBJECTS) $(ALL_LIBS)
+
+all: $(SHLIB)
+
+clean:
+	@-rm -rf .libs _libs
+	@-rm -f *.o *.so *.d
+	
+include DEPS.mkf	
+
+
+

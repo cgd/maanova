@@ -1,0 +1,7 @@
+SOURCES_C =  \
+	    masvd.c \
+	    makeratio.c \
+	    util.c \
+	    shift.c \
+	    
+	    
