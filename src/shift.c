@@ -24,7 +24,7 @@ void shift(double *r, double *g, int *nrows, double *c,
 	   double *sad, double *offset)
 {
   /* local variables */
-  int i, j, k;
+  int i, j;
   int idx[100];
   double *r_shift, *g_shift, *x, med;
 
