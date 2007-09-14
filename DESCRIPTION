@@ -3,7 +3,7 @@ Version: 1.7.0
 Date: 2006-10-11
 Title: Tools for analyzing Micro Array experiments
 Author: Hao Wu, with ideas from Gary Churchill, Katie Kerr and Xiangqin Cui
-Maintainer: Lei Wu <lei.wu@jax.org>
+Maintainer: Hyuna Yang <hyuna.yang@jax.org>
 Description: Analysis of N-dye Micro Array experiment using mixed model effect. Containing anlysis of variance, permutation and bootstrap, cluster and consensus tree. 
 License: GPL version 2 or later
 URL: http://www.jax.org/staff/churchill/labsite/software/Rmaanova/
