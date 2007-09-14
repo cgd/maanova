@@ -104,8 +104,8 @@ matest.perm(n.perm, FobsObj, data, model, term, Contrast, inits20,
             mv, is.ftest, partC, MME.method, test.method,
             shuffle.method, pool.pval, ngenes)
 meanvarlog(df)
-plot.consensus.hc(x, title, \dots)
-plot.consensus.kmean(x, \dots)
+\method{plot}{consensus.hc}(x, title, \dots)
+\method{plot}{consensus.kmean}(x, \dots)
 \method{print}{maanova}(x, \dots)
 \method{print}{madata}(x, \dots)
 \method{print}{summary.mamodel}(x, \dots)
