@@ -1,6 +1,32 @@
 Library maanova
 ================
 
+Version 1.5.1, Aug 18, 2007
+
+Modify the function 
+Reconstruct the flow
+
+---------------------------------------------------
+
+Version 1.4.1, Apr 17, 2007
+1. added the function ma.svd() to call LAPACK function DGESVD directly. It 
+works the same way as the old La.svd() in R-2.3.1 and earlier.
+
+---------------------------------------------------
+
+Version 1.2.2, Mar 9, 2007
+
+A rollback version to run on R-2.3.1 and earlier to avoid the the error
+message La.svd() throw out.
+
+---------------------------------------------------
+
+Version 1.4.0, Oct 3, 2006
+
+version run on R-2.4.0. bump up version number according bioconductor's rule.
+
+---------------------------------------------------
+
 Version 1.2.1, May 9, 2006
 1. Changed the La.svd(X, method="dgesdd") to La.svd(X) since
 La.svd(X, method="dgesdd" or "dgesvd") is deprecated. La.svd(X)'s 
