@@ -3,7 +3,7 @@
 \name{macluster}
 \alias{macluster}
 
-\title{Clustering analysis for Micro Array experiment }
+\title{Clustering analysis for Microarray experiment }
 
 \description{
   This function bootstraps K-means or hierarchical clusters and builds a 
@@ -12,12 +12,12 @@
 }
 
 \details{
-  Normally after the F test, user can select a list of differential expressed
-  genes. The next step is to investiagte the relationship among these
+  Normally after the F test, user can select a list of differentially expressed
+  genes. The next step is to investigate the relationship among these
   genes. Using the expression levels of these genes, the user can cluster the
   genes or the samples using either hierarchical or K-means clustering
   algorithm. In order to evaluate the stability of the relationship,
-  this function bootstraps the data, refits the model and recluster the
+  this function bootstraps the data, re-fits the model and recluster the
   genes/samples. Then for a certain number of bootstrap iterations, say,
   1000, we have 1000 cluster results. We can use
   \code{\link[maanova]{consensus}} to  build the consensus tree from
@@ -42,7 +42,7 @@ macluster(anovaobj, term, idx.gene, what = c("gene", "sample"),
     level for this term will be used in clustering. This term has to 
     correspond to the gene list, e.g, idx.gene in this function. The
     gene list should be the significant hits in testing this term.}
-  \item{idx.gene}{A vector indicating the list of differential expressed
+  \item{idx.gene}{A vector indicating the list of differentially expressed
     genes. The expression level of these genes will be used to construct
     the cluster.}
   \item{what}{What to be clustered, either gene or sample.}
@@ -72,29 +72,24 @@ macluster(anovaobj, term, idx.gene, what = c("gene", "sample"),
 
 \examples{
 # load in data
-data(paigen)
-# make data object with rep 2
-paigen <- createData(paigen.raw, 2)
-# make interactive model
-model.int.fix <- makeModel(data=paigen,
-      formula=~Dye+Array+Strain+Diet+Strain:Diet)
-# fit ANOVA model
-anova.int <- fitmaanova(paigen, model.int.fix)
-# test interaction effect 
-\dontrun{test.int.fix <- matest(paigen, model.int.fix, term="Strain:Diet", n.perm=100)
+data(abf1)
+# fit the anova model
+fit.fix = fitmaanova(abf1,formula = ~Strain)
+# test Strain effect 
+\dontrun{test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
 # pick significant genes - pick the genes selected by Fs test
-idx <- volcano(test.int.fix)$idx.Fs
-
+idx <- volcano(test.fix)$idx.Fs
 # do k-means cluster on genes
-gene.cluster <- macluster(anova.int, "Strain:Diet", idx, "gene",
-    "kmean", kmean.ngroups=5)
+gene.cluster <- macluster(fit.fix, term="Strain", idx, what="gene", 
+   method="kmean", kmean.ngroups=5, n.perm=100)
 # get the consensus group
 consensus(gene.cluster, 0.5)
 
 # HC cluster on samples
-sample.cluster <- macluster(anova.int, "Strain:Diet", idx, "sample","hc")
+sample.cluster <- macluster(fit.fix, term="Strain", idx, what="sample",method="hc")
 # get the consensus group
 consensus(sample.cluster, 0.5)}
+
 }
 
 \keyword{cluster}

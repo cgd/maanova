@@ -2,7 +2,6 @@
 
 \name{transform.madata}
 \alias{transform.madata}
-\alias{transform.rawdata}
 
 \title{Micro Array experiment data transformation}
 
@@ -38,16 +37,10 @@
   keep them for the reason of backward compatibility.
   
   If you have replicated spots and want to collapse them in
-  \code{\link[maanova]{createData}} by providing avgreps=1 or 2, you will
+  \code{\link[maanova]{read.madata}} by providing avgreps=1 or 2, you will
   lose grid information and joint lowess will be unavailable.
 
-  This function works on both \code{rawdata} and \code{madata} objects.
-  For \code{rawdata}, the result transformed data will be on the raw
-  scale. For \code{madata}, the result transformed data will be on log2
-  based scale.
-
-  Note that this function is only working for two-dye array at this
-  time. 
+  Note that this function is only working for two-dye array. 
 }
 
 \usage{
@@ -57,7 +50,7 @@
 }
 
 \arguments{
-  \item{_data}{An object of class \code{madata} or \code{rawdata}.}
+  \item{_data}{An object of class \code{madata}.}
   \item{method}{The smoothing method.}
   \item{lolim}{Low shift limit. If this argument is missing, the negative
     of the minimum element in the pmt data is used.}
@@ -90,8 +83,7 @@
 }
 
 \section{Value}{
-  The return value is an object of class \code{madata} or
-  \code{rawdata}. Compared with the input object, the following fields
+  The return value is an object of class \code{madata}. Compared with the input object, the following fields
   are changed:
   \itemize{
     \item Field \code{data} is the transformed data.
@@ -107,26 +99,22 @@ data(kidney)
 \dontrun{
 raw.lowess <- transform.madata(kidney.raw, method="rlowess")
 graphics.off()
-
-# make data object and do normalization on it
-# create data object with collapsing replicates
-data1<-createData(kidney.raw)
-# do shift without displaying the plot
-data1.shift <- transform.madata(data1, method="shift", lolim=-50, uplim=50,
-         draw="off")
+#do shift without displaying the plot 
+data1.shift <- transform.madata(kidney.raw, method="shift", lolim=-50, 
+     uplim=50,draw="off")
 
 # do global lowess and output the plots to a postscript file
 postscript(file="glowess.ps")
-data1.glowess <- transform.madata(data1, method="glowess", draw="dev")
+data1.glowess <- transform.madata(kidney.raw, method="glowess", draw="dev")
 graphics.off()
 
 # do linear-log
-data1.linlog <- transform.madata(data1, method="linlog")
+data1.linlog <- transform.madata(kidney.raw, method="linlog")
 graphics.off()
 
 # do linear-log shift
-data1.linlogshift <- transform.madata(data1, method="linlogshift", lolim=-50,
-  uplim=50)
+data1.linlogshift <- transform.madata(kidney.raw, method="linlogshift", 
+  lolim=-50, uplim=50)
 graphics.off()
 }
 }

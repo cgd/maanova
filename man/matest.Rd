@@ -1,4 +1,4 @@
-\author{Hao Wu;  Hyuna Yang, \email{hyuna.yang@jax.org} }
+\author{Hao Wu}
 
 \name{matest}
 \alias{matest}
@@ -11,15 +11,14 @@
 }
 
 \details{
-  If user provide a comparision matrix, this function will perform T-test
+  If user provide a comparison matrix, this function will perform T-test
   on the given comparison(s). Otherwise, this function will perform
   F-test for the given term.
   
-  There are four types of tests available. All four tests are based on the
-  gene-specific ANOVA model.  F1 is the usual F statistic. F3 assumes
-  common error variance across all genes. F2 is the hybrid of the F1 and
-  F3 tests. Fs is based on the James-Stein shrinkage estimates of the
-  error variance.
+  There are three types of tests available. All three tests are based on the
+  gene-specific ANOVA model.  F1 is the usual F statistic, Fs is based on the
+  James-Stein shrinkage estimates of the error variance, and Fss is based on
+  mean and variance shrinkage method by Hwang. et al (2007).  
   
   Permutation tests can run on MPI cluster. 
   This feature is only available for Unix/Linux system. Several
@@ -30,28 +29,28 @@
 }
 
 \usage{
-matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
+matest(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
        critical=.9, test.type = c("ttest", "ftest"),
        shuffle.method=c("sample", "resid"),
        MME.method=c("REML","noest","ML"),
-       test.method=c(1,0,1,1),
-       pval.pool=TRUE, verbose=TRUE)
+       test.method=c(1,1,0),pval.pool=TRUE, verbose=TRUE)
 }
 
 \arguments{
   \item{data}{An object of class \code{madata}.}
-  \item{model}{An object of class \code{mamodel}.}
+  \item{anovaobj}{An object of class \code{fitmaanova}.}
   \item{term}{The term(s) to be tested. It can be multiple terms. Note
     that the tested term must be fixed. If the term to be tested is a
     random term, it will be converted to a fixed term than do test.}
   \item{Contrast}{The contrast matrix for the term. The number of
     columns equals to the number of levels in the term. The number of
     rows is the number of T-test you want to carry. Note that it must
-    be a matrix. Use \code{\link[base]{matrix}} command to make it. Note
-    that the the hypothesis test can be formulated as H0: Lb=0 versus
-    alternative. This contrast matrix is L. For testing a covariate,
+    be a matrix. Use \code{\link[maanova]{PairContrast}} to make all possible
+  pairwise comparison or \code{\link[base]{matrix}} command to make it
+  manually. Note that the the hypothesis test can be formulated as H0: Lb=0
+  versus alternative. This contrast matrix is L. For testing a covariate,
     use a one by one contrast matrix of 1.}
-  \item{n.perm}{An integer for number of permuatations.}
+  \item{n.perm}{An integer for number of permutations.}
   \item{nnodes}{Number of nodes in the MPI cluster. If 1, the
     permutation test will be running on the local computer.}
   \item{critical}{percentile of F-distribution used to get a subset to 
@@ -74,9 +73,10 @@ matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
     "REML". The variance components for observed data will be used
     for permuted data. It will greatly increase the speed but you may
     lose power in statistical test in some cases.}
-  \item{test.method}{An integer vector of four elements to indicate
-    which F test to carry. Default is c(1,0,1,1), which means do F1, F3
-    and Fs test.}
+  \item{test.method}{An integer vector of three elements to indicate
+    which F test to carry. Default is c(1,1,0), which means do F1 and Fs test,
+  but not Fss test. Fss test is not implemented in mixed model yet. Fss
+  statistics may yields uneven p-value histogram near tail, thus user needs to be careful to calculate q-value from p-value from Fss statistics.}
   \item{pval.pool}{A logical value to indicate whether to use pooled
     permutation F values to calculate the P values.}
   \item{verbose}{A logical value to indicate whether to display some
@@ -86,14 +86,12 @@ matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
 \section{Data Shuffling}{
   Data shuffling method is a crucial part in the permutation
   test. Currently there are two shuffling method available, residual
-  shuffing and sample shuffing. Fixed-effects models permutation test
-  can use either of the method. For mixed-effects models, residual
-  shuffing will be incorrect so only sample shuffing is available. 
-  
-  Residual shuffing is to shuffle the null model residuals globally
+  shuffling and sample shuffling. 
+
+  Residual shuffling is to shuffle the null model residuals within gene
   without replacement. 
 
-  Sample shuffing is to shuffle the samples based on the nesting
+  Sample shuffling is to shuffle the samples based on the nesting
   relationship among the experimental factors in the model. For sample
   shuffling, you need to make sure you have a 
   good sample size. Otherwise the result may be biased.
@@ -108,20 +106,20 @@ matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
   \item{dfde}{Denominator's degree of freedom for the test.}
   \item{dfnu}{Numerator's degree of freedom for the test. Note that this
     is always 1 for T-test.}
-  \item{obsAnova}{An object of \code{maanova}, which is the ANOVA model
+  \item{obsAnova}{An object of \code{fitmaanova}, which is the ANOVA model
     fitting result on the original data.}
   \item{Contrast}{The contrast matrix used in the test.}
   \item{n.perm}{Number of permutations.}
   \item{shuffle}{Shuffle style}
   \item{pval.pool}{Use pooled P value or not.}
-  \item{F1, F2, F3, Fs}{Objects of four different F tests results. All or
+  \item{F1, Fs, Fss}{Objects of four different F tests results. All or
     any of them could be there according to the requested F test
     method. Each of them contains the following fields:
     \itemize{
       \item{Fobs}{F value for the observed data.}
       \item{Ptab}{Tabulated P values for the observed data.}
       \item{Pvalperm}{Nominal permutation P values for each gene. This
-	field will be unavailable if user didnot do permutation test.}
+	field will be unavailable if user do not do permutation test.}
       \item{Pvalmax}{FWER one-step adjusted P values from the permutation
 	test.}
     }
@@ -130,58 +128,32 @@ matest(data, model, term, Contrast, n.perm=1000, nnodes=1,
     of columns will be one. For T-test, the number of columns equals
     to the number of tests carried.
   }
-
 }
-
 \examples{
-# load in Paigen's data
-data(paigen)
-# make data object with rep 2
-paigen <- createData(paigen.raw, 2)
-# Note that the data is normalized so normalization is skipped
-
-##################################
-# fixed model test
-##################################
-# make an additive model
-model.add.fix <- makeModel(data=paigen, formula=~Dye+Array+Strain+Diet)
-# test strain effect
-\dontrun{test.Strain.fix <- matest(paigen, model.add.fix, term="Strain", n.perm=100)}
-# volcano plot
-\dontrun{idx <- volcano(test.Strain.fix)}
-
-# test pairwise comparisions for Strain, using a MPI cluster with 8 nodes
-\dontrun{C <- matrix(c(1,-1,0,1,0,-1, 0,1,-1), nrow=3, byrow=TRUE)}
-\dontrun{ttest.strain.fix <- matest(paigen, model.add.fix,
-         term="Strain", Contrast=C, n.perm=100, nnodes=8)}
-\dontrun{volcano(ttest.strain.fix)}
-
-# a user specified F-test on Strain
-# note that the F- and P-values generated in this test is exactly the
-# same as the above F-test. But the volcano plot looks a little
-# different because the X-axis values are different
-\dontrun{C <- matrix(c(1,-1/2,-1/2,1,0,-1), nrow=2, byrow=TRUE)
-test.Strain.fix <- matest(paigen, model.add.fix, term="Strain",
-Contrast=C, test.type="ftest", n.perm=100)}
-
-##################################
-# mixed model test
-##################################
-# mixed model permutation test is very slow
-# I will skip the example for that
-# the syntax of the function will be the same
-# except the input model object is for mixed effects model
+# load in abf1 data
+data(abf1)
+fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
+   random = ~Sample)
+\dontrun{
+ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1,0),
+    shuffle.method="sample", term="Strain", n.perm= 100)
+C = matrix(c(1,-1,0,1,0,-1), ncol=3, byrow=T)
+ftest.pair = matest(abf1, fit.full.mix, Contrast = C, 
+   term="Strain", n.perm=100)}
 }
-
 \keyword{models}
 
 \references{
   Cui, X. and Churchill,GA (2003), Statistical tests for differential
-  expression in cDNA Microarray Expeirments, \emph{Genome Biology} 4:210. 
+  expression in cDNA Microarray experiments, \emph{Genome Biology} 4:210. 
 
   Cui, X., Hwang, J.T.G., Blades N., Qiu J. and Churchill GA (2003),
   Improved statistical tests for differential gene expression by
   shrinking variance components, to be submitted.
+
+  Hwang, J.T.G. and Liu, P. (2007), Optimal tests shrinking both means and
+  variances applicable to microarray data analysis, technical paper in
+  statistics department in Iowa state university.
 }
 
 \seealso{

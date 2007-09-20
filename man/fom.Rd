@@ -35,20 +35,15 @@ fom(anovaobj, idx.gene, term, ngroups)
 
 \examples{
 # load in data
-data(paigen)
-# make data object with rep 2
-paigen <- createData(paigen.raw, 2)
-# make interactive model
-model.int.fix <- makeModel(data=paigen,
-      formula=~Dye+Array+Strain+Diet+Strain:Diet)
-# fit ANOVA model
-\dontrun{anova.int <- fitmaanova(paigen, model.int.fix)
-# test interaction effect 
-test.int.fix <- matest(paigen, model.int.fix, term="Strain:Diet", n.perm=100)
+data(abf1)
+# fit the anova model
+fit.fix = fitmaanova(abf1,formula = ~Strain)
+# test Strain effect 
+\dontrun{test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
 # pick significant genes - pick the genes selected by Fs test
-idx <- volcano(test.int.fix)$idx.Fs
+idx <- volcano(test.fix)$idx.Fs
 # generate FOM
-m <- fom(anova.int, idx, "Strain:Diet", 10)}
+m <- fom(fit.fix, idx, "Strain", 10)}
 }
 
 \references{

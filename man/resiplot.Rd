@@ -3,7 +3,7 @@
 \name{resiplot}
 \alias{resiplot}
 
-\title{Residual plot for Micro Array Experiment}
+\title{Residual plot for Microarray Experiment}
 
 \description{
   This is the function to plot the residuals versus fitted value figure. Two
@@ -11,7 +11,7 @@
 }
 
 \usage{
-resiplot(madata, anovaobj, header)
+resiplot(madata, anovaobj, header, xlab, ylab)
 }
 
 \arguments{
@@ -20,20 +20,18 @@ resiplot(madata, anovaobj, header)
     from \code{\link[maanova]{fitmaanova}}.}
   \item{header}{Optional. The title of the figure. The default figure
     title will be "Residual vs. Yhat plot".}
+  \item{xlab}{Optional. The xlab of the figure. The default will be 
+     "Yhat".}
+  \item{ylab}{Optional. The ylab of the figure. The default will be 
+     "Residual".}
 }
 
 \examples{
-# load in Paigen's data
-data(paigen)
-# make data object with rep 2
-paigen <- createData(paigen.raw, 2)
-# Note that the data is normalized so normalization is skipped
-# full model
-model.full.fix <- makeModel(data=paigen,
-      formula=~Dye+Array+Spot+Strain+Diet+Strain:Diet)
-anova.full.fix <- fitmaanova(paigen, model.full.fix)
-# residual plot
-resiplot(paigen, anova.full.fix)
+# load abf1 data
+data(abf1)
+fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
+   random = ~Sample)
+resiplot(abf1, fit.full.mix)
 }
 
 \keyword{hplot}

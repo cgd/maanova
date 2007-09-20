@@ -61,6 +61,7 @@
 \alias{ones}
 \alias{parseformula}
 \alias{pinv}
+\alias{ma.svd}
 \alias{repmat}
 \alias{rowmax}
 \alias{rowmin}
@@ -104,8 +105,8 @@ matest.perm(n.perm, FobsObj, data, model, term, Contrast, inits20,
             mv, is.ftest, partC, MME.method, test.method,
             shuffle.method, pool.pval, ngenes)
 meanvarlog(df)
-\method{plot}{consensus.hc}(x, title, \dots)
-\method{plot}{consensus.kmean}(x, \dots)
+plot.consensus.hc(x, title, \dots)
+plot.consensus.kmean(x, \dots)
 \method{print}{maanova}(x, \dots)
 \method{print}{madata}(x, \dots)
 \method{print}{summary.mamodel}(x, \dots)
@@ -129,7 +130,7 @@ rowmin(x)
 colmax(x)
 colmin(x)
 sumrow(x)
-matrank(X)
+matrank(X, tol=1e-07)
 norm(X)
 mixed(y, X, Z, XX, XZ, ZZ, Zi, ZiZi, dimZ, s20, method =
       c("noest", "MINQE-I", "MINQE-UI", "ML", "REML"),
@@ -137,6 +138,7 @@ mixed(y, X, Z, XX, XZ, ZZ, Zi, ZiZi, dimZ, s20, method =
 parseformula(formula, random, covariate)
 makeContrast(model, term)
 pinv(X, tol)
+ma.svd(x, nu=min(n,p), nv=min(n,p), method=c("dgesvd","dgesdd"))
 fdr(p, method = c("stepup", "adaptive", "stepdown"))
 }
 
@@ -180,6 +182,8 @@ fdr(p, method = c("stepup", "adaptive", "stepdown"))
     I use La.svd instead of svd in my function.
     I don't want to spend time on it so it doesn't support complex
     number
+    \item ma.svd: function to compute the sigular-value decomposition 
+    of a rectangular matrix by using LAPACK routines DEGSVD AND ZGESVD.
     \item fdr: function to calculate the adjusted P values for FDR control.
   }
 

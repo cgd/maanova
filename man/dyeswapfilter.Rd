@@ -18,7 +18,7 @@
   that to Standard Deviation by SD = IQR/1.35. Any gene with d larger
   than r times SD will be flagged.
 
-  Note that I assume in the input data object, the adjecent arrays is a
+  Note that I assume in the input data object, the adjacent arrays is a
   dye-swap pair. 
 }
   
@@ -27,7 +27,7 @@ dyeswapfilter(dataobj, r=4)
 }
 
 \arguments{
-  \item{dataobj}{An object of class \code{madata} or \code{rawdata}.}
+  \item{dataobj}{An object of class \code{madata}.}
   \item{r}{A cut-off value for bad spot. The genes with log-ratio
     difference larger than r times standard deviation will be flagged.}
 }

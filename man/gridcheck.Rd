@@ -9,12 +9,12 @@
   This function is used to check microarray data quality. It can
   check the data within the same array or cross different arrays.
 
-  Normally, on one array, the pmt data for both channels (CY5 and CY3)
-  should be highly correlated (also apparent on the RI plot). The pmt data
+  Normally, on one array, the intensity data for both channels (Cy5 and Cy3)
+  should be highly correlated (also apparent on the RI plot). The intensity data
   for the same sample on different arrays should be highly correlated
   too. Normally if an error happened in gridding, only a few blocks
-  will be misgridded. This function does the scatter plot on a grid basis
-  to check the quality of hybridazition and gridding. 
+  will be gridded. This function does the scatter plot on a grid basis
+  to check the quality of hybridization and gridding. 
 
   If you only provide array1 (either an integer or a vector), it will do
   grid check within the same array, that is, for each slide, there will
@@ -41,7 +41,7 @@ gridcheck(rawdata, array1, array2, highlight.flag = TRUE, flag.color = "Red",
 }
 
 \arguments{
-  \item{rawdata}{An object of class \code{rawdata}.}
+  \item{rawdata}{An object of class \code{madata}.}
   \item{array1}{A list of array numbers for which you want to do grid
     checking. All arrays will be checked by default. If you want to
     compare the same sample across arrays, this parameter must be an
@@ -69,11 +69,9 @@ data(kidney)
 gridcheck(kidney.raw, array1=1, margin=c(1,1,1,1))
 graphics.off()
 # grid check array 1 versus array 2
-gridcheck(rawdata, array1=1, array2=2)
+gridcheck(kidney.raw, array1=1, array2=2)
 graphics.off()
 }
 }
 
 \keyword{hplot}
-
-

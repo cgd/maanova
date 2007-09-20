@@ -1,52 +1,82 @@
 \author{Hao Wu}
-
 \name{fitmaanova}
 \alias{fitmaanova}
-
 \title{Fit ANOVA model for Micro Array experiment}
-
 \description{
-  This is the function to fit the ANOVA model for Micro Array
-  experiment. Given the data and model object, this function will fit the
-  regression gene by gene and output the estimates, variance components
+  This is the function to fit the ANOVA model for Microarray
+  experiment. Given the data and formula, this function fits the
+  regression model for each gene and calculates the ANOVA estimates, variance components
   for random terms, fitted values, etc.
   For a mixed effect models, the output estimates will be BLUE and BLUP.
+
+  All terms used in the formula should be corresponding to the factor names in designfile except
+  "Spot" and "Label". "Spot" represents the spotting effect and "Label"
+  represents the labeling effects. They are from the within slide
+  technical replicates. If there is no replicated spots, These two terms
+  cannot be fitted. Also these two terms cannot be fitted for one-dye
+  system (e.g., Affymetrix arrays). (Note that Dye effect should not be
+  fitted in one-dye system). 
+
+  A typical formula will be like "~Array+Dye+Sample", which means you
+  want to fit Array, Dye and Sample effect in the ANOVA model. In this case, you need to have Array, Dye and Sample columns in
+  your input design file. Make sure you have enough degree of
+  freedom when making a model. Also you need to be careful about
+  confounding problem.
+  
+  If you have multiple factors in your experiment, you can specify the main
+  and interaction effect in the formula. At this time, only two-way
+  interactions are allowed.
+
+  When you have random or covariate effect they should be specified in the 'random' and 'covariate', and
+  also in the formula.
+
+  For most mixed effect models, Array should be treated as random
+  factor. Sample should be treated as random if you have biological
+  replicates. Note that the reference sample (0's in Sample) will
+  always be treated as fixed even if you specify Sample as random.
 
   Note that the calculation could be very slow for mixed effect
   models. The computational time depends on the number of genes, number
   of arrays and the size of the random variables (dimension of Z
   matrix). 
+
+  Array specific covariate should be included in the design matrix, and gene specific covariate 
+  should be read by 'covM' in \code{read.madata()}, and need to be specified in covariate term. 
 }
 
 \usage{
-fitmaanova(madata, mamodel, inits20,
-           method=c("REML","ML","MINQE-I","MINQE-UI", "noest"),
-           verbose=TRUE)
+fitmaanova(madata, formula, random= ~1, covariate = ~1, mamodel,
+           inits20,method=c("REML","ML","MINQE-I","MINQE-UI", "noest"),
+           verbose=TRUE, subCol=F)
 }
 
 \arguments{
   \item{madata}{An object of class \code{madata}.}
-  \item{mamodel}{An object of class \code{mamodel}.}
+  \item{formula}{The ANOVA model formula.}
+  \item{random}{The formula for random terms. ~1 means only the residual
+    is random (fixed model). Note that all random terms should be in the
+    ANOVA model formula.}
+  \item{covariate}{The formula for covariates. ~1 means no covariates.
+    The array specific covariates should be numeric values in the design matrix, 
+    and the gene specific covariates should be read by \code{covM} in  \code{\link[base]{read.madata}}.
   \item{inits20}{The initial value for variance components. This should
     be a matrix with number of rows equals to the number of genes and
     number of columns equals to the number of random terms in the model.
-    Good initial values will greatly speed up the calculation. If not
-    given, it will be calculated based on the corresponding fixed
-    model.}
+    Good initial values will greatly speed up the calculation. If it is not
+    given, it will be calculated based on the corresponding fixed model.}
   \item{method}{The method used to solve the Mixed Model
     Equation. Available options includes: "ML" for maximum liklihood;
     "REML" for restricted maximum liklihood; "MINQE-I" and "MINQE-UI"
     are for minimum norm and "noest" for no estimate
     for variance component (use the initial value). Both "ML" and "REML"
     use method of scoring algorithm to solve MME iteratively. "noest" skips the
-    iteration and will be significantly faster (but 
-    accurate). Default method is "REML". For details about fitting mixed
+    iteration and will be significantly faster (but accurate). Default method is "REML". For details about fitting mixed
     effects models, read the "Fitting mixed Effects model" section.
   } 
   \item{verbose}{A logical value to indicate whether to display some
     message for calculation progress.}
+  \item{subCol}{A logical value to indicate whether subtracting column mean from the raw data or not. Default is not subtracting column mean but for two color array it automatically subtracts the column mean.}
 }
-
 \section{Fitting mixed Effects model}{
   Fitting mixed effects models needs a lot of computation. A good
   starting value for the variances is very important. This function
@@ -56,12 +86,12 @@ fitmaanova(madata, mamodel, inits20,
 
   There are several methods available for fitting the mixed effects
   model. "noest" does not really fit the mixed effects model. It takes
-  the initial variance and solve mixed model equatinos to get the
+  the initial variance and solve mixed model equations to get the
   estimates (BLUE and BLUP). "MINQE-I" and "MINQE-UI" are based on
   minimum norm unbiased estimators. It is can be thought as a first
   iterate solution of "ML" and "REML", respectively. "ML" and "REML" are
   based on maximum likelihood and restricted maximum likelihood. Both of
-  them need to be solved iteratively so they are verly slow to
+  them need to be solved iteratively so they are very slow to
   compute. For "ML" and "REML", a MINQUE estimates is used as
   the starting value.  "Method of scoring" is used as the iteratively
   algorithm to solve ML and REML. "Method of scoring" algorithm is
@@ -74,13 +104,12 @@ fitmaanova(madata, mamodel, inits20,
   For more mathematical details please read Searle et al. 
 }
 
-
-
 \value{
-  An object of class \code{maanova}, which is a list of following
-  components:
-  \item{yhat}{Fitted pmt value which has the same dimension as the input
-    pmt data}
+  It returns \code{anova} and \code{anova.subcol}. Depending on 'subCol'
+  option, one field may not contain any information. Still it needs two fields
+  to calculate Fss test statistics. \code{anova} and \code{anova.subcol} contains the same following fields.
+  \item{yhat}{Fitted intensity value which has the same dimension as the input
+    intensity data}
   \item{S2}{Variance components for the random terms. It is a matrix
     with number of rows equals to the number of genes and number of
     columns equals to the number of random terms. Note that for fixed
@@ -110,32 +139,32 @@ fitmaanova(madata, mamodel, inits20,
 ###################################
 # fixed model fitting
 ###################################
-# load in Paigen's data
-data(paigen)
-# make data object with rep 2
-paigen <- createData(paigen.raw, 2)
-# Note that the data is normalized so normalization is skipped
-# full model
-model.full.fix <- makeModel(data=paigen,
-      formula=~Dye+Array+Spot+Strain+Diet+Strain:Diet)
-anova.full.fix <- fitmaanova(paigen, model.full.fix)
-# residual plot
-resiplot(paigen, anova.full.fix)
+# load in abf1 data
+data(abf1)
+# fit model with random effect
+fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
+   random = ~Sample)
 
-#######################################
-# mixed model fitting -
-# Array, Spot and biological
-# replicates are random effects. 
-# This may take a while to finish
-#######################################
-\dontrun{model.full.mix <- makeModel(data=paigen,
-      formula=~Dye+Array+Spot+Strain+Diet+Strain:Diet+Sample,
-      random=~Array+Spot+Sample)
-anova.full.mix <- fitmaanova(paigen, model.full.mix, method="REML")
-# residual plot
-resiplot(paigen, anova.full.mix)
-# variance component plot
-varplot(anova.full.mix)}
+\dontrun{
+# this is to explain the usage of including covariate variable.
+# .CEL file is not included in the package, thus use can not use this. 
+# array specific covariate : add it to the design matrix 
+beforeRma <- ReadAffy() # suppose there are 18 arrays.
+rmaData <- rma(beforeRma)
+datafile <- exprs(rmaData)
+design.table=data.frame(Array=row.names(pData(beforeRma)))
+Strain = rep(c('Aj', 'B6', 'B6xAJ'), each=6) 
+Sample = rep(c(1:9), each=2) 
+Cov1 = sample(1:100,18) # this is artificial example 
+designfile.cov1 = cbind(design.table, Strain, Sample,Cov1) 
+data.cov1=read.madata(datafile, designfile=designfile.cov1) 
+fit.cov1 = fitmaanova(data.cov1,formula = ~Strain+Sample+Cov1, covariate = ~ Cov1) 
+
+# gene specific covariate - make artificial 'covM' matrix 
+covm = matrix(rnorm(length(datafile)), nrow=nrow(datafile)) 
+designfile.cov2 = cbind(design.table, Strain, Sample) 
+data.cov2=read.madata(datafile, designfile=designfile.cov2, covM=covm) 
+fit.cov2 = fitmaanova(data.cov2,formula = ~Strain+Sample+covM, covariate = ~ covM) }
 }
 
 \references{

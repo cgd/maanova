@@ -3,7 +3,7 @@
 \name{riplot}
 \alias{riplot}
 
-\title{Ratio intensity plot for 2-dye Micro Array experiment}
+\title{Ratio intensity plot for 2-dye Microarray experiment}
 
 \description{
   This function only works for 2-dye array at this time. It will
@@ -11,15 +11,14 @@
   figure for Micro Array experiment. Ideal RI plot will be points
   scattered around the y=0 horizontal line.
 
-  This function works for both \code{rawdata} and \code{madata}. 
-  This function and \code{\link[maanova]{arrayview}} assume the data
-  field in \code{rawdata} is on the raw scale, and in \code{madata} is
-  on log2 based scale. So if your rawdata is pre-transformed, you should
+  This function works for \code{madata}. This function and 
+  \code{\link[maanova]{arrayview}} assume the data is
+  on log2 based scale. So if your rawdata is not pre-transformed, you should
   not do riplot on the raw data.
 }
 
 \usage{
-riplot(object, title, array, color = "blue", highlight.flag = TRUE, 
+riplot(object, title, xlab, ylab, array, color = "blue",highlight.flag = TRUE, 
     flag.color = "Red", idx.highlight, highlight.color = "Green", 
     rep.connect = FALSE, onScreen=TRUE) 
 }
@@ -30,11 +29,17 @@ riplot(object, title, array, color = "blue", highlight.flag = TRUE,
 }
 
 \arguments{
-  \item{object}{An object of class \code{madata} or \code{rawdata}.}
+  \item{object}{An object of class \code{madata}.}
   \item{title}{The title for figures. The default figure title is "RI
     plot for array number X". If the user wants to provide titles, be
     sure to provide a string array with the same number of elements as
     the number of arrays.}
+  \item{xlab}{The xlab for figures. The default figure xlab is 
+    "expression(log[2](R*G))". One xlab would be used for all plot, 
+     thus unlike title, user (if one wants) need to provide only one name.}
+  \item{ylab}{The ylab for figures. The default figure ylab is 
+    "expression(log[2](R/G))". One ylab would be used for all plot, 
+     thus unlike title, user (if one wants) need to provide only one name.}
   \item{array}{A list of arrays numbers for which you want to draw an RI
     plot.} 
   \item{color}{The color for the points in scatter plot. Default is blue.}
@@ -55,24 +60,12 @@ riplot(object, title, array, color = "blue", highlight.flag = TRUE,
 \examples{
 \dontrun{
 data(kidney)
-############################
-# riplot on rawdata
-############################
 # riplot raw data on screen
 riplot(kidney.raw)
 graphics.off()
 # riplot raw data array 1 and 3 and output to postscript file
 postscript(file="kidneyRIplot.ps")
 riplot(kidney.raw, array=c(1,3), onScreen=FALSE)
-
-############################
-# RI plot on madata
-############################
-data1 <- createData(kidney.raw)
-# do RI plot for all arrays
-riplot(data1)
-graphics.off()
-}
 }
 
 \keyword{hplot}

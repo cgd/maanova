@@ -15,7 +15,7 @@ data.
 
 \usage{data(kidney)}
 \format{
-    An object of class \code{rawdata}.
+    An object of class \code{madata}.
 }
 
 \source{

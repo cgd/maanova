@@ -1,10 +1,7 @@
 \author{Hao Wu}
-
 \name{consensus}
 \alias{consensus}
-
 \title{Build consensus tree out of bootstrap cluster result}
-
 \description{
   This is the function to build the consensus tree from the bootstrap
   clustering analysis. If the clustering algorithm is hierarchical
@@ -32,35 +29,28 @@ consensus(macluster, level = 0.8, draw=TRUE)
 }
 
 \examples{
-# load in data
-data(paigen)
-# make data object with rep 2
-paigen <- createData(paigen.raw, 2)
-# make interactive model
-model.int.fix <- makeModel(data=paigen,
-      formula=~Dye+Array+Strain+Diet+Strain:Diet)
-# fit ANOVA model
-anova.int <- fitmaanova(paigen, model.int.fix)
-# test interaction effect 
-\dontrun{test.int.fix <- matest(paigen, model.int.fix, term="Strain:Diet", n.perm=100)
+# load data
+data(abf1)
+# fit the anova model
+fit.fix = fitmaanova(abf1,formula = ~Strain)
+# test Strain effect 
+\dontrun{
+test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
 # pick significant genes - pick the genes selected by Fs test
-idx <- volcano(test.int.fix)$idx.Fs
-
+idx <- volcano(test.fix)$idx.Fs
 # do k-means cluster on genes
-gene.cluster <- macluster(anova.int, "Strain:Diet", idx, "gene",
-    "kmean", kmean.ngroups=5)
+gene.cluster <- macluster(fit.fix, term="Strain", idx, what="gene", 
+   method="kmean", kmean.ngroups=5, n.perm=100)
 # get the consensus group
 consensus(gene.cluster, 0.5)
 
 # HC cluster on samples
-sample.cluster <- macluster(anova.int, "Strain:Diet", idx, "sample","hc")
+sample.cluster <- macluster(fit.fix, term="Strain", idx, what="sample",method="hc")
 # get the consensus group
-consensus(sample.cluster, 0.5)}
-}
-
+consensus(sample.cluster, 0.5)
+}}
 \seealso{
   \code{\link[maanova]{macluster}}
 }
-
 \keyword{cluster}
 

@@ -9,7 +9,7 @@
   This function generate a plot with many lines. Each line represents
   a gene. The y-axis is the estimated expression level for the given
   factor from ANOVA model. The x-axis is for the levels of the
-  give factor, e.g.,  different strains. 
+  give factor, e.g., different strains. 
 }
 
 \usage{
@@ -33,20 +33,14 @@ geneprofile(anovaobj, term, geneidx,
 
 \examples{
 # load in data
-data(paigen)
-# make data object with rep 2
-paigen <- createData(paigen.raw, 2)
-# make an additive model
-model.add.fix <- makeModel(data=paigen, formula=~Dye+Array+Strain+Diet)
-# fit ANOVA model
-anova.add <- fitmaanova(paigen, model.add.fix)
-# test strain effect
-\dontrun{test.Strain.fix <- matest(paigen, model.add.fix, term="Strain", n.perm=100)
-# volcano plot
-idx <- volcano(test.Strain.fix)
-
-# do gene profile for the selected genes
-geneprofile(anova.add, "Strain", idx$idx.all)}
+data(abf1)
+# fit the anova model
+fit.fix = fitmaanova(abf1,formula = ~Strain)
+# test Strain effect 
+\dontrun{test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
+# pick significant genes - pick the genes selected by Fs test
+idx <- volcano(test.fix)$idx.Fs
+geneprofile(fit.fix, "Strain", idx)}
 }
 
 \keyword{hplot}

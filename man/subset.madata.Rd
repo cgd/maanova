@@ -3,7 +3,7 @@
 \name{subset.madata}
 \alias{subset.madata}
 
-\title{Subsetting Micro Array data objects}
+\title{Subsetting Microarray data objects}
 
 \usage{
 \method{subset}{madata}(x, arrays, genes, \dots)
@@ -28,15 +28,12 @@
 
 \examples{
 data(kidney)
-# create data object with replicate
-data <- createData(kidney.raw)
-# take out array 1 and 2
-smalldata <- subset(data, arrays=c(1,2))
+smalldata <- subset(kidney.raw, arrays=c(1,2))
 # take out the all arrays except array 1
-idx.array <- 1:data$n.array
-smalldata <- subset(data,arrays=(idx.array[-1]))
+idx.array <- 1:kidney.raw$n.array
+smalldata <- subset(kidney.raw,arrays=(idx.array[-1]))
 # take out gene number 1 to 20
-smalldata <- subset(data,genes=1:20)
+smalldata <- subset(kidney.raw,genes=1:20)
 }
 
 \keyword{utilities}

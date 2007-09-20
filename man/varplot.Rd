@@ -15,23 +15,22 @@
 }
 
 \usage{
-varplot(anovaobj)
+varplot(anovaobj, xlab, ylab, main)
 }
 
 \arguments{
   \item{anovaobj}{An object of class \code{maanova}.}
+  \item{xlab}{Figure xlab. Default is "Sigma".}
+  \item{ylab}{Figure ylab. Default is "Density".}
+  \item{main}{Figure title. Default is "Density plot for sqrt of variance".}
 }
 
 \examples{
-# load in Paigen's data
-data(paigen)
-# make data object with rep 2
-paigen <- createData(paigen.raw, 2)
-\dontrun{model.full.mix <- makeModel(data=paigen,
-      formula=~Dye+Array+Spot+Strain+Diet+Strain:Diet+Sample,
-      random=~Array+Spot+Sample)
-anova.full.mix <- fitmaanova(paigen, model.full.mix, method="REML")
-varplot(anova.full.mix)}
+# load abf1 data
+data(abf1)
+\dontrun{fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
+   random = ~Sample)
+varplot(fit.full.mix)}
 }
 
 \seealso{
