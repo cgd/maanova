@@ -8,16 +8,17 @@
 #
 # Part of the R/maanova package
 #
-#
 ######################################################################
-
 require("stats")
 
 macluster <-
   function(anovaobj, term, idx.gene, what=c("gene","sample"),
            method=c("hc", "kmean"), dist.method="correlation",
-           hc.method="ward", kmean.ngroups, n.perm=100)
-{
+           hc.method="ward", kmean.ngroups, n.perm=100){
+  subCol = anovaobj$anova$subCol
+  if(subCol) anovaobj = anovaobj$anova.subcol
+  else anovaobj = anovaobj$anova
+
   what <- match.arg(what)
   method <- match.arg(method)
   

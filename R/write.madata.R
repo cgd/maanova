@@ -15,8 +15,8 @@
 
 write.madata <- function(madata, datafile="madata.txt", designfile="design.txt")
 {
-  if( (class(madata) != "madata") && (class(madata) != "rawdata") )
-    stop("The first input variable must be an object of madata or rawdata!")
+  if( (class(madata) != "madata")  )
+    stop("The first input variable must be an object of madata!")
 
   # local variables
   nreps <- madata$n.rep

@@ -18,7 +18,7 @@
 
 
 makeModel <-
-  function(data, design, formula, random=~1, covariate=~1)
+ function(data, design, formula, random = ~1, covariate = ~1)
 {
   # check input variables
   if (class(data) != "madata")
@@ -30,6 +30,7 @@ makeModel <-
   narrays <- data$n.array
   ngenes <- data$n.gene
   nspots <- data$n.spot
+  
   # parse the input fixed and random formula
   parsed.formula <- parseformula(formula, random, covariate)
   nlabels <- length(parsed.formula$labels)
@@ -105,10 +106,10 @@ makeModel <-
   }
   
   df <- NULL # degree of freedom of each term
-  if(nlabels >= 1) {
+  if(nlabels >= 1){
     # it's not a completely null model, e.g., y~1
     # go throught all labels in formula to make X and Z matrices
-    termX <- list(NULL)
+    termX <- list(NULL); 
     # loop for all terms in the formula
     for(i in 1:nlabels) {
       termX[[i]] <- numeric(0)
@@ -134,6 +135,7 @@ makeModel <-
           termX[[i]] <- cbind(termX[[i]], label==j)
       }
       # if this term is a factor in design
+      
       if(l %in% names(designobj)) {
         # if l is covariate
         if(parsed.formula$covariate[i] == 1) {
@@ -155,7 +157,7 @@ makeModel <-
       # if this term is an interaction (for 2 interaction only now)
       if(parsed.formula$order[i] == 2) {
         intterm <- which(parsed.formula$factors[,i]==1)
-      #  termX[[i]] <- intprod(termX, intterm)
+        #termX[[i]] <- intprod(termX, intterm)
       }
       
       ########## finish making design matrix for this term
@@ -171,7 +173,7 @@ makeModel <-
     }
 
     ##################################
-    #calculate df for each term
+    # calculate df for each term
     ##################################
     # find nesting relationships
     nesting <- matrix(0, nlabels, nlabels)
@@ -225,16 +227,16 @@ makeModel <-
     }
   
       
-#      if(parsed.formula$random[i] ==0) { # for fixed terms
-        # combine all other termX for fixed terms together
-        # except the current one
-#        for(j in setdiff(idx.fixed, i))
-#          X.drop <- cbind(X.drop, termX[[j]])
-#        df[i] <- rank.X - matrank(X.drop)
-#      }
-#      else { # for random terms
-#        df[i] <- matrank(cbind(X, termX[[i]])) - rank.X
-#      }
+    #if(parsed.formula$random[i] ==0) { # for fixed terms
+    # combine all other termX for fixed terms together
+    # except the current one
+    # for(j in setdiff(idx.fixed, i))
+    #   X.drop <- cbind(X.drop, termX[[j]])
+    #   df[i] <- rank.X - matrank(X.drop)
+    # }
+    # else { # for random terms
+    #        df[i] <- matrank(cbind(X, termX[[i]])) - rank.X
+    #      }
   }
   
   # calculate error df
@@ -352,7 +354,8 @@ print.summary.mamodel <- function (x, ...)
 makeDesign <- function(design)
 {
   # find the idx for non-references
-  idx.noref <- which(design$Sample!=0)
+  if(length(design$Sample)==0) idx.noref = c(1:nrow(design))
+  else idx.noref <- which(design$Sample!=0)
   
   # output
   result <- list(NULL)

@@ -94,6 +94,3 @@ subset.madata <-
   result
 
 }
-  
-                                  
-    

@@ -16,6 +16,9 @@
 
 fom <- function(anovaobj, idx.gene, term, ngroups)
 {
+  subCol = anovaobj$anova$subCol
+  if(subCol) anovaobj = anovaobj$anova.subcol
+  else anovaobj = anovaobj$anova
   # check input data
   if (class(anovaobj) != "maanova")
     stop("The first input variable is not an object of class maanova.")

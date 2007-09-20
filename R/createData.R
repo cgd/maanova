@@ -37,7 +37,7 @@ createData <-
   data$n.gene <- n.gene
   data$n.rep <- n.rep
   data$collapse <- FALSE
-  #data$log.trans <- log.trans
+  # data$log.trans <- log.trans
   
   # take single replicates for cloneid
   idx.gene <- seq(1,n.gene*n.rep,n.rep)

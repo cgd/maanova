@@ -1,21 +1,17 @@
-
 ######################################################################
 #
 # riplot.R
 #
 # copyright (c) 2001, Hao Wu and Gary A. Churchill, The Jackson Lab.
-#
 # written Nov, 2001
 # Modified Nov, 2002 
 # Licensed under the GNU General Public License version 2 (June, 1991)
 #
 # Part of the R/maanova package
 #
-# 
 ######################################################################
-
 riplot <-
-  function(object, title, array, color="blue", highlight.flag=TRUE,
+  function(object, title, xlab, ylab,array, color="blue", highlight.flag=TRUE,
            flag.color="Red", idx.highlight, highlight.color="Green",
            rep.connect=FALSE, onScreen=TRUE)
 {
@@ -56,6 +52,12 @@ riplot <-
     for(i in 1:object$n.array) 
       title[i] <- paste("RI plot for array number",i)
   }
+  if(missing(xlab)){
+    xlab = 'expression(log[2](R*G))'
+  }
+  if(missing(ylab)){
+    ylab = 'expression(log[2](R/G))'
+  }
 
   # now draw the figures
   if(missing(array))
@@ -63,16 +65,10 @@ riplot <-
   for (i in array) {
     if(onScreen) {
       get(getOption("device"))()
-      # open a window on screen
-#      if(.Platform$GUI == "AQUA")
-#        quartz()
-#      else
-#        x11()
     }
     plot( I[,i], R[,i], xlim=c(min(I),max(I)), ylim=c(-tmp,tmp),
-         xlab=expression(log[2](R*G)), ylab=expression(log[2](R/G)),
-         col=color, pch=4, cex=0.5,
-         main=title[i] )
+         xlab=xlab, ylab=ylab,col=color, pch=.5, cex=.5,
+         main=title[i], font.main=4, font=2)
     # if highlight is given, redraw those points
     if(!missing(idx.highlight)) {
       if(class(object) == "madata") {

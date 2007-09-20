@@ -9,12 +9,14 @@
 #
 # Part of the R/maanova package
 #
-#
 ######################################################################
 
+varplot <- function(anovaobj, xlab, ylab, main){
 
-varplot <- function(anovaobj)
-{
+  subCol <- anovaobj$anova$subCol
+  if(subCol) anovaobj = anovaobj$anova.subcol
+  else anovaobj = anovaobj$anova
+
   if (class(anovaobj) != "maanova")
     stop("The first input variable is not an object of class maanova.")
 
@@ -31,15 +33,20 @@ varplot <- function(anovaobj)
   nbreaks <- npts/10
   x <- NULL
   y <- NULL
+
   for(i in 1:nlevel) {
     varcom <- s2[,i]
     tmp <- density(sqrt(s2[,i]))
     x <- cbind(x, tmp$x)
     y <- cbind(y, tmp$y)
   }
-
-  plot(x, y, type="n", xlab="sigma", ylab="density",
-       main="Density plot for sqrt of variance")
+  if(missing(xlab))
+    xlab <- "Sigma"
+  if(missing(ylab))
+    ylab <- "Density"
+  if(missing(main))
+    main = "Density plot for sqrt of variance"
+  plot(x, y, type="n", xlab=xlab, ylab=ylab, main=main)
   
   for(i in 1:nlevel)
     lines(x[,i], y[,i], col=line.color[i])
@@ -51,6 +58,5 @@ varplot <- function(anovaobj)
   xpos <- 0.3*xlim[1] + 0.7*xlim[2]
   ypos <- 0.1*ylim[1] + 0.9*ylim[2]
   legend(xpos, ypos, s2level, col=line.color[1:nlevel], lty=1)
-
 }
   

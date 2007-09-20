@@ -1,5 +1,4 @@
 ######################################################################
-#
 # util.R
 #
 # copyright (c) 2001, Hao Wu and Gary A. Churchill, The Jackson Lab.
@@ -27,7 +26,6 @@ matsort <- function(mat, index=1)
     for(i in 1:n[1])
       result[i,] <- sort(mat[i,])
   }
-
   result
 }
 
@@ -197,7 +195,7 @@ matrank <- function(X)
     # rank is 1 for vectors
     return(1)
   else if(is.matrix(X)) {
-    s <- La.svd(X,0,0)
+    s <- ma.svd(X,0,0)
     tol <- max(dim(X)) * s$d[1] * .Machine$double.eps
     r <- sum(s$d>tol)
     return(r)
@@ -206,6 +204,8 @@ matrank <- function(X)
     return(0)
   }
 }
+
+#matrank <- function(X, tol=1e-7) qr(X, tol=tol, LAPACK=FALSE)$rank
 
 
 # calculate matrix or vector norm, working only for vector now
@@ -270,7 +270,6 @@ parseformula <- function(formula, random, covariate)
         result$covariate[idx] <- 1
     }
   }
-
   result
 }
 
@@ -412,7 +411,8 @@ pinv <- function(X, tol)
     stop("X must be a numeric matrix")
   if (!is.matrix(X)) 
     X <- as.matrix(X)
-  Xsvd <- La.svd(X)
+#  Xsvd <- La.svd(X)
+  Xsvd <- ma.svd(X,method="dgesvd")
   
   # find the tolerance
   if(missing(tol))
@@ -429,66 +429,159 @@ pinv <- function(X, tol)
 
 ###############################################################
 #
+# function to compute the singular-value decomposition of a rectangular 
+# matrix by using LAPACK routines DGESVD and ZGESVD.
+#
+###############################################################
+ma.svd <- function (x, nu = min(n, p), nv = min(n, p), method = c("dgesvd", 
+    "dgesdd")) 
+{
+    if (!is.numeric(x) && !is.complex(x)) 
+        stop("argument to 'ma.svd' must be numeric or complex")
+    if (any(!is.finite(x))) 
+        stop("infinite or missing values in 'x'")
+    method <- match.arg(method)
+    x <- as.matrix(x)
+    if (is.numeric(x)) 
+        storage.mode(x) <- "double"
+    n <- nrow(x)
+    p <- ncol(x)
+    if (!n || !p) 
+        stop("0 extent dimensions")
+    if (is.complex(x) || method == "dgesvd") {
+        if (nu == 0) {
+            jobu <- "N"
+            u <- matrix(0, 1, 1)
+        }
+        else if (nu == n) {
+            jobu <- ifelse(n > p, "A", "S")
+            u <- matrix(0, n, n)
+        }
+        else if (nu == p) {
+            jobu <- ifelse(n > p, "S", "A")
+            u <- matrix(0, n, p)
+        }
+        else stop("'nu' must be 0, nrow(x) or ncol(x)")
+        if (nv == 0) {
+            jobv <- "N"
+            v <- matrix(0, 1, 1)
+        }
+        else if (nv == n) {
+            jobv <- ifelse(n > p, "A", "S")
+            v <- matrix(0, min(n, p), p)
+        }
+        else if (nv == p) {
+            jobv <- ifelse(n > p, "S", "A")
+            v <- matrix(0, p, p)
+        }
+        else stop("'nv' must be 0, nrow(x) or ncol(x)")
+        if (is.complex(x)) {
+            u[] <- as.complex(u)
+            v[] <- as.complex(v)
+            res <- .Call("La_svd_cmplx", jobu, jobv, x, double(min(n, 
+                p)), u, v, PACKAGE = "base")
+        }
+        else {
+            res <- .Call("masvd", jobu, jobv, x, double(min(n, 
+                p)), u, v, method, PACKAGE = "maanova")
+        }
+        return(res[c("d", if (nu) "u", if (nv) "vt")])
+    }
+    else {
+        if (nu > 0 || nv > 0) {
+            np <- min(n, p)
+            if (nu <= np && nv <= np) {
+                jobu <- "S"
+                u <- matrix(0, n, np)
+                v <- matrix(0, np, p)
+            }
+            else {
+                jobu <- "A"
+                u <- matrix(0, n, n)
+                v <- matrix(0, p, p)
+            }
+        }
+        else {
+            jobu <- "N"
+            u <- matrix(0, 1, 1)
+            v <- matrix(0, 1, 1)
+        }
+        jobv <- ""
+        res <- .Call("La_svd", jobu, jobv, x, double(min(n, p)), 
+            u, v, method, PACKAGE = "base")
+        res <- res[c("d", if (nu) "u", if (nv) "vt")]
+        if (nu) 
+            res$u <- res$u[, 1:min(n, nu), drop = FALSE]
+        if (nv) 
+            res$vt <- res$vt[1:min(p, nv), , drop = FALSE]
+        return(res)
+    }
+}
+
+
+###############################################################
+#
 # fdr - function to calculate the adjusted P values
 # for FDR control
 #
 ###############################################################
-fdr <- function(p, method=c("stepup", "adaptive", "stepdown"))
+fdr <- function(p, method=c("stepup", "adaptive", "stepdown", "jsFDR"))
 {
   method <- match.arg(method)
+  if( method=="setup" | method =="adaptive" | method=="setdown" ){
+    m <- length(p)
+    tmp <- sort(p, index.return=TRUE)
+    sortp <- tmp$x
+    idx <- tmp$ix
 
-  m <- length(p)
-  tmp <- sort(p, index.return=TRUE)
-  sortp <- tmp$x
-  idx <- tmp$ix
+    if(method == "stepdown") {
+      d <- m:1
+      sortp <- (1-(1-sortp)^d) * d/m
 
-  if(method == "stepdown") {
-    d <- m:1
-    sortp <- (1-(1-sortp)^d) * d/m
-
-    for(i in 1:(m-1)) {
-      if(sortp[i+1] < sortp[i])
-        sortp[i+1] <- sortp[i]
+      for(i in 1:(m-1)) {
+        if(sortp[i+1] < sortp[i])
+          sortp[i+1] <- sortp[i]
+      }
     }
+    else{
+      if(method == "stepup")
+        m0 <- m
+      else if(method == "adaptive") {
+        s <- sort(1 - sortp)/(1:m)
+        # calculate m0
+        m0raw <- m
+        i <- m
+        while(i > 1 && s[i] <= s[i - 1]) i <- i - 1
+        if(i > 1) m0raw <- 1/s[i - 1]
+        else m0raw <- 1/s[1]
+        m0 <- min(floor(1 + m0raw), m)
+      }
+      # calculate sortp
+      sortp <- sortp * m0 / (1:m)
+      for(i in (m-1):1) {
+        if(sortp[i] > sortp[i+1])
+          sortp[i] <- sortp[i+1]
+      }
+    }
+    result <- NULL
+    result[idx] <- sortp
   }
-  else {
-    if(method == "stepup")
-      m0 <- m
-    else if(method == "adaptive") {
-      s <- sort(1 - sortp)/(1:m)
-      # calculate m0
-      m0raw <- m
-      i <- m
-      while(i > 1 && s[i] <= s[i - 1]) i <- i - 1
-      if(i > 1)
-      m0raw <- 1/s[i - 1]
-      else m0raw <- 1/s[1]
-      m0 <- min(floor(1 + m0raw), m)
-    }
-
-
-    # calculate sortp
-    sortp <- sortp * m0 / (1:m)
-    for(i in (m-1):1) {
-      if(sortp[i] > sortp[i+1])
-        sortp[i] <- sortp[i+1]
-    }
+  else if(method=="jsFDR"){
+    library(qvalue)
+    result = qvalue(p)$qvalues
   }
-
-  # return variable
-  result <- NULL
-  result[idx] <- sortp
-
+  else
+    stop("Need to specify FDR method (stepup, adaptive, stepdown, or jsFDR). To use jsFDR, one needs to install qvalue() package")
   result
 }
 
 ###############################################################
-# meanvarlog - function to generate mean and var for a logrithm
+# meanvarlogold - function to generate mean and var for a logrithm
 # chi2 distribution
 # This is used by JSshrinker
 ###############################################################
 
-meanvarlog <- function(df)
+meanvarlogold <- function(df)
 {
   meanlog <- rep(0,length(df))
   varlog <- rep(0, length(df))
@@ -505,6 +598,27 @@ meanvarlog <- function(df)
   result$meanlog <- meanlog
   result$varlog <- varlog
 
+  result
+}
+###############################################################
+# meanvarlog - function to generate mean and var for a logrithm
+# Analytic formula is provided by Stanley Pounds
+# Pounds (2007) Computational Enhancement of a Shrinkage-Based
+# ANOVA F-test Proposed for Differential Gene Expression Analysis.
+# Biostatistics, to appear.
+# This is used by JSshrinker
+###############################################################
+
+meanvarlog <- function(df)
+{
+  result <- NULL
+  B = exp(-log(2)-digamma(df/2)+log(df))
+  result$meanlog <-  -log(B)
+
+  E2<-log(2)^2+2*log(2)*digamma(df/2)+trigamma(df/2)+digamma(df/2)^2
+  m<-log(2)+digamma(df/2)-log(df)
+  varlog <-E2-2*log(df)*(m+log(df))+log(df)^2-m^2
+  result$varlog <- varlog
   result
 }
 
@@ -558,16 +672,10 @@ JSshrinker <- function(X, df, meanlog, varlog)
   result
 }
 
- 
-#################################################
-# the following functions are useful for Jmaanova
-#################################################
-
-######################################################################
-#
+###################################################################### 
 # make.ratio.R
 # Calculate the logratio for two dye arrays
-#
+# this function is useful for Jmaanova
 ######################################################################
 make.ratio <- function(object, norm.std=TRUE)
 {
@@ -614,5 +722,25 @@ make.ratio <- function(object, norm.std=TRUE)
   result <- matrix(z$result, n.row, n.col/2)
 
   result
+}
+
+######################################################################
+# PairContrast : make all possible pairwise comparison
+######################################################################
+
+PairContrast <- function(n){
+  if(n>=2){
+    res = NULL
+    for(i in (n-1):1){
+      a=matrix(0,nrow=i, ncol=i)
+      diag(a) = -1
+      if(n-i-1>0) 
+        res = rbind(res, cbind(matrix(0,nrow=i, ncol=(n-i-1)), rep(1, i), a))
+      else res = rbind(res, cbind(rep(1, i), a))
+    }
+    return(res)
+  }
+  else stop("n should be bigger than 2")
+  return(res)
 }
 

@@ -1,5 +1,4 @@
 ######################################################################
-#
 # gridcheck.R
 #
 # copyright (c) 2002, Hao Wu and Gary A. Churchill, The Jackson Lab.
@@ -12,13 +11,12 @@
 #
 # Part of the R/maanova package
 #
-#
 ######################################################################
 
 gridcheck <- function(rawdata, array1, array2, highlight.flag=TRUE,
                       flag.color="Red", margin=c(3.1,3.1,3.1,1.1))
 {
-  if(class(rawdata) != "rawdata")
+  if(class(rawdata) != "madata")
     stop("The first input variable is not an object of class rawdata.")
 
   if(rawdata$n.dye != 2)
@@ -53,12 +51,7 @@ gridcheck <- function(rawdata, array1, array2, highlight.flag=TRUE,
     # loop for all arrays
     for (i.array in array1) {
       if(i.array != array1[1]) {
-        # open a new window
         get(getOption("device"))()
-#        if(.Platform$GUI == "AQUA")
-#          quartz()
-#        else
-#          x11()
       }
       # setup the layout and margin
       layout(matrix(1:(n.mrow*n.mcol), n.mrow, n.mcol, byrow=TRUE))
@@ -89,7 +82,7 @@ gridcheck <- function(rawdata, array1, array2, highlight.flag=TRUE,
     
     # get the sample ids for array 1 and array 2 from design
     if(is.null(rawdata$design))
-      stop("No experimental design information in rawdata. Cannot do grid check on two arrays.")
+      stop("No experimental design information. Cannot do grid check on two arrays.")
     sample1 <- rawdata$design$Sample[c(array1*2-1, array1*2)]
     sample2 <- rawdata$design$Sample[c(array2*2-1, array2*2)]
     if(length(intersect(sample1, sample2)) == 0)
@@ -107,10 +100,6 @@ gridcheck <- function(rawdata, array1, array2, highlight.flag=TRUE,
           if(nplot!=1) {
             # open a window on screen
             get(getOption("device"))()
-#            if(.Platform$GUI == "AQUA")
-#              quartz()
-#            else
-#              x11()
           }
 
           # setup the layout and margin
@@ -133,8 +122,6 @@ gridcheck <- function(rawdata, array1, array2, highlight.flag=TRUE,
       }
     }
   }
-
 }
       
-  
   

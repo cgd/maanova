@@ -22,9 +22,9 @@ arrayview <-
   if(sum(c("metarow","metacol","row" ,"col") %in% names(object)) != 4)
     stop("There's no grid location information in input data.")
   
-  # stop if the input object is not madata or rawdata
-  if(!(class(object) %in% c("madata","rawdata")) )
-    stop("The input variable must be an object of rawdata or madata")
+  # stop if the input object is not madata 
+  if(!(class(object) %in% c("madata")) )
+    stop("The input variable must be an object of madata")
 
   # if object is madata and reps were collapsed, cannot do arrayview
   if(class(object)=="madata")
@@ -101,7 +101,4 @@ arrayview <-
     image(1:n.gcol, 1:n.grow, t(data.grid), ylab="Row",
           xlab="Column", col=colormap, main=paste("Array", i),... )
   }
-
 }
-       
-  

@@ -13,8 +13,7 @@
 
 consensus <- function(macluster, level=0.8, draw=TRUE)
 {
-
-     
+  
   if(class(macluster) != "macluster")
     stop("The input variable is not an object of class macluster.")
 
@@ -27,26 +26,20 @@ consensus <- function(macluster, level=0.8, draw=TRUE)
  #   msg <- paste(msg, "in macluster function in order to do permutation.")
  #   stop(msg)
  # }
-
-  # local variable
+ # local variable
   n.perm <- macluster$n.perm
 
   # result
   consensus <- NULL
-  
+
   if( macluster$method == "hc")
     #stop("Consensus for HC has not implemented yet.")
     consensus <- consensus.hc(macluster, level, draw)
   else if( macluster$method == "kmean") {
     consensus <- consensus.kmean(macluster, level, draw)
   }
-
-
   invisible(consensus)
 }
-
-
-
 
 consensus.hc <- function(macluster, level, draw)
 {
@@ -99,24 +92,22 @@ consensus.hc <- function(macluster, level, draw)
           result$count <- c(result$count, 1)
         }
       } # finish loop for nodes in this permutation tree
-    
     } # finish loop for all trees
   }
-  
   # total number of leaves in the tree
   result$nleaves <- n.node+2
   result$count <- result$count/macluster$n.perm
 
   # the leave names
   result$leaves.name <- macluster$leave.names
-#  if(missing(leaves.name)) {
-#    if(macluster$what == "gene")
-#      idx.tmp <- macluster$idx.gene
-#    else
-#      idx.tmp <- 1:result$nleaves
-#    leaves.name <- paste(macluster$what, idx.tmp, sep="")
-#  }
-#  result$leaves.name <- leaves.name
+  #  if(missing(leaves.name)) {
+  #    if(macluster$what == "gene")
+  #      idx.tmp <- macluster$idx.gene
+  #    else
+  #      idx.tmp <- 1:result$nleaves
+  #    leaves.name <- paste(macluster$what, idx.tmp, sep="")
+  #  }
+  #  result$leaves.name <- leaves.name
   # visualize the result consensus tree
 
   idx.node <- which(result$count>level)
@@ -213,8 +204,6 @@ plot.consensus.hc <- function(x, title, ...)
          pos=3)
   }
 }
-
-
 
 makeAB <- function(ct, coord, treeidx, startx, maxdepth)
 {
@@ -314,12 +303,7 @@ makeAB <- function(ct, coord, treeidx, startx, maxdepth)
   result$nodecoord <- nodecoord
   result$leavesidx <- leavesidx
   result
-}
-
- 
-
-
-    
+}  
 
 buildtree <- function(ct, binstr, depth, parent, idx.node, idx.leave)
 {
@@ -339,7 +323,6 @@ buildtree <- function(ct, binstr, depth, parent, idx.node, idx.leave)
     binstr <- binstr[,-missleave]
     idx.leave <- idx.leave[-missleave]
   }
-
   # if there are only one node, we are done
   if(n==1) {
     ct[[idx.node+1]]$children <- -idx.leave
@@ -397,8 +380,7 @@ buildtree <- function(ct, binstr, depth, parent, idx.node, idx.leave)
 
 }
 
-cluster2num <- function(clust)
-{
+cluster2num <- function(clust){
   # number of leaves, exclude the last one(root)
   n.leaves <- dim(clust)[1] - 1
   result <- NULL
@@ -406,20 +388,20 @@ cluster2num <- function(clust)
   result$num <- matrix(rep(0, n.leaves*2), n.leaves, 2)
   result$tree[[1]] <- -clust[1,]
   result$num[1,] <- c(2, sum(-clust[1,]))
-  for(i in 2:n.leaves) {
-    tmp1 <- -clust[i,1]
-    tmp2 <- -clust[i,2]
-    if(tmp1 < 0)
-      tmp1 <- result$tree[[-tmp1]]
-    if(tmp2 < 0)
-      tmp2 <- result$tree[[-tmp2]]
-    result$tree[[i]] <- c(tmp1, tmp2)
-    result$num[i,] <- c(length(result$tree[[i]]), sum(result$tree[[i]]))
+  if(n.leaves > 1){
+    for(i in 2:n.leaves) {
+      tmp1 <- -clust[i,1]
+      tmp2 <- -clust[i,2]
+      if(tmp1 < 0)
+        tmp1 <- result$tree[[-tmp1]]
+      if(tmp2 < 0)
+        tmp2 <- result$tree[[-tmp2]]
+      result$tree[[i]] <- c(tmp1, tmp2)
+      result$num[i,] <- c(length(result$tree[[i]]), sum(result$tree[[i]]))
+    }
   }
-
   result
 }
-
 
 #############################################################
 # The following functions are using for Kmeans clustering

@@ -2,112 +2,240 @@
 #
 # read.madata.R
 #
-# copyright (c) 2001-2004, Hao Wu and Gary A. Churchill, The Jackson Lab.
-#
-# written Nov, 2001
-# modified Nov, 2002 for reading design file for mixed model effect
-# modified Mar, 2004 for N-dye system
-# modified May, 2004 for collapse.madata function
-#
+# copyright (c) 2001-2002, Hao Wu and Gary A. Churchill, The Jackson Lab.
+# written May, 2002
 # Licensed under the GNU General Public License version 2 (June, 1991)
 #
 # Part of the R/maanova package
 #
-# This is the function to read in MicroArray experiment data and design
-# from two tab delimited files
-#
 ######################################################################
 
-read.madata <-
-  function(datafile, designfile="design.txt", header=TRUE, spotflag=TRUE,
-           metarow, metacol, row, col, pmt, ...) 
-{
-  # read in design file first
-  design <- read.table(designfile,sep="\t", quote="", header=TRUE)
-  # Array, Dye and Sample must be in design
+read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
+  arrayType=c("oneColor", "twoColor"),header=T, spotflag=F, n.rep=1, avgreps=0,
+  log.trans=F, metarow, metacol, row, col, probeid, intensity, ...){
+
+  #================== make the output object 
+  data <- NULL
+  arrayType <- match.arg(arrayType); 
+  if(arrayType  == 'oneColor') 
+    cat(paste("Reading one color array.\n Otherwise change arrayType='twoColor' then read the data again\n"))
+  else if(arrayType  == 'twoColor')
+    cat(paste("Reading two color array.\n Array, Dye and Sample information should be in design file.\n 
+    metarow, metacol, row, col, probeid, intensity information should be provided. \n 
+    Log transformation ('log.trans=T') is recommended. 
+    If you miss some of information, provide them and read the data again.\n"))
+  else  stop("Invalid arrayType")
+
+  #============================ read design
+  if(missing(designfile))
+    stop("You must provide a designfile name or data.frame/matrix object for design file")
+
+  if( class(designfile) == 'character' )
+    design <- read.table(designfile, sep="\t", quote="", header)
+  else if(class(designfile)== 'matrix') design = designfile
+  else if(class(designfile)== 'data.frame') design = designfile
+  else stop("Invalid design file type")
+
+  # Array (oneCol), Array, Dye and Sample (twoCol) must be in design 
   design.fields <- names(design)
+  n.dye = 1
   if( !("Array" %in% design.fields) )
     stop("There is no Array column in design file")
-  if( !("Dye" %in% design.fields) )
-    stop("There is no Dye column in design file")
-  if( !("Sample" %in% design.fields) )
-    stop("There is no Sample column in design file")
+  if(arrayType != 'oneColor'){
+    if( !("Dye" %in% design.fields) )
+      stop("There is no Dye column in design file")
+    if( !("Sample" %in% design.fields) )
+      stop("There is no Sample column in design file")
+    # number of dyes
+    n.dye <- length(unique(design$Dye))
+  }
   if( "Spot" %in% design.fields )
-    stop("You cannot have a column called Spot in the design file")
+      stop("You cannot have a column called 'Spot' in the design file")
   if("Label" %in% design.fields)
-    stop("You cannot have a column called Label in the design file")
+      stop("You cannot have a column called 'Label' in the design file")
+  if("covM" %in% design.fields)
+      stop("covM is reserved for covariate matrix.\n
+      You cannot have a column called 'covM' in the design file")
 
-  # number of dyes
-  n.dye <- length(unique(design$Dye))
-  
-  # read in data
+  #============================= read data
   if(missing(datafile))
-    stop("You must provide a file name for raw data")
-  rawdata <- as.matrix(read.table(datafile,sep="\t",quote="",header,
-                                  comment.char=""))
-  n.row <- nrow(rawdata)
-  n.col <- ncol(rawdata)
-
-  # make the output object
-  data <- NULL
-  data$n.dye <- n.dye
-  # number of columns per array
-  if(spotflag) ncol.array <- n.dye + 1
-  else ncol.array <- n.dye
-  n.array <- (n.col-pmt+1)/ncol.array
-  if(round(n.array) != n.array)
-    stop("Data has wrong number of columns for pmt data")
-  data$n.array <- n.array
-  
-  # pmt data with/without flags
-  pmtdata <- matrix(as.numeric(rawdata[,pmt:n.col]),
-                     n.row,n.col-pmt+1)
-  # If there's no flag info, pmt is the raw data
-  # otherwise, we need to seperate pmt and flag
-  if(spotflag) {
-    idx.flag <- ncol.array * (1:n.array)
-    idx.pmt <- setdiff(1:(n.array*ncol.array), idx.flag)
-    data$data <- pmtdata[,idx.pmt]
-    data$flag <- pmtdata[,idx.flag]
+    stop("You must provide a file name or matrix object for data")
+  if( class(datafile) == 'character' ){
+    rawdata<- as.matrix(read.table(datafile,sep="\t",
+       quote="",header, comment.char=""))
+    n.row <- nrow(rawdata)
+    #=============== probeid 
+    if(missing(probeid)){
+      probeid = 1
+      warning(paste("Assume that the first column is probeid. If you have probeid specify it, otherwise set 'probeid=0' then read the data again"))
+    }
+    if( probeid > 0) data$probeid <- rawdata[,probeid]
+    else{
+      warning(paste("No Probe ID is available. 1 to ",n.row," is used."))
+      data$probeid <- 1:n.row
+    }
+    if(missing(intensity)){
+      intensity = 2
+      warning(paste("Assume that intensity value is saved from the second column. Otherwise provide 'intensity' (first column storing intensity) information, and read the data again"))
+    }
   }
   else{
-    data$data <- pmtdata
+    if( class(datafile) == 'matrix' ){
+      n.row <- nrow(datafile)
+      if(missing(probeid)) probeid = -1
+      if( probeid <1 ){
+        rname = rownames(datafile)
+        if(length(rname)>0){
+          data$probeid=rname; 
+          cat(paste("Rowname of matrix is used for Probe ID\n"))
+        }
+        else{
+          warning(paste("Datafile does not have rawname. 1 to",n.row,"is used for probeid."))
+          data$probeid <- 1:n.row
+        }
+      }
+      else data$probeid = datafile[,probeid]      
+      if(missing(intensity)){
+         intensity = 1 
+         cat(paste("Assume that intensity value is saved from the first column. Otherwise provide 'intensity' (first column storing intensity) information, and read the data again"))
+      }
+      rawdata = datafile; rm(datafile)
+    }
+    else
+      stop("Invalid data type. Provide either data file name (tab deliminated format)
+       or matrix object (class(object)==matrix)")
   }
+  n.row <- nrow(rawdata)
+  n.col <- ncol(rawdata)
+  n.gene <- n.row/n.rep
+  if(round(n.gene) != n.gene)
+    stop("Number of rows in data file does not match the number of replicates. Check n.rep or data file")
 
-  # get the CloneID
-  #if( !missing(cloneid) )
-  #  data$cloneid <- rawdata[,cloneid]
-  #else {
-  #  warning(paste("Clone ID is not provided. 1 to",n.row,"is used."))
-  #  data$cloneid <- 1:n.row
-  #}
-
-  # get metarow, metacol, row, col
-  if(!missing(metarow))
-    data$metarow <- as.integer(rawdata[, metarow])
-  else {
-    warning("No meta row information, use 1 instead!")
-    data$metarow <- rep(1, n.row)
+  #============================= read covM
+  if( !missing(covM) ){
+    if( class(covM) == 'character' ){
+      covm <- as.matrix(read.table(datafile,sep="\t", quote="",header, comment.char=""))
+      if( (nrow(covm) != n.row | ncol(covm) != n.col) ) 
+        stop("Dimension of Covariate matrix does not match to the that of data matrix.\n
+              Covariate matrix should (not) have header if data does (not)
+  have header, and should have row name column.")
+    }
+    else{
+      if( class(covM) == 'matrix' ){
+        covm = covM
+        if( (nrow(covm) != n.row | ncol(covm) != n.col) ) 
+          stop("Dimension of Covariate matrix does not match to the that of data matrix \n")
+      }   
+      else
+        stop("Invalid covariate data type. Provide either file name (tab deliminated format)
+             or matrix type R object (i.e., class(covM)==matrix)")
+    }
+    covM = covm[1,]
+    design = cbind(design, covM)
   }
+  else covm = NULL
+  #====================== number of columns per array
+  if(spotflag) ncol.array <- n.dye + 1
+  else ncol.array <- n.dye
+  n.array <- (n.col-intensity+1)/ncol.array
+  if(round(n.array) != n.array)
+    stop("Data has wrong number of columns")
+
+  #====================== separate PM data and check if it has missing
+  intensitydata <- matrix(as.numeric(rawdata[,intensity:n.col]),n.row, (n.col-intensity+1))
+  if(any(is.na(intensitydata))) stop(" Data has NA") 
+
+  #====================== divide genes by flag
+  # If there's no flag info, intensity is the raw data
+  # otherwise, we need to seperate intensity and flag
+  if(spotflag){
+    idx.flag <- ncol.array * (1:n.array)
+    idx.intensity <- setdiff(1:(n.array*ncol.array), idx.flag)
+    data$data <- intensitydata[,idx.intensity]
+    data$flag <- intensitydata[,idx.flag]
+  }
+  else data$data <- intensitydata
+
+  #== get metarow, metacol, row, col for transformation two col only : this is for transformation
+  if(arrayType != 'oneColor'){
+    if( !missing(metarow) )
+      data$metarow <- as.integer(rawdata[, metarow])
+    else {
+      warning(paste("You have two color array - No meta row information, use 1 instead!"))
+      data$metarow <- rep(1, n.row)
+    }
   
-  if(!missing(metacol))
-    data$metacol <- as.integer(rawdata[, metacol])
-  else {
-    warning("No meta column information, use 1 instead!")
-    data$metacol <- rep(1, n.row)
-  }
+    if( !missing(metacol) )
+      data$metacol <- as.integer(rawdata[, metacol])
+    else {
+      warning(paste("You have two color array - No meta column information, use 1 instead!"))
+      data$metacol <- rep(1, n.row)
+    }
   
-  if(!missing(row))
-    data$row <- as.integer(rawdata[, row])
-  else {
-    warning("No row information.")
-  }
-  if(!missing(col))
-    data$col <- as.integer(rawdata[, col])
-  else {
-    warning("No column information.")
-  }
+    if( !missing(row) )
+      data$row <- as.integer(rawdata[, row])
+    else {
+      warning(paste("You have two color array - No row information."))
+    }
+    if( !missing(col) )
+      data$col <- as.integer(rawdata[, col])
+    else {
+      warning(paste("You have two color array - No column information."))
+    }
+  } 
 
+  #================================  collapse if replicates > 1 
+  if( (avgreps != 0) & (n.rep != 1) ) {
+    # initialize data and flag
+    tmpdata <- matrix(0, n.gene, n.array*n.dye)
+    # n.rep became one (because of collapsing)
+    data$n.rep <- 1
+    data$collapse <- TRUE
+    # drop grid location fields to save some memory,
+    # they are no longer useful anyway
+    data$metarow <- NULL
+    data$metacol <- NULL
+    data$row <- NULL
+    data$col <- NULL
+    # row indices
+    idx <- seq(1,dim(data$data)[[1]],n.rep)
+
+    if(avgreps == 1) { # take mean of the replicates
+      for(i in 0:(n.rep-1)) 
+          tmpdata <- tmpdata + data$data[idx+i,]
+      data$data <- tmpdata/n.rep
+    }
+    if(avgreps == 2) { # take median of the replicates
+      for(i in 1:(n.array*n.dye)) {
+        for(j in 1:n.gene) {
+          tmp <- data$data[(n.rep*(j-1)+1):(n.rep*j),i]
+          data$data[j,i] <- median(tmp)
+        }
+      }
+    }
+    if( !is.null(data$flag) ) {
+      tmpflag <- matrix(0, n.gene, n.array)
+      for(i in 0:(n.rep-1))
+        data$flag <- tmpflag + data$flag[idx+i,]
+    }
+  }
+  #======================== log transform
+  data$TransformMethod = "None"
+  if(log.trans){
+    if(arrayType  == 'oneColor') warning(paste('You are taking log2 transformation to one color array '))
+    data$data <- log2(data$data)
+    data$TransformMethod <- "log2"
+  }
+  #================== make the output object 
+  data$n.dye <- n.dye
+  data$n.array <- n.array
+  data$design <- design
+  data$n.gene <- n.gene
+  data$n.spot <- n.rep*n.array
+  data$colmeans <- apply(data$data, 2, mean)
+  data$n.rep <- n.rep
+  data$covm = covm
+  #=============== other information : DO WE NEED THIS??
   # get other data from ...
   args <- list(...)
   nargu <- length(args)
@@ -126,24 +254,47 @@ read.madata <-
       names(data)[n.field+i] <- argname
     }
   }
-
-  # skip reading array name
-  # read in array names (if any)
-#  if(header == T) {
-#    tmp <- strsplit(readLines(datafile,1), "\t")[[1]]
-#    tmp <- tmp[pmt:length(tmp)]
-#    if(spotflag)
-#      data$ArrayName <- tmp[idx.pmt]
-#    else
-#      data$ArrayName <- tmp
-#  }
-
-  # no data transformation at this time
-  data$TransformMethod <- "None"
-
-  data$design <- design
-  class(data) <- "rawdata"
-
-  data
+  class(data) <- "madata"
+  invisible(data)
 }
+
+print.madata <- function(x, ...)
+{
+  print.summary.madata(x, ...)
+}
+
+
+# summerize the MAdata object
+summary.madata <-
+  function(object, ...)
+{
+  if( is.na(match("madata",class(object))) )
+    stop("The input variable is not an object of class madata!")
+
+  TransformMethod <- object$TransformMethod
   
+  result <- list(n.dye=object$n.dye, n.array=object$n.array,
+                 n.gene=object$n.gene,
+                 n.spot=object$n.spot, n.rep=object$n.rep,
+                 TransformMethod=TransformMethod, collapse=object$collapse )
+  class(result) <- "summary.madata"
+
+  result
+}
+
+
+print.summary.madata <-
+  function(x, ...)
+{
+  
+  cat("\n\t\tSummary for this experiment\n\n")
+  cat("Number of dyes:\t", x$n.dye, "\n")
+  cat("Number of arrays:\t", x$n.array, "\n")
+  cat("Number of genes:\t", x$n.gene, "\n")
+  cat("Number of replicates:\t", x$n.rep, "\n")
+  cat("Transformation method:\t",x$TransformMethod,"\n")
+  cat("Replicate collapsed:\t",x$collapse, "\n")
+  cat("\n\n")
+  
+}
+

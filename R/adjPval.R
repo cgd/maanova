@@ -11,14 +11,13 @@
 # This is the function to adjust F test object
 #
 ######################################################################
-
-adjPval <- function(matestobj, method=c("stepup","adaptive", "stepdown"))
+adjPval <- function(matestobj, method=c("stepup","adaptive", "stepdown", 
+  "jsFDR"))
 {
   if(class(matestobj)[1] != "matest")
     stop("First input object is not an object of class matest")
 
   fdr.method <- function(x) {fdr(x, method)}
-  
   # start to adjust
   # for F1
   if( !(is.null(matestobj$F1)) ) {
@@ -27,29 +26,19 @@ adjPval <- function(matestobj, method=c("stepup","adaptive", "stepdown"))
       matestobj$F1$adjPvalperm <- apply(matestobj$F1$Pvalperm, 2, fdr.method)
   }
   
-  # for F2
-  if( !(is.null(matestobj$F2)) ) {
-    matestobj$F2$adjPtab <- apply(matestobj$F2$Ptab, 2, fdr.method)
-    if( !(is.null(matestobj$F2$Pvalperm)) )
-      matestobj$F2$adjPvalperm <- apply(matestobj$F2$Pvalperm, 2, fdr.method)
-  }
-  
-  # for F3
-  if( !(is.null(matestobj$F3)) ) {
-    matestobj$F3$adjPtab <- apply(matestobj$F3$Ptab, 2, fdr.method)
-    if( !(is.null(matestobj$F3$Pvalperm)) )
-      matestobj$F3$adjPvalperm <- apply(matestobj$F3$Pvalperm, 2, fdr.method)
-  }
-
   # for Fs
   if( !(is.null(matestobj$Fs)) ) {
     matestobj$Fs$adjPtab <- apply(matestobj$Fs$Ptab, 2, fdr.method)
     if( !(is.null(matestobj$Fs$Pvalperm)) )
       matestobj$Fs$adjPvalperm <- apply(matestobj$Fs$Pvalperm, 2, fdr.method)
   }
-
+  
+  # for Fss
+  if( !(is.null(matestobj$Fss)) ) {
+    matestobj$Fss$adjPtab <- apply(matestobj$Fss$Ptab, 2, fdr.method)
+    if( !(is.null(matestobj$Fss$Pvalperm)) )
+      matestobj$Fss$adjPvalperm <- apply(matestobj$Fss$Pvalperm, 2, fdr.method)
+  }
   # return
   invisible(matestobj)
 }
-
-
