@@ -3,45 +3,37 @@
 interactive environment for the analysis of microarray experiments. 
 It is implemented as an add-on
 package for the freely available statistical language R (www.r-project.org).
-The engine functions were written in C for better performance.
-
 MAANOVA stands for MicroArray ANalysis Of VAriance. It provides a complete 
 work flow for microarray data analysis including:
 \begin{itemize}
-\item Data quality checks and visualization
-\item Data transformation
-\item ANOVA model fitting for both fixed and mixed effects models
-\item Statistical tests including permutation
-\item Cluster analysis with bootstrapping
+\item Data quality checks - visualization and transformation
+\item ANOVA model fitting - both fixed and mixed effects models
+\item Calculating test statistics - F, Fs and Fss  statistics
+\item Deriving p-value - using sampling and residual shuffling permutation approach
+\item Summarize the result - provide summary tables, graphics including volcano plot and cluster analysis with bootstrapping
 \end{itemize}
 
 {\em R/maanova} can be applied to any microarray data but it is
 specially tailored for multiple factor experimental designs.
 Mixed effects models are implemented to estimate variance components 
 and perform F and T tests for differential expressions.
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Installation section
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Installation}
 \subsection{System requirements}
-This package was developed under {\em R 1.8.0} in the 
-{\em Linux Redhat 8.0} operating system. The programs have been 
+This package was developed under {\em R 1.8.0} and updated under {\em R 2.5.1} in the {\em Linux Redhat 8.0} operating system. The programs have been 
 observed to work under {\em Windows NT/98/2000}. The memory requirement
 depends on the size of the input data but a minimum of 256Mb memory
 is recommended. 
-
 \subsection{Obtaining R}
 R is available in the Comprehensive R Archive Network (CRAN).
 Visit \\{\tt http://cran.r-project.org} or a local mirror site.
 Source code is available for UNIX/LINUX, and binaries are 
-available for Windows, MacOS, and many versions of Linux.  
-
+available for Windows, MacOS and many versions of Linux.  
 \subsection{Installation - Windows(9x/NT/2000)}
 \begin{itemize}
-
 \item Install {\em R/maanova} from Rgui
 \begin{enumerate}
 \item Start Rgui
@@ -49,7 +41,6 @@ available for Windows, MacOS, and many versions of Linux.
 click {\tt Install package from local zip file}. 
 Choose the file \\{\tt maanova\_*.tar.gz} and click 'OK'. 
 \end{enumerate}
-
 \item Install {\em R/maanova} outside Rgui
 \begin{enumerate}
 \item Unzip the {\tt maanova\_*.tar.gz} file into the directory 
@@ -61,9 +52,7 @@ containing the R source code and the compiled dlls.
 \item Type \Rfunction{link.html.help()} to get the help files for 
 the maanova package added to the help indices.
 \end{enumerate}
-
 \end{itemize}
-
 \subsection{Installation - Linux/Unix}
 \begin{enumerate}
 \item Go into the directory containing {\tt maanova\_*.tar.gz}.
@@ -78,7 +67,6 @@ will need to create a file {\tt .Renviron} in your home directory to contain
 the line {\tt R\_LIBS=/home/user/Rlib} so that R will know to search for
 packages in that directory.
 \end{enumerate}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Function list
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -91,85 +79,69 @@ in {\em R} environment or typing {\tt help.start()} to get the html help in
 a web browser.
 
 \begin{enumerate}
-
 % sample data
-\item Sample data available with the package
+\item Sample data available with the package. Both include subset of original
+  data, which can be found at {\tt
+http://www.jax.org/staff/churchill/labsite/software/}. 
 \begin{description}
-\item[{\tt abf1}] A 18-array affymetric experiment. 500 hand picked genes are 
-included in the data set
-\item[{\tt kidney}] A 6-array kidney data set from CAMDA (Critical Assessment 
-of Microarray Data Analysis). 
-\item[{\tt paigen}] A multiple factor 28-array experiment from Bev
-Paigen's lab in The Jackson Lab. Only 300 hand picked genes are 
-included in this data set
+\item[{\tt abf1}] A 18-array Affymetrix experiment. 
+\item[{\tt kidney}] A 6-array kidney data set from CAMDA (Critical Assessment of Microarray Data Analysis). 
 \end{description}
 
 % File IO
 \item File I/O
 \begin{description}
-\item[{\tt read.madata}] Read microarray data from TAB delimited simplex 
-text file.
-\item[{\tt write.madata}] Write microarray data to a TAB delimited simple
-text file.
+\item[{\tt read.madata()}] Read microarray data from TAB delimited 
+text file (typical input for two-color array) or matrix type {\em R} object
+(such as output of {\tt exprs()} from normalization package, such as {\em Affy}, {\em beadarray}).
+\item[{\tt write.madata()}] Write microarray data to a TAB delimited text file.
 \end{description}
-
 % quality check
-\item Data quality check
+\item Data quality check - for two-color arrays
 \begin{description}
-\item[{\tt arrayview}] View the layout of the arrays 
-\item[{\tt riplot}] Ratio intensity plot for arrays 
-\item[{\tt gridcheck}] Plot grid-by-grid data comparison for arrays
-\item[{\tt dyeswapfilter}] Flag the bad spots in dye swap experiment
-Note that these data quality check functions only work for 2-dye
-arrays at this time.
+\item[{\tt arrayview()}] View the layout of the arrays 
+\item[{\tt riplot()}] Ratio intensity plot for arrays 
+\item[{\tt gridcheck()}] Plot grid-by-grid data comparison for arrays
+\item[{\tt dyeswapfilter()}] Flag the bad spots in dye swap experiment
 \end{description}
-
 % normalization
 \item Data transformation
 \begin{description}
-\item[{\tt createData}] Create a data object with options to 
-collapse the replicated spots and do log2 transformation
-\item[{\tt transform.madata}] Data transformation with options to use any of
+\item[{\tt transform.madata()}] Data transformation with options to use any of
 several methods
 \end{description}
-
 % model fitting
 \item ANOVA model fitting 
 \begin{description}
-\item[{\tt makeModel}] Make model object to represent the 
-experimental design
-\item[{\tt fitmaanova}] Fit ANOVA model
-\item[{\tt resiplot}] Residual plot on a given ANOVA model
+\item[{\tt fitmaanova()}] Fit ANOVA model
+\item[{\tt resiplot()}] Residual plot on a given ANOVA model
 \end{description}
-
 % tests
 \item Hypothesis testing
 \begin{description}
-\item[{\tt matest}] F-test or T-test with permutation
-\item[{\tt adjPval}] Calculate FDR adjusted P values given the 
-result of [{\tt matest}]
-\item[{\tt volcano}] Volcano plot for summarizing F or T test results
+\item[{\tt matest()}] F-test or T-test with permutation
+\item[{\tt adjPval()}] Calculate FDR adjusted P values given the result of {\tt matest()}
 \end{description}
-
+\item Summarize the result
+\begin{description}
+\item[{\tt summarytable()}] Provide summary of 
+{\tt matest()}, such as P-value, adjusted P-value and fold change 
+\item[{\tt volcano()}] Volcano plot for summarizing F or T test results
+\end{description}
 % clustering
 \item Clustering
 \begin{description}
-\item[{\tt macluster}] Bootstrap clustering.
-\item[{\tt consensus}] Build consensus tree out of bootstrap cluster result
-\item[{\tt fom}] Use figure of merit to determine the number of groups
-in K-means cluster
-\item[{\tt geneprofile}] Plot the estimated relative expression
-for a given list of genes
+\item[{\tt macluster()}] Bootstrap clustering.
+\item[{\tt consensus()}] Build consensus tree out of bootstrap cluster result
+\item[{\tt fom()}] Use figure of merit to determine the number of groups in K-means cluster
+\item[{\tt geneprofile()}] Plot the estimated relative expression for a given list of genes
 \end{description}
 % utility functions
 \item Utility functions
 \begin{description}
-\item[{\tt fill.missing}] Fill in missing data.
-\item[{\tt summary.madata}] Summarize the data object.
-\item[{\tt summary.mamodel}] Summarize the model object.
-\item[{\tt subset.madata}] Subsetting the data objects.
-\item[{\tt exprSet2Rawdata}] Convert an object of exprSet to an object of Rawdata.
+\item[{\tt fill.missing()}] Fill in missing data.
+\item[{\tt PairContrast()}] Make all possible pairwise contrast.
+\item[{\tt summary.madata()}] Summarize the data object.
+\item[{\tt subset.madata()}] Subsetting the data objects.
 \end{description}
-
 \end{enumerate}
- 
