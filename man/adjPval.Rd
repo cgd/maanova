@@ -28,12 +28,13 @@ adjPval(matestobj, method=c("stepup","adaptive", "stepdown", "jsFDR"))
 
 \examples{
 data(abf1)
-fit.full.simple = fitmaanova(abf1,formula = ~Strain)
 \dontrun{ 
+fit.full.simple = fitmaanova(abf1,formula = ~Strain)
 # F-test strain effect
 ftest.all = matest(abf1, fit.full.simple, term="Strain",n.perm= 1000)
 # make FDR adjusted P values
 ftest.all = adjPval(ftest.all, 'jsFDR')
 # there will be new fields in test.strain.fix after this
+}
 }
 \keyword{utilities}

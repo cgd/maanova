@@ -1,4 +1,4 @@
-################################################################
+ ################################################################
 #
 # This is the script to demonstrate the data analysis on a
 # multiple factor experiment using affymetric arrays.
@@ -14,46 +14,50 @@ graphics.off()
 library(maanova)
 
 # read in data
-#abf1.raw <- read.madata("AffyData.txt", designfile="AffyDesign.txt", 
-#	probeID=1, pmt=2, spotflag=F)
+# library(affy)
+# beforeRma <- ReadAffy()
+# rmaData <- rma(beforeRma)
+# datafile <- exprs(rmaData)
+# design.table <- data.frame(Array=row.names(pData(beforeRma)));
+# Strain <- rep(c('Aj', 'B6', 'B6xAJ'), each=6)
+# Sample <- rep(c(1:9), each=2)
+# designfile <- cbind(design.table, Strain, Sample)
+# abf1 <- read.madata(datafile, designfile=designfile)
 
-# load in data
 data(abf1)
-# make data object with rep 1
-# note that this data was pre-transformed so log.trans=F
-abf1 <- createData(abf1.raw, 1, log.trans=F)
-
 ##############################
 # STEP I: fixed model analysis - skipped
 ##############################
 # make several model objects and fit ANOVA model
 # full model
-model.full.fix <- makeModel(data=abf1, formula=~Strain+Sample)
-anova.full.fix <- fitmaanova(abf1, model.full.fix)
+
+fit.full.fix <- fitmaanova(abf1, formula = ~Strain)
 
 # F-test on Sample
-test.sample.fix <- matest(abf1, model.full.fix, term="Sample", n.perm=500,
-        shuffle.method="resid", test.method=rep(1,4))
-idx.fix <- volcano(test.sample.fix, title="Volcano Plot - fixed model")
+ftest.fix = matest(abf1, fit.full.fix, test.method=c(1,1,0),
+    shuffle.method="sample", term="Strain", n.perm= 100)
+idx.fix <- volcano(ftest.fix, title="Volcano Plot - fixed model")
 
 ##############################
 # STEP II: mixed model analysis
 ##############################
 # make mixed effect model object, treat Sample as random factor
-model.full.mix <- makeModel(data=abf1, formula=~Strain+Sample, random=~Sample)
-anova.full.mix <- fitmaanova(abf1, model.full.mix)
-varplot(anova.full.mix)
+fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
+    random = ~Sample)
+varplot(fit.full.mix)
 
 # F-test on Strain
-test.Strain.mix <- matest(abf1, model.full.mix, term="Strain", n.perm=500,
-        test.method=rep(1,4))
+ftest.mix <- matest(abf1, fit.full.mix, term="Strain", n.perm=500)
+
 # FDR adjustment
-test.Strain.mix <- adjPval(test.Strain.mix)
-#save(test.Strain.mix, file="testStrainMix.RData")
-#load("testStrainMix.RData")
+ftest.all = adjPval(ftest.mix, 'jsFDR')
+
+#summary table 
+summarytable(abf1, ftest.all, outfile='all.csv')
+
 # volcano plot
-x11();idx.mix <- volcano(test.Strain.mix, 
+x11();idx.mix <- volcano(ftest.all,
 	title="Volcano Plot - Testing Strain - mixed model",
-	threshold=rep(0.05,4))
+	threshold=rep(0.05,3))
 
 

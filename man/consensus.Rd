@@ -31,10 +31,10 @@ consensus(macluster, level = 0.8, draw=TRUE)
 \examples{
 # load data
 data(abf1)
+\dontrun{
 # fit the anova model
 fit.fix = fitmaanova(abf1,formula = ~Strain)
 # test Strain effect 
-\dontrun{
 test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
 # pick significant genes - pick the genes selected by Fs test
 idx <- volcano(test.fix)$idx.Fs

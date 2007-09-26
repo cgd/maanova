@@ -28,7 +28,8 @@ varplot(anovaobj, xlab, ylab, main)
 \examples{
 # load abf1 data
 data(abf1)
-\dontrun{fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
+\dontrun{
+fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
    random = ~Sample)
 varplot(fit.full.mix)}
 }

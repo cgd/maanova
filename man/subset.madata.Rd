@@ -28,12 +28,13 @@
 
 \examples{
 data(kidney)
+\dontrun{
 smalldata <- subset(kidney.raw, arrays=c(1,2))
 # take out the all arrays except array 1
 idx.array <- 1:kidney.raw$n.array
 smalldata <- subset(kidney.raw,arrays=(idx.array[-1]))
 # take out gene number 1 to 20
 smalldata <- subset(kidney.raw,genes=1:20)
-}
+}}
 
 \keyword{utilities}

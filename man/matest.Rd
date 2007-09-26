@@ -132,9 +132,9 @@ matest(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
 \examples{
 # load in abf1 data
 data(abf1)
+\dontrun{
 fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
    random = ~Sample)
-\dontrun{
 ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1,0),
     shuffle.method="sample", term="Strain", n.perm= 100)
 C = matrix(c(1,-1,0,1,0,-1), ncol=3, byrow=T)

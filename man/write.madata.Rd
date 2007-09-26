@@ -25,9 +25,10 @@ write.madata(madata, datafile="madata.txt", designfile="design.txt")
 # load abf1 data
 data(abf1)
 # take out first 6 arrays
+\dontrun{
 smalldata <- subset(abf1, array=1:6)
 # write to file
-\dontrun{write.madata(smalldata, datafile="smallabf1.txt",
+write.madata(smalldata, datafile="smallabf1.txt",
       designfile="smallabf1design.txt")}
 }
 \keyword{IO}

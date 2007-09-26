@@ -66,7 +66,7 @@ graphics.off()
 # riplot raw data array 1 and 3 and output to postscript file
 postscript(file="kidneyRIplot.ps")
 riplot(kidney.raw, array=c(1,3), onScreen=FALSE)
-}
+}}
 
 \keyword{hplot}
 

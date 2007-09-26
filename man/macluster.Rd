@@ -74,9 +74,10 @@ macluster(anovaobj, term, idx.gene, what = c("gene", "sample"),
 # load in data
 data(abf1)
 # fit the anova model
+\dontrun{
 fit.fix = fitmaanova(abf1,formula = ~Strain)
 # test Strain effect 
-\dontrun{test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
+test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
 # pick significant genes - pick the genes selected by Fs test
 idx <- volcano(test.fix)$idx.Fs
 # do k-means cluster on genes
@@ -89,7 +90,6 @@ consensus(gene.cluster, 0.5)
 sample.cluster <- macluster(fit.fix, term="Strain", idx, what="sample",method="hc")
 # get the consensus group
 consensus(sample.cluster, 0.5)}
-
 }
 
 \keyword{cluster}

@@ -29,9 +29,10 @@ resiplot(madata, anovaobj, header, xlab, ylab)
 \examples{
 # load abf1 data
 data(abf1)
+\dontrun{
 fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
    random = ~Sample)
 resiplot(abf1, fit.full.mix)
-}
+}}
 
 \keyword{hplot}

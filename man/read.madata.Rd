@@ -166,17 +166,15 @@ beforeRma <- ReadAffy()
 rmaData <- rma(beforeRma)
 datafile <- exprs(rmaData)
 abf1 <- read.madata(datafile=datafile,designfile="design.txt")
-}
+
 # make and read designfile (data.frame type R object) from R
-\dontrun{
 design.table <- data.frame(Array=row.names(pData(beforeRma)));
 Strain <- rep(c('Aj', 'B6', 'B6xAJ'), each=6)
 Sample <- rep(c(1:9), each=2)
 designfile <- cbind(design.table, Strain, Sample)
 abf1 <- read.madata(datafile, designfile=designfile)
-}
+
 # read in a TAB delimited file with spot flag
-\dontrun{
  kidney <- read.madata(datafile="kidney.txt",designfile="kidneydesign.txt",
    metarow=1, metacol=2, col=3, row=4, probeid=5, intensity=7,spotflag=TRUE)
 }}

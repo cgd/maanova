@@ -16,9 +16,8 @@ graphics.off()
 library(maanova)
 
 # read in data
-#kidney.raw <- read.madata("kidney.txt", designfile="kidneydesign.txt", 
-#	metarow=1, metacol=2, col=3, row=4, Name=5, ID=6,
-#	pmt=7, spotflag=T)
+# kidney <- read.madata(datafile="kidney.txt",designfile="kidneydesign.txt",
+#   metarow=1, metacol=2, col=3, row=4, probeid=5, intensity=7,spotflag=TRUE)
 
 data(kidney)
 
@@ -45,26 +44,18 @@ graphics.off()
 # STEP II: Fixed model ANOVA, permutation test
 # and clustering analysis
 ##############################################
-# make data object with rep 1
-kidney <- createData(kidney.raw);
-summary(kidney)
 # smooth the data using intensity lowess
-kidney <- transform.madata(kidney, method="glowess")
+kidney <- transform.madata(kidney.raw, method="glowess")
 graphics.off()
 
-# make model object for fixed model
-# note that because there's no replicates, Spot and Label cannot be fitted
-model.fix <- makeModel(data=kidney, formula=~Dye+Array+Sample)
-summary(model.fix)
 # fit ANOVA model and do residual plot
-anova.fix <- fitmaanova(kidney, model.fix)
+anova.fix <- fitmaanova(kidney, formula= ~Dye+Array+Sample)
 resiplot(kidney, anova.fix)
 
-test.fix <- matest(kidney, model=model.fix, term="Sample", n.perm=100, shuffle="sample")
+test.fix <- matest(kidney, anova.fix, term="Sample", n.perm=100, shuffle="sample")
+
 # calculate FDR adjusted F values
-test.fix <- adjPval(test.fix)
-#save(ftest.fix, file="ftestfix.RData")
-#load("ftestfix.RData")
+test.fix <- adjPval(test.fix, 'jsFDR')
 
 # volcano plot
 idx.fix <- volcano(test.fix, title="Volcano plot for fixed effect model")
@@ -81,29 +72,3 @@ cluster.hc <- macluster(anova.fix,term="Sample",
          idx.gene=idx.fix$idx.all,what="sample", method="hc",
          n.perm=100)
 con.hc <- consensus(cluster.hc)
-
-
-#########################################
-# STEP III: Mixed model ANOVA and F test
-# Mixed model analysis is skipped for this demo
-#########################################
-# make model object for mixed model
-model.mix <- makeModel(data=kidney, formula=~Dye+Array+Sample, random=~Array)
-summary(model.mix)
-# the following line takes long time to finish,
-anova.mix <- fitmaanova(kidney, model.mix)
-varplot(anova.mix)
-#save(anova.mix, file="anovamix.RData")
-#load("anovamix.RData")
-# residual plot
-resiplot(kidney, anova.mix)
-# test Sample
-ftest.mix <- matest(data=kidney, model=model.mix, term="Sample")
-#save(ftest.mix, file="ftestmix.RData")
-#load("ftestmix.RData")
-
-# volcano plot
-idx.mix <- volcano(anova.mix, ftest.mix, 
-	method=c("unadj","unadj","unadj"),
-	title="Volcano plot for mixed effect model")
-

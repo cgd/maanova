@@ -15,6 +15,7 @@
 \alias{consensus.kmean}
 \alias{dist.cor}
 \alias{findgroup}
+\alias{getPval.table}
 \alias{getPval.volcano}
 \alias{glowess}
 \alias{intprod}
@@ -31,12 +32,14 @@
 \alias{makeShuffleGroup}
 \alias{makeZiZi}
 \alias{makelevel}
+\alias{makeModel}
 \alias{matest.engine}
 \alias{matest.perm}
 \alias{meanvarlog}
+\alias{meanvarlogold}
+\alias{mixture}
 \alias{plot.consensus.hc}
 \alias{plot.consensus.kmean}
-\alias{print.maanova}
 \alias{print.madata}
 \alias{print.summary.madata}
 \alias{print.summary.mamodel}
@@ -47,6 +50,9 @@
 \alias{solveMME}
 \alias{summary.madata}
 \alias{summary.mamodel}
+\alias{summarytable.ftest}
+\alias{summarytable.ttest}
+\alias{transform.rawdata}
 \alias{volcano.ftest}
 \alias{volcano.ttest}
 \alias{blkdiag}
@@ -100,14 +106,13 @@ makeShuffleGroup(sample.mtx, ndye, narray)
 makeZiZi(Z, dimZ)
 makelevel(model, term)
 matest.engine(anovaobj, term, mv, test.method, Contrast,
-              is.ftest, partC, verbose=FALSE)
-matest.perm(n.perm, FobsObj, data, model, term, Contrast, inits20,
+              is.ftest, partC, verbose=FALSE, mean_est, tau_est)
+matest.perm(n.perm, FobsObj, data, model, term, Contrast, 
             mv, is.ftest, partC, MME.method, test.method,
-            shuffle.method, pool.pval, ngenes)
+            shuffle.method, pool.pval, ngenes, mean_est, tau_est, subCol)
 meanvarlog(df)
 plot.consensus.hc(x, title, \dots)
 plot.consensus.kmean(x, \dots)
-\method{print}{maanova}(x, \dots)
 \method{print}{madata}(x, \dots)
 \method{print}{summary.mamodel}(x, \dots)
 ratioVarplot(logsum, logdiff, n)
@@ -130,7 +135,7 @@ rowmin(x)
 colmax(x)
 colmin(x)
 sumrow(x)
-matrank(X, tol=1e-07)
+matrank(X)
 norm(X)
 mixed(y, X, Z, XX, XZ, ZZ, Zi, ZiZi, dimZ, s20, method =
       c("noest", "MINQE-I", "MINQE-UI", "ML", "REML"),
@@ -139,7 +144,7 @@ parseformula(formula, random, covariate)
 makeContrast(model, term)
 pinv(X, tol)
 ma.svd(x, nu=min(n,p), nv=min(n,p), method=c("dgesvd","dgesdd"))
-fdr(p, method = c("stepup", "adaptive", "stepdown"))
+fdr(p, method = c("stepup", "adaptive", "stepdown", 'jsFDR'))
 }
 
 \title{Internal maanova functions}

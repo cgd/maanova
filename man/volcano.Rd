@@ -86,6 +86,6 @@ fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample,
 ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1,0),
     shuffle.method="sample", term="Strain", n.perm= 100)
 volcano(ftest.all)
-}
+}}
 
 \keyword{hplot}

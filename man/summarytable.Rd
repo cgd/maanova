@@ -42,8 +42,8 @@ summarytable(data, matestobj, method=c("Fold.change","Pvalperm","adjPvalperm"),
 
 \examples{
 data(abf1)
-fit.full.simple = fitmaanova(abf1,formula = ~ Strain)
 \dontrun{ 
+fit.full.simple = fitmaanova(abf1,formula = ~ Strain)
 # F-test strain effect
 ftest.all = matest(abf1, fit.full.simple, term="Strain", n.perm= 1000)
 # make FDR adjusted P values
@@ -51,5 +51,5 @@ ftest.all = adjPval(ftest.all, 'jsFDR')
 summarytable(abf1, ftest.all, outfile='all.csv')
 smallset = summarytable(abf1, ftest.all, method ='Pvalperm',
 test=c('F1','Fs'), whichTest='Fs.Pvalperm', threshold = 0.1)
-}
+}}
 \keyword{utilities}

@@ -35,9 +35,10 @@ geneprofile(anovaobj, term, geneidx,
 # load in data
 data(abf1)
 # fit the anova model
+\dontrun{
 fit.fix = fitmaanova(abf1,formula = ~Strain)
 # test Strain effect 
-\dontrun{test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
+test.fix = matest(abf1, fit.fix, term="Strain",n.perm= 1000)
 # pick significant genes - pick the genes selected by Fs test
 idx <- volcano(test.fix)$idx.Fs
 geneprofile(fit.fix, "Strain", idx)}

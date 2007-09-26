@@ -58,7 +58,8 @@ fitmaanova(madata, formula, random= ~1, covariate = ~1, mamodel,
     ANOVA model formula.}
   \item{covariate}{The formula for covariates. ~1 means no covariates.
     The array specific covariates should be numeric values in the design matrix, 
-    and the gene specific covariates should be read by \code{covM} in  \code{\link[base]{read.madata}}.
+    and the gene specific covariates should be read by \code{covM} in  \code{\link[base]{read.madata}}}.
+  \item{mamodel}{Inside arguments to save the calculation time.}
   \item{inits20}{The initial value for variance components. This should
     be a matrix with number of rows equals to the number of genes and
     number of columns equals to the number of random terms in the model.
@@ -141,11 +142,12 @@ fitmaanova(madata, formula, random= ~1, covariate = ~1, mamodel,
 ###################################
 # load in abf1 data
 data(abf1)
+\dontrun{
+
 # fit model with random effect
 fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
    random = ~Sample)
 
-\dontrun{
 # this is to explain the usage of including covariate variable.
 # .CEL file is not included in the package, thus use can not use this. 
 # array specific covariate : add it to the design matrix 
