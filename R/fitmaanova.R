@@ -17,7 +17,7 @@
 fitmaanova <-
   function(madata, formula, random= ~1, covariate = ~1, mamodel,
            inits20,method=c("REML","ML","MINQE-I","MINQE-UI", "noest"),
-           verbose=TRUE, subCol=F){
+           verbose=TRUE, subCol=FALSE){
   if(class(madata) != "madata")
     stop("The first input variable is not an object of class madata.")
   design = madata$design
@@ -36,7 +36,7 @@ fitmaanova <-
   # take colmeans from madata
   colmeans <-  madata$colmeans
   covm = madata$covm
-  if( ndyes > 1 ) subCol= T 
+  if( ndyes > 1 ) subCol= TRUE
   X <- mamodel$X
   Z <- mamodel$Z
   dimX <- mamodel$dimX
@@ -87,7 +87,7 @@ fitmaanova <-
         anova$S2[i] <- rss/error.df
         # fitted values
         anova$yhat[(nreps*(i-1)+1):(nreps*i),] <- matrix(yfit, nrow=nreps) 
-        if(subCol == T){# even if subCol=T, we still need subCol=F for Fss
+        if(subCol == TRUE){# even if subCol=TRUE, we still need subCol=FALSE for Fss
           # take the data for this gene
           y <- data[(nreps*(i-1)+1):(nreps*i),] - colmeans.gene
           y <- as.vector(y)
@@ -121,7 +121,7 @@ fitmaanova <-
         # fitted values
         anova$yhat[(nreps*(i-1)+1):(nreps*i),] <- matrix(yfit, nrow=nreps)
 
-        if(subCol == T){
+        if(subCol == TRUE){
           # take the data for this gene
           y <- data[(nreps*(i-1)+1):(nreps*i),] - colmeans.gene
           y <- as.vector(y)
@@ -169,13 +169,13 @@ fitmaanova <-
         # and use a default one
         inits20 <- matrix(0.01, ngenes, nrandom+1)
       }
-      else { # I did not make a separate inits20 (subCol=T or not)
+      else { # I did not make a separate inits20 (subCol=TRUE or not)
         if(verbose==TRUE)
           cat("Calculating variance components for fixed model...\n")
         invX <- pinv(model.fixed$X)
         inits20 <- matrix(0, ngenes, nrandom+1);
         for(i in 1:ngenes) {
-          if(subCol==T) y <- data[(nreps*(i-1)+1):(nreps*i),] - colmeans.gene
+          if(subCol==TRUE) y <- data[(nreps*(i-1)+1):(nreps*i),] - colmeans.gene
           else y <- data[(nreps*(i-1)+1):(nreps*i),] 
           y <- as.vector(y)
           tmpb <- invX %*% y
@@ -212,7 +212,7 @@ fitmaanova <-
     anova$S2.level <- parsed.formula$labels[parsed.formula$random==1]
 
     # initialize
-    if(subCol == T){
+    if(subCol == TRUE){
       Allb.subcol <- Allb 
       Allu.subcol <- Allu 
       anova.subcol$loops <- anova$loops 
@@ -232,7 +232,7 @@ fitmaanova <-
       if(verbose == TRUE)
         if(round(i/100) == i/100)
           cat("Finish gene number", i, "...\n")
-      if(subCol == T)
+      if(subCol == TRUE)
         y <- data[(nreps*(i-1)+1):(nreps*i),]- colmeans.gene
       else y <- data[(nreps*(i-1)+1):(nreps*i),]
       y <- as.vector(y)
@@ -243,7 +243,7 @@ fitmaanova <-
       # anova$rss[i] <- sum((y-yfit)*(y-yfit))
       # fitted values
   
-      if(subCol == T){
+      if(subCol == TRUE){
         anova.subcol$yhat[(nreps*(i-1)+1):(nreps*i),] <- 
           matrix(yfit, nrow=nreps) + colmeans.gene
         anova.subcol$S2[i,] <- generesult$s2
@@ -261,13 +261,13 @@ fitmaanova <-
     }
   } # mixed model over
   # get the estimates from Allb
-  if(subCol == T) anova.subcol$G <- Allb.subcol[,1]
+  if(subCol == TRUE) anova.subcol$G <- Allb.subcol[,1]
   anova$G <- Allb[,1];
   next.fix <- 2
   if(length(refid) != 0) {
     # there's references
     anova$reference <- Allb[,2]
-    if(subCol == T) anova.subcol$reference <- Allb.subcol[,2]
+    if(subCol == TRUE) anova.subcol$reference <- Allb.subcol[,2]
     next.fix <- next.fix + 1
   }
   # get the rest of terms from Allb and Allu according to formula
@@ -284,7 +284,7 @@ fitmaanova <-
         ncols <- dimX[nfix+1]
         anova[[anovalength+1]] <- Allb[,next.fix:(next.fix+ncols-1)]
         names(anova)[anovalength+1] <- l
-        if(subCol == T){
+        if(subCol == TRUE){
           anova.subcol[[anovalength+1]] <- Allb.subcol[,next.fix:(next.fix+ncols-1)]
           names(anova.subcol)[anovalength+1] <- l
         }
@@ -294,7 +294,7 @@ fitmaanova <-
       else {
         # this is a random term
         ncols <- dimZ[nrandom+1]
-        if(subCol == T){
+        if(subCol == TRUE){
           anova.subcol[[anovalength+1]]<-Allu.subcol[,next.random:(next.random+ncols-1)]
           names(anova.subcol)[anovalength+1] <- l
         }
@@ -313,7 +313,7 @@ fitmaanova <-
         mm = makelevel(mamodel, l)
         anova[[anovalength+1]] <- mm
         names(anova)[anovalength+1] <- paste(l, "level", sep=".")
-        if(subCol == T){
+        if(subCol == TRUE){
           anova.subcol[[anovalength+1]] <- mm
           names(anova.subcol)[anovalength+1] <- paste(l, "level", sep=".")
         }
@@ -330,7 +330,7 @@ fitmaanova <-
         flag[i] <- 1
     }
     anova$flag <- flag
-    if(subCol == T) anova.subcol$flag <- flag
+    if(subCol == TRUE) anova.subcol$flag <- flag
   }
   # put model into the object
   anova$model <- mamodel

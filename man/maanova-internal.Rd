@@ -111,8 +111,8 @@ matest.perm(n.perm, FobsObj, data, model, term, Contrast,
             mv, is.ftest, partC, MME.method, test.method,
             shuffle.method, pool.pval, ngenes, mean_est, tau_est, subCol)
 meanvarlog(df)
-plot.consensus.hc(x, title, \dots)
-plot.consensus.kmean(x, \dots)
+\method{plot}{consensus.hc}(x, title, \dots)
+\method{plot}{consensus.kmean}(x, \dots)
 \method{print}{madata}(x, \dots)
 \method{print}{summary.mamodel}(x, \dots)
 ratioVarplot(logsum, logdiff, n)

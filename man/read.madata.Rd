@@ -91,8 +91,8 @@
 }
 \usage{
 read.madata(datafile=datafile, designfile=designfile, covM = covM,
-arrayType=c("oneColor", "twoColor"),header=T, spotflag=F, n.rep=1, avgreps=0,
-  log.trans=F, metarow, metacol, row, col, probeid, intensity, ...)
+arrayType=c("oneColor", "twoColor"),header=TRUE, spotflag=FALSE, n.rep=1, avgreps=0,
+  log.trans=FALSE, metarow, metacol, row, col, probeid, intensity, ...)
 }
 
 \arguments{

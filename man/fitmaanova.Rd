@@ -47,7 +47,7 @@
 \usage{
 fitmaanova(madata, formula, random= ~1, covariate = ~1, mamodel,
            inits20,method=c("REML","ML","MINQE-I","MINQE-UI", "noest"),
-           verbose=TRUE, subCol=F)
+           verbose=TRUE, subCol=FALSE)
 }
 
 \arguments{

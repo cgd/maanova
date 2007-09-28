@@ -11,8 +11,8 @@
 ######################################################################
 
 read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
-  arrayType=c("oneColor", "twoColor"),header=T, spotflag=F, n.rep=1, avgreps=0,
-  log.trans=F, metarow, metacol, row, col, probeid, intensity, ...){
+  arrayType=c("oneColor", "twoColor"),header=TRUE, spotflag=FALSE, n.rep=1, avgreps=0,
+  log.trans=FALSE, metarow, metacol, row, col, probeid, intensity, ...){
 
   #================== make the output object 
   data <- NULL
@@ -22,7 +22,7 @@ read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
   else if(arrayType  == 'twoColor')
     cat(paste("Reading two color array.\n Array, Dye and Sample information should be in design file.\n 
     metarow, metacol, row, col, probeid, intensity information should be provided. \n 
-    Log transformation ('log.trans=T') is recommended. 
+    Log transformation ('log.trans=TRUE') is recommended. 
     If you miss some of information, provide them and read the data again.\n"))
   else  stop("Invalid arrayType")
 

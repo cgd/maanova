@@ -254,7 +254,7 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
       pstar.nodes.fss <- clusterApply(cl, nperm.cluster, matest.perm, 
        ftest,data, model, term,Contrast, mv, is.ftest, partC, 
        MME.method, ttest.method, shuffle.method, pval.pool, ngenes,
-                        mean_est, tau_est, subCol=F)
+                        mean_est, tau_est, subCol=FALSE)
       pstar.nodes$Fss$Pperm = pstar.nodes.fss$Fss$Pperm
       pstar.nodes$Fss$Pmax = pstar.nodes.fss$Fss$Pmax
     }

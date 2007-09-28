@@ -275,7 +275,7 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
     # get the estimates
     tmpb <- anovaobj$anova[[tmpterm]]
     b <- cbind(b, tmpb)
-    if(subCol == T){
+    if(subCol == TRUE){
       tmpb <- anovaobj$anova.subcol[[tmpterm]]
       b.subcol <- cbind(b.subcol, tmpb)
     }

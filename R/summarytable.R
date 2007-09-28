@@ -18,7 +18,7 @@ summarytable <-
     stop("The first input variable is not an object of class madata.")
   if(class(matestobj)[1] != "matest")
     stop("The second input variable is not an object of class matest.")
-  fold = F
+  fold = FALSE
   if(missing(test)){
     alltest =c("F1", "Fs", "Fss")
     test = alltest[alltest %in% names(matestobj)]
@@ -38,13 +38,13 @@ summarytable <-
   if(missing(method)){
     allmeth = c("Pvalperm", "adjPvalperm")
     smethod = allmeth[allmeth %in% names(matestobj[[test[1]]])]
-    fold = T
+    fold = TRUE
   }
   else{
     smethod = method[method %in% names(matestobj[[test[1]]])]
     nomethod= setdiff(setdiff(method, smethod), 'Fold.change') 
 
-    if( "Fold.change" %in% method) fold = T
+    if( "Fold.change" %in% method) fold = TRUE
     if(length(nomethod) > 0) 
       warning(paste(nomethod, ' is not available. ', sep="", collapse=""))
   }
@@ -58,7 +58,7 @@ summarytable <-
   else
     # this is a F test 
     result <- summarytable.ftest(data, matestobj, smethod, test, whichTest, threshold, fold)
-  write.csv(result, file=outfile, row.names = F)
+  write.csv(result, file=outfile, row.names = FALSE)
   result = result
 }
 
@@ -74,7 +74,7 @@ summarytable.ftest <- function(data, matestobj, method, test, whichTest,
     pvalname= pval$pvalname; pval = pval$pval; 
   }
   else{pvalname= NULL; pval = NULL}
-  if(fold == T){
+  if(fold == TRUE){
     Fold.change <- matrix(calVolcanoXval(matestobj), ncol=1)
     pval = cbind(Fold.change, pval)
     pvalname=c('Fold.change',pvalname)
@@ -121,7 +121,7 @@ summarytable.ttest <- function(data, matestobj,method, test, whichTest,
   nplots <- dim(Contrast)[1]
   id = data$cloneid
 
-  if(fold == T){
+  if(fold == TRUE){
     xvalue.all <- calVolcanoXval(matestobj)
     if(nplots==1) xvalue.all = matrix(xvalue.all, ncol=1)
   }
@@ -141,7 +141,7 @@ summarytable.ttest <- function(data, matestobj,method, test, whichTest,
       pval <- getPval.table(matestobj, method, test, icon)
       pvalname= pval$pvalname; pval = pval$pval;
     } 
-    if(fold == T){
+    if(fold == TRUE){
       pval <-cbind(xvalue.all[,icon], pval)
       pvalname=c("Fold.change", pvalname)
     }
