@@ -20,16 +20,11 @@
   James-Stein shrinkage estimates of the error variance, and Fss is based on
   mean and variance shrinkage method by Hwang. et al (2007).  
   
-  Permutation tests can run on MPI cluster. 
-  This feature is only available for Unix/Linux system. Several
-  other R packages (such like SNOW, Rmpi, etc.) are needed for using
-  cluster. You may need help from your system administrator to setup LAM-MPI
-  correctly. For detailed information on LAM-MPI cluster setup and the
-  cluster usage in R, read "MPI\_README" distributed with the package.
+  Permutation tests can run on MPI cluster. This is implemented at maanovaPR (available in www.jax.org/staff/churchill/labsite/software).
 }
 
 \usage{
-matest(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
+matest(data, anovaobj, term, Contrast, n.perm=1000, 
        critical=.9, test.type = c("ttest", "ftest"),
        shuffle.method=c("sample", "resid"),
        MME.method=c("REML","noest","ML"),
@@ -51,8 +46,6 @@ matest(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
   versus alternative. This contrast matrix is L. For testing a covariate,
     use a one by one contrast matrix of 1.}
   \item{n.perm}{An integer for number of permutations.}
-  \item{nnodes}{Number of nodes in the MPI cluster. If 1, the
-    permutation test will be running on the local computer.}
   \item{critical}{percentile of F-distribution used to get a subset to 
     calculate p-value. Default is 90th percentile of F-distribution, and 
     permutation analysis is conducted based on genes whose test statistics 

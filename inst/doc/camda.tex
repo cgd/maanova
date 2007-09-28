@@ -101,7 +101,8 @@ each test statistics. It implements residual shuffling and sample shuffling,
 and sample shuffling is the current default. Permutation test could be very
 time consuming, especially for the mixed effects models. The permutation
 test function can run on the Linux clusters through the message passing 
-interface (MPI). For the detail information regarding F test and 
+interface (MPI). You need R/maanovaPR (available at {\tt
+http://www.jax.org/staff/churchill/labsite/software}) package for this and for the detail information regarding F test and 
 using computer cluster, please read appendix. 
 
 Test Sample effect in the model:
@@ -170,7 +171,8 @@ is used to build consensus trees (groups for K-means) from the
 bootstrap results.
 \begin{Sinput}
 R> cluster.kmean <- macluster(fit.fix, ,term="Sample",
-         idx.gene=idx.fix$idx.all,what="gene", method="kmean", kmean.ngroups=5, n.perm=100)
+         idx.gene=idx.fix$idx.all,what="gene", method="kmean",
+         kmean.ngroups=5, n.perm=100)
 R> con.kmean <- consensus(cluster.kmean, 0.7)
 \end{Sinput}
 An expression profile plot will be generated for the consensus K-means

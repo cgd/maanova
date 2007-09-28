@@ -1,6 +1,6 @@
 Package: maanova
 Version: 1.7.1
-Date: 2007-09-20
+Date: 2007-09-28
 Title: Tools for analyzing Micro Array experiments
 Author: Hao Wu, modified by Hyuna Yang with ideas from Gary Churchill, Katie Kerr and Xiangqin Cui
 Maintainer: Hyuna Yang <hyuna.yang@jax.org>
@@ -8,6 +8,6 @@ Description: Analysis of N-dye Micro Array experiment using mixed model effect. 
 License: GPL version 2 or later
 URL: http://www.jax.org/staff/churchill/labsite/software/Rmaanova/
 Depends: R (>= 2.3.0)
-Suggests: snow, Rmpi, qvalue
+Suggests: qvalue
 biocViews: Microarray, DifferentialExpression, Clustering
 Packaged: Thu Sep 20 18:21:04 2007; hyang
