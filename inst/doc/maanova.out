@@ -12,7 +12,7 @@
 \BOOKMARK [1][-]{section.5}{A quick tour of the functions}{}
 \BOOKMARK [2][-]{subsection.5.1}{CAMDA kidney experiment}{section.5}
 \BOOKMARK [2][-]{subsection.5.2}{An Affymetrix experiment}{section.5}
-\BOOKMARK [1][-]{section.A}{Running R/maanova on computer cluster using R/maanovaPR package}{}
+\BOOKMARK [1][-]{section.A}{Running R/maanova on computer cluster}{}
 \BOOKMARK [2][-]{subsection.A.1}{System requirements}{section.A}
 \BOOKMARK [2][-]{subsection.A.2}{System setup}{section.A}
 \BOOKMARK [2][-]{subsection.A.3}{Install and test clusters in R}{section.A}

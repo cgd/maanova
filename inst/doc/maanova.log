@@ -1,4 +1,4 @@
-This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2005.9.12)  28 SEP 2007 15:23
+This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2005.9.12)  24 SEP 2007 19:26
 entering extended mode
  file:line:error style messages enabled.
 **\nonstopmode \input /home/hyang/maanova/inst/doc/maanova.tex
@@ -468,13 +468,13 @@ File: ts1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `TS1/aett/m/sl' in size <12> not available
 (Font)              Font shape `TS1/cmtt/m/sl' tried instead on input line 16.
 
-<gridcheck.png, id=229, 481.8pt x 481.8pt>
+<gridcheck.png, id=228, 481.8pt x 481.8pt>
 File: gridcheck.png Graphic file (type png)
  <use gridcheck.png>
-<riplot.png, id=230, 481.8pt x 481.8pt>
+<riplot.png, id=229, 481.8pt x 481.8pt>
 File: riplot.png Graphic file (type png)
  <use riplot.png>
-<arrayview.png, id=231, 481.8pt x 481.8pt>
+<arrayview.png, id=230, 481.8pt x 481.8pt>
 File: arrayview.png Graphic file (type png)
  <use arrayview.png>
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
@@ -492,7 +492,7 @@ Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
-[13 <./arrayview.png>] <rlowess.png, id=263, 481.8pt x 481.8pt>
+[13 <./arrayview.png>] <rlowess.png, id=262, 481.8pt x 481.8pt>
 File: rlowess.png Graphic file (type png)
 
 <use rlowess.png>
@@ -510,16 +510,16 @@ Overfull \hbox (12.32976pt too wide) in paragraph at lines 121--127
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
-[15] <volcano.png, id=277, 481.8pt x 481.8pt>
+[15] <volcano.png, id=276, 481.8pt x 481.8pt>
 File: volcano.png Graphic file (type png)
  <use volcano.png>
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
-[16 <./volcano.png>] <vgprofile.pdf, id=285, 433.62pt x 466.74374pt>
+[16 <./volcano.png>] <vgprofile.pdf, id=284, 433.62pt x 466.74374pt>
 File: vgprofile.pdf Graphic file (type pdf)
 
-<use vgprofile.pdf> <hckidney.pdf, id=286, 476.78125pt x 462.72874pt>
+<use vgprofile.pdf> <hckidney.pdf, id=285, 476.78125pt x 462.72874pt>
 File: hckidney.pdf Graphic file (type pdf)
 
 <use hckidney.pdf>) (./abf1.tex
@@ -535,7 +535,7 @@ Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
 [19 <./hckidney.pdf, page is rotated 90 degrees>]
-<abf1fig.pdf, id=328, 335.2525pt x 94.3525pt>
+<abf1fig.pdf, id=327, 335.2525pt x 94.3525pt>
 File: abf1fig.pdf Graphic file (type pdf)
  <use abf1fig.pdf>
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
@@ -574,15 +574,15 @@ Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
 [25]
-Underfull \hbox (badness 10000) in paragraph at lines 84--85
+Underfull \hbox (badness 10000) in paragraph at lines 82--83
 
  []
 
-
+) (./algorithm.tex
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
-[26]) (./algorithm.tex
+[26]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
@@ -591,10 +591,6 @@ Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
 [28]
-Overfull \vbox (21.68121pt too high) has occurred while \output is active []
-
-
-[29]
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
 (hyperref)                removing `math shift' on input line 144.
@@ -607,30 +603,30 @@ Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
-[30]) (./faq.tex
+[29]) (./faq.tex
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
-[31]
+[30]
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
-[32])
+[31])
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
-[33] (./maanova.aux) ) 
+[32] (./maanova.aux) ) 
 Here is how much of TeX's memory you used:
- 5733 strings out of 94499
- 72902 string characters out of 1172810
+ 5732 strings out of 94499
+ 72895 string characters out of 1172810
  138460 words of memory out of 3500000
  8598 multiletter control sequences out of 10000+50000
  32927 words of font info for 76 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
  35i,9n,40p,323b,317s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 475 PDF objects out of 300000
- 157 named destinations out of 131072
+ 470 PDF objects out of 300000
+ 156 named destinations out of 131072
  281 words of extra memory for PDF output out of 65536
 </usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr
 /share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/blue
@@ -642,4 +638,4 @@ pen/tc/tcrm1200.600pk></usr/share/texmf/fonts/type1/bluesky/cm/cmti12.pfb></usr
 /share/texmf/fonts/type1/bluesky/cm/cmmi12.pfb></usr/share/texmf/fonts/type1/bl
 uesky/cm/cmbx12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/sh
 are/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on maanova.pdf (33 pages, 341803 bytes).
+Output written on maanova.pdf (32 pages, 340424 bytes).

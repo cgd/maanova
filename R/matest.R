@@ -1,7 +1,7 @@
 #####################################################################
 #
 # matest.R
-# copyright (c) 2001-2004, Hao Wu and Gary A. Churchill, 
+# copyright (c) 2001-2004, Hao Wu, Hyuna Yang and Gary A. Churchill, 
 # The Jackson Lab.
 # Written Apr, 2004
 # Modified Apr, 2006
@@ -14,7 +14,7 @@
 #
 ######################################################################
 
-matest <- function(data, anovaobj, term, Contrast, n.perm=1000,
+matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
                    critical=.9, test.type=c("ttest","ftest"),
                    shuffle.method=c("sample", "resid"),
                    MME.method=c("REML","noest","ML"),
@@ -44,6 +44,16 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000,
   nreps <- data$n.rep
   ngenes <- data$n.gene
   narrays <- data$n.array
+
+  ########## initialize cluster ############
+  if( (n.perm>1) & (nnodes>1) ) {
+    if(!require(snow))
+      stop("You have to install SNOW package to use cluster")
+    # make cluster object
+    cl <- makeMPIcluster(nnodes)
+    # correct the possible correlation problem
+    clusterApply(cl, runif(length(cl), max=1000000000), set.seed)
+  }
 
   ################################################################
   # if any tested term is random, issue a warning and rebuild model
@@ -215,6 +225,68 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000,
     sdata$cloneid = sdata$cloneid[hsidx==1]
     sdata$colmeans = apply(sdata$data, 2, mean)
   }
+  # permutation - use MPI cluster if specified
+  if(nnodes > 1) { # use MPI cluster
+    # use cluster call to do permutation
+    # calculate the number of permutation needed in each node
+    nperm.cluster <- rep(floor((n.perm-1)/nnodes), nnodes)
+    # maybe some leftovers
+    leftover <- n.perm - 1 - sum(nperm.cluster)
+    if(leftover > 0)
+      nperm.cluster[1:leftover] <- nperm.cluster[1:leftover] + 1
+    
+    # load library on all nodes
+    clusterEvalQ(cl, library(maanova))
+    # use clusterApply to run permutation on all nodes
+    # note that the only different parameter passed to function
+    # is ftest.mixed.perm. So in ftest.mixed.perm I put nperm 
+    # as the first argument so I can use clusterApply
+    cat(paste("Doing permutation on", nnodes, "cluster nodes ... \n"))
+   
+    if(test.method[3]==1 & critical <1){ # trim & Fss 
+      ttest.method = test.method; ttest.method[3]=0
+      pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm, ftest,sdata,
+        model, term,Contrast,mv, is.ftest, partC, MME.method,ttest.method,
+        shuffle.method, pval.pool, ngenes,mean_est, tau_est, subCol)
+
+      ttest.method = test.method; ttest.method[c(1,2)]=0 
+      # no trim using full data get Fss
+      pstar.nodes.fss <- clusterApply(cl, nperm.cluster, matest.perm, 
+       ftest,data, model, term,Contrast, mv, is.ftest, partC, 
+       MME.method, ttest.method, shuffle.method, pval.pool, ngenes,
+                        mean_est, tau_est, subCol=FALSE)
+      pstar.nodes$Fss$Pperm = pstar.nodes.fss$Fss$Pperm
+      pstar.nodes$Fss$Pmax = pstar.nodes.fss$Fss$Pmax
+    }
+    else{ # no trim or no Fss
+      pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm,ftest,sdata,
+        model, term,Contrast, mv, is.ftest, partC, 
+    	MME.method, ttest.method, shuffle.method, pval.pool, ngenes,
+                        mean_est, tau_est, subCol)
+    }
+    # how to display permutation number?
+    # after it's done, gather the results from nodes
+    ffields <- c("F1","Fs", "Fss")
+    for(i in 1:nnodes) {
+      if(nperm.cluster[i] > 0) {
+        pstar <- pstar.nodes[[i]]
+        for(itest in 1:3) {
+          if(test.method[itest] == 1){
+            ftest[[ffields[itest]]]$Pvalperm <-
+              ftest[[ffields[itest]]]$Pvalperm + pstar[[ffields[itest]]]$Pperm
+            ftest[[ffields[itest]]]$Pvalmax <-
+              ftest[[ffields[itest]]]$Pvalmax + pstar[[ffields[itest]]]$Pmax
+          }
+        }
+      }
+    }
+    # clear cluster results to save some memory
+    rm(pstar.nodes);
+
+    # stop the cluster
+    stopCluster(cl)
+  }
+  else { # no cluster, do it on single node
     # original pooling
     ## using subset of data,
     ## It can not handle a situation that one array is toally missing.
@@ -247,7 +319,7 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000,
           ftest[[ffields[itest]]]$Pvalmax + pstar[[ffields[itest]]]$Pmax
       }
     }
-
+  }    
   #finish permutation loop
   
   # calculate the pvalues. Note that the current object contains the "counts"

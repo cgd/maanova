@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % for using of MPI cluster
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Running R/maanova on computer cluster using R/maanovaPR package}
+\section{Running R/maanova on computer cluster}
 
 %\begin{center}
 %{\large\bf Appendix A: Running R/maanova on computer clusters}
@@ -10,12 +10,11 @@
 Due to the intensive computation needed by the permutation test
 (especially for mixed effects models), parallel computing is
 implemented in R/maanova. The permutation tests can run on
-multiple computer nodes at the same time and the total
+multiple computer nodes at the same time and the toal
 computational time will be greatly reduced.  
 
 Here I provide some tips for system and software configurations for
-running R/maanovaPR on clusters. The package is available at {\tt
-http://www.jax.org/staff/churchill/labsite/software}. My system is a 32-node beowulf
+running R/maanova on clusters. My system is a 32-node beowulf
 cluster running Redhat linux 8.0 and R 1.8.0. 
 You might encounter problems on different system
 following the steps. 
@@ -23,14 +22,12 @@ following the steps.
 \subsection{System requirements}
 The computer cluster need to be Unix/Linux cluster with LAM/MPI
 installed. LAM/MPI can be download from {\tt http://www.lam-mpi.org}. 
-R and {\tt R/maanovaPR} need to be installed on all nodes (or they
+R and {\tt R/maanova} need to be installed on all nodes (or they
 can be exported from a network file system). 
 
 The following R packages are required (you can obtain them
 from {\tt http://cran.r-project.org}:
 \begin{itemize}
-\item R/maanovaPR. This and R/maanova are the identical package, but this
-  one can be used for the computer cluster.   
 \item SNOW (Simple Network Of Workstations). Obtain this one from\\
 {\tt http://www.stat.uiowa.edu/\~{}luke/R/cluster/cluster.html}.
 \item Rmpi
