@@ -9,6 +9,5 @@ License: GPL version 2 or later
 URL: http://www.jax.org/staff/churchill/labsite/software/Rmaanova/
 Depends: R (>= 2.5.0)
 Suggests: qvalue
-Enhances: snow, Rmpi
 biocViews: Microarray, DifferentialExpression, Clustering
 Packaged: Thu Sep 20 18:21:04 2007; hyang
