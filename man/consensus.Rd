@@ -42,7 +42,9 @@ idx <- volcano(test.fix)$idx.Fs
 gene.cluster <- macluster(fit.fix, term="Strain", idx, what="gene", 
    method="kmean", kmean.ngroups=5, n.perm=100)
 # get the consensus group
-consensus(gene.cluster, 0.5)
+genegroup = consensus(gene.cluster, 0.5)
+# get the gene names belonging to each group
+genegroupname = genegroup$groupname
 
 # HC cluster on samples
 sample.cluster <- macluster(fit.fix, term="Strain", idx, what="sample",method="hc")

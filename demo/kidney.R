@@ -66,7 +66,8 @@ cluster.kmean <- macluster(anova.fix,term="Sample",
 	idx.gene=idx.fix$idx.all,what="gene", method="kmean", kmean.ngroups=5,
 	n.perm=100)
 con.kmean <- consensus(cluster.kmean, 0.7)
-
+# to see which genes belongs to which group
+con.kmean$groupname
 # HC the samples
 cluster.hc <- macluster(anova.fix,term="Sample", 
          idx.gene=idx.fix$idx.all,what="sample", method="hc",

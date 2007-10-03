@@ -18,6 +18,7 @@ macluster <-
   subCol = anovaobj$anova$subCol
   if(subCol) anovaobj = anovaobj$anova.subcol
   else anovaobj = anovaobj$anova
+  probeid = anovaobj$probeid
 
   what <- match.arg(what)
   method <- match.arg(method)
@@ -30,9 +31,10 @@ macluster <-
     stop(paste(term, "is not in input anova result"))
 
   # use all genes to do clustering by default
-  if(missing(idx.gene))
+  if(missing(idx.gene)){
     idx.gene <- 1:length(anovaobj$G)
-  
+    names(idx.gene) = probeid
+  }
   # get the data to be clustered
   if(what=="gene")
     data.cluster <- anovaobj[[term]][idx.gene,]
@@ -55,10 +57,10 @@ macluster <-
   # leave names is for HC and condition name is for kmeans
   if(what=="sample") { # cluster sample
     result$leave.names <- anovaobj[[paste(term,"level",sep=".")]]
-    result$condition.names <- paste("gene", idx.gene)
+    result$condition.names <- names(idx.gene) #paste("gene", idx.gene)
   }
   else { #cluster genes
-    result$leave.names <- paste("gene", idx.gene)
+    result$leave.names <- names(idx.gene) #paste("gene", idx.gene)
     result$condition.names <- anovaobj[[paste(term,"level",sep=".")]]
   }
   
@@ -114,12 +116,9 @@ macluster <-
                       iter.max=50)
         result$cluster.perm[[i]] <- tmp$cluster
       }
-
     }
+  }
     #### finish permutation ################
-
-  } ## for(i in 1:n.perm) {
-
   class(result) <- "macluster"
   invisible(result)
 }

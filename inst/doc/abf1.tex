@@ -99,13 +99,23 @@ To derive FDR adjust p-value :
 \begin{Sinput}
 R> ftest.all = adjPval(ftest.all, method = 'jsFDR')
 \end{Sinput}
-{\bf Summarize the result} To get volcano plot and summary table :  
+{\bf Summarize the result} To get summary table, volcano plot and cluster :  
 \begin{Sinput}
-R> volcano(ftest.all)
-R> volcano(ftest.pair)
-R> summarytable(abf1, ftest.all)
-R> summarytable(abf1, ftest.all, method=c("Pvalperm"), test =c("Fs"), 
+R> summarytable(ftest.all)
+R> summarytable(ftest.all, method=c("Pvalperm"), test =c("Fs"), 
    whichTest=c("Fs.Pvalperm"), threshold=.1, outfile='shrotsummarytable.csv')
+
+R> volcano(ftest.all)
+R> idx.fix = volcano(ftest.pair)
+
+R> cluster.kmean <- macluster(fit.full.mix, term="Strain",
+   idx.gene=idx.fix$comparison1$idx.Fs,what="gene", method="kmean", 
+   kmean.ngroups=5, n.perm=100)
+R> con.kmean <- consensus(cluster.kmean, 0.7)
+R> con.kmean$groupname
+R> cluster.hc <- macluster(fit.full.mix, term="Strain",
+   idx.gene=idx.fix$comparison1$idx.Fs,what="sample", method="hc", n.perm=100)
+R> con.hc <- consensus(cluster.hc)
 \end{Sinput}
 Note that \Rfunction{ftest.pair} contains two comparisons, thus
 \Rfunction{volcano(ftest.pair)} generates two plots. 

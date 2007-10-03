@@ -33,6 +33,12 @@ XQ~Cui, G.~Hwang, J.~Qiu, N.~Blades, and G.A. Churchill.
 \newblock {Improved Statistical Tests for Differential Gene Expression by
   Shrinking Variance Components}.
 \newblock \emph{Biostatistics}, 6:\penalty0 59--75, 2005.
+\bibitem[Hwang et~al.(2007)Hwang, J.T.G. and Liu, P.]{hwang:2007}
+G. Hwang and P. Liu.
+\newblock{Optimal tests shrinking both means and
+  variances applicable to microarray data analysis}
+\newblock \emph{Technical paper in
+  statistics department in Iowa state university}, 2007
 
 \bibitem[Felsenstein(1985)]{felsenstein:1985}
 J.~Felsenstein.

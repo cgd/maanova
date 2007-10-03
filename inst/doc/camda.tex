@@ -25,6 +25,7 @@ R> data(kidney)
 \item Then we do some data quality check
 \begin{Sinput}
 R> gridcheck(kidney.raw)
+R> graphics.off()
 \end{Sinput}
 \Rfunction{gridcheck} is used to check the hybridization 
 and gridding quality within and
@@ -125,8 +126,8 @@ test statistics is saved at \Rfunction{test.fix\$Fs\$adjPvalperm}. \Rfunction{su
 fold-change, p-value and adjusted p-value (if it is available) and the result
 is saved in 'summarytable.csv' (default file name) under the working directory. User also can save subset of result using certain threshold.  
 \begin{Sinput}
-R> result = summarytable(kidney, test.fix)
-R> summarytable(kidney, test.fix, method=c("Pvalperm"), test=c("F1", "Fs"),
+R> result = summarytable(test.fix)
+R> summarytable(test.fix, method=c("Pvalperm"), test=c("F1", "Fs"),
 whichTest=c("Fs.Pvalperm"), threshold=.1, outfile='shrotsummarytable.csv')
 \end{Sinput}
 
@@ -170,11 +171,14 @@ is used to build consensus trees (groups for K-means) from the
 bootstrap results.
 \begin{Sinput}
 R> cluster.kmean <- macluster(fit.fix, ,term="Sample",
-         idx.gene=idx.fix$idx.all,what="gene", method="kmean", kmean.ngroups=5, n.perm=100)
+      idx.gene=idx.fix$idx.all,what="gene", method="kmean",
+      kmean.ngroups=5, n.perm=100)
 R> con.kmean <- consensus(cluster.kmean, 0.7)
+R> con.kmean$groupname
 \end{Sinput}
 An expression profile plot will be generated for the consensus K-means
-result. The plot is shown in Figure \ref{fig:vgprofile}.
+result. The plot is shown in Figure \ref{fig:vgprofile}, and groupname shows
+the name of genes belonging to each group.
 
 \begin{figure}
 \centering
@@ -187,7 +191,8 @@ Now we can do hierarchical cluster on the samples. The consensus tree
 is shown in Figure \ref{fig:hckidney}.
 \begin{Sinput}
 R> cluster.hc <- macluster(fit.fix, term="Sample",
-     idx.gene=idx.fix$idx.all,what="sample", method="hc", n.perm=100)
+     idx.gene=idx.fix$idx.all,what="sample", 
+     method="hc", n.perm=100)
 R> con.hc <- consensus(cluster.hc)
 \end{Sinput}
 

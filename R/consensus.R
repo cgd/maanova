@@ -416,6 +416,7 @@ consensus.kmean <- function(macluster, level, draw)
   n.leaves <- length(macluster$cluster.obs)
   n.grp <- macluster$kmean.ngroups
   idx.gene <- macluster$idx.gene
+  idxname = macluster$leave.names 
   groups <- matrix(rep(0, n.perm*n.leaves), n.perm, n.leaves)
   
   # fill groups
@@ -450,10 +451,14 @@ consensus.kmean <- function(macluster, level, draw)
     else
       result[[n.grp+1]] <- c(result[[n.grp+1]], i)
   }
+  resultname <- list(NULL)
+  for(i in 1:(n.grp+1))
+    resultname[[i]] <- idxname[result[[i]]]
   
   # return variable
   output <- NULL
   output$group <- result
+  output$groupname <- resultname
   output$what <- what
   output$data.draw <- macluster$VG
   output$condition.names <- macluster$condition.names

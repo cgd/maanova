@@ -45,6 +45,7 @@ volcano.ftest <- function(matestobj, threshold, method, title,
   subCol <- matestobj$obsAnova$anova$subCol
   if(subCol) anovaobj = matestobj$obsAnova$anova.subcol
   else anovaobj = matestobj$obsAnova$anova
+  probeid = matestobj$probeid
 
   if(length(method) == 1) method <- rep(method, 3)
   
@@ -57,13 +58,13 @@ volcano.ftest <- function(matestobj, threshold, method, title,
   # get P values for all F tests according to method
   # for F1
   p1 <- getPval.volcano(matestobj, method, 1)
-  idx1 <- p1 < th.f1
+  idx1 <- p1 < th.f1 ; 
   # for Fs
   ps <- getPval.volcano(matestobj, method, 2)
-  idxs <- ps < th.fs
+  idxs <- ps < th.fs ; 
   # for Fss
   pss <- getPval.volcano(matestobj, method, 3)
-  idxss <- pss < th.fss
+  idxss <- pss < th.fss; ; 
   
   # calculate the x axis value
   # the x-axis value should be the numerator of the test, e.g.
@@ -98,17 +99,21 @@ volcano.ftest <- function(matestobj, threshold, method, title,
 
   # find the significant genes from all three F tests
   result <- NULL
-  result$idx.F1 <- which(idx1)
-  idx <- result$idx.F1
+  idx.F1 <- which(idx1); idx <- idx.F1
+  names(idx.F1) = probeid[idx.F1]
+  result$idx.F1 =idx.F1
+
   if("Fs" %in% names(matestobj)) {
-    result$idx.Fs <- which(idxs)
-    idx <- intersect(idx, result$idx.Fs)
+    idx.Fs <- which(idxs); idx <- intersect(idx, idx.Fs)
+    names(idx.Fs) = probeid[idx.Fs]
+    result$idx.Fs <- idx.Fs 
   }
   if("Fss" %in% names(matestobj)) {
-    result$idx.Fss <- which(idxss)
-    idx <- intersect(idx, result$idx.Fss)
+    idx.Fss <- which(idxss); idx <- intersect(idx, idx.Fss)
+    names(idx.Fss) = probeid[idx.Fss]
+    result$idx.Fss <- idx.Fss 
   }
-  result$idx.all <- idx
+  idx.all = idx; names(idx.all) = probeid[idx.all]; result$idx.all <- idx.all
   result
 }
 
@@ -124,6 +129,7 @@ volcano.ttest <- function(matestobj, threshold, method, title,
   subCol <- matestobj$obsAnova$anova$subCol
   if(subCol) anovaobj = matestobj$obsAnova$anova.subcol
   else anovaobj = matestobj$obsAnova$anova
+  probeid = matestobj$probeid
   
   if(length(method) == 1)
     method <- rep(method, 3)
@@ -233,19 +239,24 @@ volcano.ttest <- function(matestobj, threshold, method, title,
     }
   
     # find the significant genes from all three F tests
+
     result.tmp <- NULL
-    result.tmp$idx.F1 <- which(idx1)
-    idx <- result.tmp$idx.F1
+    idx.F1 <- which(idx1); idx <- idx.F1
+    names(idx.F1) = probeid[idx.F1]
+    result.tmp$idx.F1 <- idx.F1
+
     if("Fss" %in% names(matestobj)) {
-      result.tmp$idx.Fss <- which(idxss)
-      idx <- intersect(idx, result.tmp$idx.Fss)
+      idx.Fss <- which(idxss); idx <- intersect(idx, idx.Fss)
+      names(idx.Fss) = probeid[idx.Fss]
+      result.tmp$idx.Fss <- idx.Fss 
     }
     if("Fs" %in% names(matestobj)) {
-      result.tmp$idx.Fs <- which(idxs)
-      idx <- intersect(idx, result.tmp$idx.Fs)
+      idx.Fs <- which(idxs); idx <- intersect(idx, idx.Fs)
+      names(idx.Fs) = probeid[idx.Fs]
+      result.tmp$idx.Fs <- idx.Fs 
     }
-    
-    result.tmp$idx.all <- idx
+    idx.all <- idx
+    names(idx.all) = probeid[idx.all]; result.tmp$idx.all <- idx.all
     result.name <- paste("comparison", icon, sep="")
     result[[result.name]] <- result.tmp
   }

@@ -8,16 +8,14 @@
 ######################################################################
 
 summarytable <-
-  function(data, matestobj, method=c("Fold.change","Pvalperm","adjPvalperm"), 
+  function(matestobj, method=c("Fold.change","Pvalperm","adjPvalperm"), 
          test =c("F1","Fs","Fss"),whichTest=c("F1.Pvalperm","F1.adjPvalperm", 
            "Fs.Pvalperm","Fs.adjPvalperm", "Fss.Pvalperm","Fss.adjPvalperm"), 
             threshold, outfile="summarytable.csv")
 {
  
-  if(class(data)[1] != "madata")
-    stop("The first input variable is not an object of class madata.")
   if(class(matestobj)[1] != "matest")
-    stop("The second input variable is not an object of class matest.")
+    stop("The First input variable is not an object of class matest.")
   fold = FALSE
   if(missing(test)){
     alltest =c("F1", "Fs", "Fss")
@@ -54,11 +52,11 @@ summarytable <-
 
   if(class(matestobj)[2] == "ttest")
     # this is a T-test result
-    result <- summarytable.ttest(data, matestobj, smethod, test, whichTest, threshold, fold)
+    result <- summarytable.ttest(matestobj, smethod, test, whichTest, threshold, fold)
   else
     # this is a F test 
-    result <- summarytable.ftest(data, matestobj, smethod, test, whichTest, threshold, fold)
-  write.csv(result, file=outfile, row.names = FALSE)
+    result <- summarytable.ftest(matestobj, smethod, test, whichTest, threshold, fold)
+  write.csv(result, file=outfile)
   result = result
 }
 
@@ -66,7 +64,7 @@ summarytable <-
 ######################################################################
 # function to summarize f-test
 ######################################################################
-summarytable.ftest <- function(data, matestobj, method, test, whichTest,
+summarytable.ftest <- function(matestobj, method, test, whichTest,
   threshold, fold){
   xvalue = NULL
   if(length(method)>0){
@@ -80,7 +78,7 @@ summarytable.ftest <- function(data, matestobj, method, test, whichTest,
     pvalname=c('Fold.change',pvalname)
   }
   nc=ncol(pval)
-  id = data$probeid
+  id = matestobj$probeid
   if(length(whichTest)>0){
     if(missing(threshold)){
       warning('No threshold infomation. Save all'); threshold = 1
@@ -108,7 +106,7 @@ summarytable.ftest <- function(data, matestobj, method, test, whichTest,
 ######################################################################
 # function for T-test 
 ######################################################################
-summarytable.ttest <- function(data, matestobj,method, test, whichTest, 
+summarytable.ttest <- function(matestobj,method, test, whichTest, 
   threshold, fold) 
 {
   subCol = matestobj$obsAnova$anova$subCol
@@ -119,7 +117,7 @@ summarytable.ttest <- function(data, matestobj,method, test, whichTest,
   Contrast <- matestobj$Contrast
   # number of plots to be generated
   nplots <- dim(Contrast)[1]
-  id = data$cloneid
+  id = matestobj$probeid
 
   if(fold == TRUE){
     xvalue.all <- calVolcanoXval(matestobj)

@@ -33,6 +33,8 @@ fitmaanova <-
   ngenes <- madata$n.gene
   nspots <- madata$n.spot 
   nreps <- madata$n.rep 
+  probeid = madata$probeid
+
   # take colmeans from madata
   colmeans <-  madata$colmeans
   covm = madata$covm
@@ -57,10 +59,12 @@ fitmaanova <-
   
   # create the output object
   anova <- NULL ; 
+  anova$probeid = probeid 
   anova$yhat <- matrix(0, ngenes*nreps, ndyes*narrays)
   anova$S2 <- matrix(0, ngenes, length(dimZ)+1)
 
   anova.subcol = NULL
+  anova.subcol$probeid = probeid 
   anova.subcol$yhat <- matrix(0, ngenes*nreps, ndyes*narrays)
   anova.subcol$S2 <- matrix(0, ngenes, length(dimZ)+1)
   

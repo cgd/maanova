@@ -159,7 +159,7 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
   ftest$Contrast <- Contrast
   ftest$mean_est = ftest.obs$mean_est
   ftest$tau_est = ftest.obs$tau_est
-  
+  ftest$probeid = data$probeid
   if(!is.ftest)
     class(ftest) <- c("matest", "ttest")
   else

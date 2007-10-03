@@ -53,7 +53,7 @@ ftest.mix <- matest(abf1, fit.full.mix, term="Strain", n.perm=500)
 ftest.all = adjPval(ftest.mix, 'jsFDR')
 
 #summary table 
-summarytable(abf1, ftest.all, outfile='all.csv')
+summarytable(ftest.all, outfile='all.csv')
 
 # volcano plot
 x11();idx.mix <- volcano(ftest.all,
