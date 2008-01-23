@@ -17,8 +17,7 @@
   
   There are three types of tests available. All three tests are based on the
   gene-specific ANOVA model.  F1 is the usual F statistic, Fs is based on the
-  James-Stein shrinkage estimates of the error variance, and Fss is based on
-  mean and variance shrinkage method by Hwang. et al (2007).  
+  James-Stein shrinkage estimates of the error variance.
   
   Permutation tests can run on MPI cluster. 
   This feature is only available for Unix/Linux system. Several
@@ -33,7 +32,7 @@ matest(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
        critical=.9, test.type = c("ttest", "ftest"),
        shuffle.method=c("sample", "resid"),
        MME.method=c("REML","noest","ML"),
-       test.method=c(1,1,0),pval.pool=TRUE, verbose=TRUE)
+       test.method=c(1,1),pval.pool=TRUE, verbose=TRUE)
 }
 
 \arguments{
@@ -73,10 +72,8 @@ matest(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
     "REML". The variance components for observed data will be used
     for permuted data. It will greatly increase the speed but you may
     lose power in statistical test in some cases.}
-  \item{test.method}{An integer vector of three elements to indicate
-    which F test to carry. Default is c(1,1,0), which means do F1 and Fs test,
-  but not Fss test. Fss test is not implemented in mixed model yet. Fss
-  statistics may yields uneven p-value histogram near tail, thus user needs to be careful to calculate q-value from p-value from Fss statistics.}
+  \item{test.method}{An integer vector of two elements to indicate
+    which F test to carry. Default is c(1,1), which means do F1 and Fs test.}
   \item{pval.pool}{A logical value to indicate whether to use pooled
     permutation F values to calculate the P values.}
   \item{verbose}{A logical value to indicate whether to display some
@@ -112,7 +109,7 @@ matest(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
   \item{n.perm}{Number of permutations.}
   \item{shuffle}{Shuffle style}
   \item{pval.pool}{Use pooled P value or not.}
-  \item{F1, Fs, Fss}{Objects of four different F tests results. All or
+  \item{F1, Fs}{Objects of four different F tests results. All or
     any of them could be there according to the requested F test
     method. Each of them contains the following fields:
     \itemize{
@@ -135,7 +132,7 @@ data(abf1)
 \dontrun{
 fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
    random = ~Sample)
-ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1,0),
+ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1),
     shuffle.method="sample", term="Strain", n.perm= 100)
 C = matrix(c(1,-1,0,1,0,-1), ncol=3, byrow=T)
 ftest.pair = matest(abf1, fit.full.mix, Contrast = C, 
@@ -150,10 +147,6 @@ ftest.pair = matest(abf1, fit.full.mix, Contrast = C,
   Cui, X., Hwang, J.T.G., Blades N., Qiu J. and Churchill GA (2003),
   Improved statistical tests for differential gene expression by
   shrinking variance components, to be submitted.
-
-  Hwang, J.T.G. and Liu, P. (2007), Optimal tests shrinking both means and
-  variances applicable to microarray data analysis, technical paper in
-  statistics department in Iowa state university.
 }
 
 \seealso{

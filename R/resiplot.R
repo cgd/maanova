@@ -14,10 +14,7 @@
 resiplot <- function(madata, anovaobj, header, xlab, ylab)
   
 {
-  subCol = anovaobj$anova$subCol
-  if(subCol) anovaobj = anovaobj$anova.subcol
-  else anovaobj = anovaobj$anova
-
+ 
   # check input variables
   if(class(madata) != "madata")
     stop("This first input variable is not an object of class madata.")

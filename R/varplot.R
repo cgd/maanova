@@ -13,10 +13,7 @@
 
 varplot <- function(anovaobj, xlab, ylab, main){
 
-  subCol <- anovaobj$anova$subCol
-  if(subCol) anovaobj = anovaobj$anova.subcol
-  else anovaobj = anovaobj$anova
-
+ 
   if (class(anovaobj) != "maanova")
     stop("The first input variable is not an object of class maanova.")
 

@@ -22,16 +22,14 @@
   A horizontal line represents the significance threshold of
   the F1 test. The red dots are the genes selected by the Fs
   test (if there's Fs test result). 
-  The orange dots are the genes selected by the Fss
-  test (if there's Fss test result).
   If there is flag information in the data and the user wants to highlight the
   flagged genes, the genes with any bad spots will be circled by a black
   circle.  
 }
   
 \usage{
-volcano(matestobj, threshold=c(0.001,0.05,0.05),
-        method=c("unadj","unadj","unadj"), title="Volcano Plot",
+volcano(matestobj, threshold=c(0.001,0.05),
+        method=c("unadj","unadj"), title="Volcano Plot",
         highlight.flag=TRUE, onScreen=TRUE)
 }
 
@@ -52,8 +50,8 @@ volcano(matestobj, threshold=c(0.001,0.05,0.05),
       \item{"fdr"}{FDR adjusted tabulated P values.}
       \item{"fdrperm"}{FDR adjusted nominal permutation P values.}
     }
-    Default value is c("unadj", "unadj", "unadj") which means to use
-    tabulated P values for all three tests.
+    Default value is c("unadj", "unadj") which means to use
+    tabulated P values for all tests.
 
     Note that you need to put three values here even if you don't have
     all three F tests in matestobj.}
@@ -71,7 +69,6 @@ volcano(matestobj, threshold=c(0.001,0.05,0.05),
   following four fields: 
   \item{idx.F1}{The significant genes selected by F1 test.}
   \item{idx.Fs}{The significant genes selected by Fs test.}
-  \item{idx.Fss}{The significant genes selected by Fss test.}
   \item{idx.all}{The significant genes selected by all four F tests.}
 
   For T-test volcano plot, it returns an array of the above object. Each
@@ -83,7 +80,7 @@ volcano(matestobj, threshold=c(0.001,0.05,0.05),
 data(abf1)
 fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
     random = ~Sample)
-ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1,0),
+ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1),
     shuffle.method="sample", term="Strain", n.perm= 100)
 volcano(ftest.all)
 }}

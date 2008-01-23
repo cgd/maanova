@@ -174,9 +174,11 @@ Sample <- rep(c(1:9), each=2)
 designfile <- cbind(design.table, Strain, Sample)
 abf1 <- read.madata(datafile, designfile=designfile)
 
-# read in a TAB delimited file with spot flag
- kidney <- read.madata(datafile="kidney.txt",designfile="kidneydesign.txt",
-   metarow=1, metacol=2, col=3, row=4, probeid=5, intensity=7,spotflag=TRUE)
+# read in a TAB delimited file with spot flag - for two color array
+# HAVE TO SPECIFY that the data is from two color array
+ kidney.raw <- read.madata("kidney.txt", designfile="kidneydesign.txt", 
+	metarow=1, metacol=2, col=3, row=4, probeid=6,
+	intensity=7, arrayType='twoColor',log.trans=T, spotflag=T)
 }}
 
 \keyword{IO}

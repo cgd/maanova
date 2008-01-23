@@ -81,7 +81,7 @@ R> resiplot(abf1, fit.full.mix)
 \end{Sinput}
 {\bf Test statistics} To test Strain effect in the model:
 \begin{Sinput}
-R> ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1,0),
+R> ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1),
     shuffle.method="sample", term="Strain", n.perm= 100)
 \end{Sinput}
 If you are interested in the pairwise comparison, you can specify the contrast

@@ -106,10 +106,10 @@ makeShuffleGroup(sample.mtx, ndye, narray)
 makeZiZi(Z, dimZ)
 makelevel(model, term)
 matest.engine(anovaobj, term, mv, test.method, Contrast,
-              is.ftest, partC, verbose=FALSE, mean_est, tau_est)
+              is.ftest, partC, verbose=FALSE)
 matest.perm(n.perm, FobsObj, data, model, term, Contrast, 
             mv, is.ftest, partC, MME.method, test.method,
-            shuffle.method, pool.pval, ngenes, mean_est, tau_est, subCol)
+            shuffle.method, pool.pval, ngenes)
 meanvarlog(df)
 \method{plot}{consensus.hc}(x, title, \dots)
 \method{plot}{consensus.kmean}(x, \dots)

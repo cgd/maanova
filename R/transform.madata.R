@@ -44,8 +44,11 @@ transform.madata <-
   # set the data to be transformed
   # if it's madata, the data field should be log2 based,
   # restore back to raw scale
-  if(class(object)=="madata")
-    object$data <- 2^(object$data)
+  if( class(object)=="madata" ) 
+    if(object$TransformMethod !="log2") 
+      warning(" I assume data is log2 transformed. Otherwise, read madata using
+      read.madata(... log.transform=T). \n")   
+  object$data <- 2^(object$data)
 
   # transformation method
   method <- match.arg(method)

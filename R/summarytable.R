@@ -9,8 +9,8 @@
 
 summarytable <-
   function(matestobj, method=c("Fold.change","Pvalperm","adjPvalperm"), 
-         test =c("F1","Fs","Fss"),whichTest=c("F1.Pvalperm","F1.adjPvalperm", 
-           "Fs.Pvalperm","Fs.adjPvalperm", "Fss.Pvalperm","Fss.adjPvalperm"), 
+         test =c("F1","Fs"),whichTest=c("F1.Pvalperm","F1.adjPvalperm", 
+           "Fs.Pvalperm","Fs.adjPvalperm"), 
             threshold, outfile="summarytable.csv")
 {
  
@@ -18,11 +18,11 @@ summarytable <-
     stop("The First input variable is not an object of class matest.")
   fold = FALSE
   if(missing(test)){
-    alltest =c("F1", "Fs", "Fss")
+    alltest =c("F1", "Fs")
     test = alltest[alltest %in% names(matestobj)]
   }
   else{
-    alltest = c("F1", "Fs", "Fss")
+    alltest = c("F1", "Fs")
     stest = test[test %in% names(matestobj)]
     notest =setdiff(test, stest) 
     if(length(notest) > 0) 
@@ -109,9 +109,7 @@ summarytable.ftest <- function(matestobj, method, test, whichTest,
 summarytable.ttest <- function(matestobj,method, test, whichTest, 
   threshold, fold) 
 {
-  subCol = matestobj$obsAnova$anova$subCol
-  if(subCol) anovaobj <- matestobj$obsAnova$anova.subcol
-  else anovaobj <- matestobj$obsAnova$anova
+  anovaobj <- matestobj$obsAnova
 
   diff.terms <- matestobj$term
   Contrast <- matestobj$Contrast

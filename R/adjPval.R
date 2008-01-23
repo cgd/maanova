@@ -34,11 +34,11 @@ adjPval <- function(matestobj, method=c("stepup","adaptive", "stepdown",
   }
   
   # for Fss
-  if( !(is.null(matestobj$Fss)) ) {
-    matestobj$Fss$adjPtab <- apply(matestobj$Fss$Ptab, 2, fdr.method)
-    if( !(is.null(matestobj$Fss$Pvalperm)) )
-      matestobj$Fss$adjPvalperm <- apply(matestobj$Fss$Pvalperm, 2, fdr.method)
-  }
+  #if( !(is.null(matestobj$Fss)) ) {
+  #  matestobj$Fss$adjPtab <- apply(matestobj$Fss$Ptab, 2, fdr.method)
+  #  if( !(is.null(matestobj$Fss$Pvalperm)) )
+  #    matestobj$Fss$adjPvalperm <- apply(matestobj$Fss$Pvalperm, 2, fdr.method)
+  #}
   # return
   invisible(matestobj)
 }

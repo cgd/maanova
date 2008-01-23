@@ -26,7 +26,7 @@ data(abf1)
 \dontrun{
 fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
    random = ~Sample)
-ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1,0),
+ftest.all = matest(abf1, fit.full.mix, test.method=c(1,1),
     shuffle.method="sample", term="Strain", n.perm= 100)
 C = PairContrast(3)
 ftest.pair = matest(abf1, fit.full.mix, Contrast = C, 

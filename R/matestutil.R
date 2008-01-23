@@ -233,14 +233,13 @@ calPval <- function(fstar, fobs, pool)
 #
 ########################################################
 matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
-         is.ftest, partC, verbose=FALSE, mean_est, tau_est)
+         is.ftest, partC, verbose=FALSE)
 {
   # local variables
-  model <- anovaobj$anova$model
+  model <- anovaobj$model
   # parse the formula
   parsed.formula <- model$parsed.formula
   # subtract the column mean
-  subCol = anovaobj$anova$subCol
 
   ################################################################
   # find the indices for these terms in information matrix (C)
@@ -269,16 +268,12 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
     cat("Start doing F test...\n")
 
   # get the estimates for the tested terms
-  b <- NULL; b.subcol = NULL
+  b <- NULL; 
   for(i in 1:length(termidx)){
     tmpterm <- term[i]
     # get the estimates
-    tmpb <- anovaobj$anova[[tmpterm]]
+    tmpb <- anovaobj[[tmpterm]]
     b <- cbind(b, tmpb)
-    if(subCol == TRUE){
-      tmpb <- anovaobj$anova.subcol[[tmpterm]]
-      b.subcol <- cbind(b.subcol, tmpb)
-    }
   }
 
   # Finish making comparison matrix
@@ -306,7 +301,7 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
   df.random <- model$df[idx.random]
 
   # initialize output object
-  ngenes <- length(anovaobj$anova$G)
+  ngenes <- length(anovaobj$G)
   ftest <- NULL
   if(test.method[1] == 1){
     ftest$F1 <- matrix(0, ngenes, n.test)
@@ -314,140 +309,52 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
   if(test.method[2] == 1){
     ftest$Fs <- matrix(0, ngenes, n.test)
   }
-  if(test.method[3] == 1){ 
-    ftest$Fss <- matrix(0, ngenes, n.test)
-  }
+  #if(test.method[3] == 1){ 
+  #  ftest$Fss <- matrix(0, ngenes, n.test)
+  #}
   # for fixed model
-  if(model$mixed == 0){
-    # get shrinked variance first
-    if(missing(mv)) mv <- meanvarlog(df.random)
-    ftest$mv <- mv
-
-    # JS shrunk variances
-    JSs2 <- JSshrinker(anovaobj$anova$S2, df.random, mv$meanlog, mv$varlog)
-    sg = sqrt(JSs2); 
-
-    if(subCol){
-      JSs2.subcol <- JSshrinker(anovaobj$anova.subcol$S2, df.random, 
-          mv$meanlog, mv$varlog)
-      sg.subcol = sqrt(JSs2.subcol)
-    }
-
-    if(missing(partC)){ # calculate partC if not given
+  if(model$mixed == 0) {
+    if(missing(partC)) { # calculate partC if not given
       X <- model$X
       C <- pinv(t(X) %*% X)
       partC <- C[colidx,colidx]
       ftest$partC <- partC
     }
-
-    if(test.method[3]==0){
-      mean_est = 0; tau_est = 0
-      if(!is.ftest) {
-        # do t-test
-        ttest <- function(L, b){
-          tmp <- as.numeric(solve(t(L) %*% partC %*% L))
-          fm <- b %*% L
-          Fval <- fm^2 *tmp
-          Fval
-        }
-        if(subCol) Fval <- apply(Contrast, 1, ttest, b.subcol)
-        else Fval <- apply(Contrast, 1, ttest, b)
+    
+    if(!is.ftest) {
+      # do t-test
+      ttest <- function(L) {
+        tmp <- as.numeric(solve(t(L) %*% partC %*% L))
+        fm <- b %*% L
+        Fval <- fm^2 *tmp
+        Fval
       }
-      else{ # do F-test
-        tmp <- solve(Contrast %*% partC %*% t(Contrast))
-        if(subCol) fm <- b.subcol %*% t(Contrast)
-        else fm <- b %*% t(Contrast)
-        Fval <- apply(fm, 1, 
-          function(x) as.numeric((t(x) %*% tmp %*% x) / dfnu))
-        Fval <- matrix(Fval, ncol = n.test)
-      } 
-      if(subCol) Fval.subcol = Fval
+      Fval <- apply(Contrast, 1, ttest)
     }
-    else{ # calculate the top/hyperpharmaters for Fss stat. 
-      b_fss = NULL;
-      if(missing(mean_est)){
-        tau_est = NULL; mean_est = NULL 
-        for(i in 1:ncol(b)){
-          tFval <- b[,i]
-          # Fss statistics 
-          m1g=mean(tFval); m2g=mean(tFval^2);  
-          pest=nlminb(0.5, mixture, lower= 10^(-3),upper = 1-10^(-3),
-            xg=tFval,m1g=m1g, m2g=m2g, sg=sg)$par
-          mean_theta_est =  m1g/pest
-          mean_est = c(mean_est, mean_theta_est)
-          b_fss = cbind(b_fss, (tFval - mean_theta_est)) 
-          tau2_theta_est =( (m2g-mean(JSs2))/pest - (mean_theta_est)^2 );
-          tau_est=c(tau_est, max(tau2_theta_est,0))
-        }
-        tau_est = mean(tau_est)
-      }
-      else{
-        for(i in 1:ncol(b)){
-          tFval <- b[,i]
-          b_fss = cbind(b_fss, (tFval - mean_est[i]))
-        }
-      }
-      if(!is.ftest) {
-        # do t-test
-        Fval = NULL; Fssval = NULL;  Fval.subcol = NULL
-        for(i in 1:n.test){
-          L = Contrast[i,]
-          tmp <- as.numeric(solve(t(L) %*% partC %*% L))
-          fm <- b %*% L
-          Fval <- cbind(Fval, fm^2 *tmp)
-          if(subCol){# this is for Fs statistics
-            fm.subcol <- b.subcol %*% L
-            Fval.subcol <- cbind(Fval.subcol, fm.subcol^2 *tmp)
-          }
-          fm_fss <- b_fss %*% L
-          Fssval <- cbind(Fssval, fm_fss^2 *tmp)
-        }
-      }
-      else { # do F-test
-        tmp <- solve(Contrast%*%partC%*%t(Contrast))
-        fm <- b %*% t(Contrast)
-        Fval <- apply(fm, 1, function(x) 
-              as.numeric((t(x) %*% tmp %*% x) / dfnu))
-        Fval <- matrix(Fval,ncol=n.test)
-        if(subCol){
-          fm.subcol <- b.subcol %*% t(Contrast)
-          Fval.subcol <- apply(fm.subcol, 1, function(x) 
-              as.numeric((t(x) %*% tmp %*% x) / dfnu))
-          Fval.subcol <- matrix(Fval.subcol,ncol=n.test)
-        }
-        fm_fss <- b_fss %*% t(Contrast)
-        Fssval <- apply(fm_fss, 1, function(x) 
-               as.numeric((t(x) %*% tmp %*% x)/dfnu ))
-        Fssval <- matrix(Fssval,ncol=n.test) 
-      }
+    else { # do F-test
+      tmp <- solve(Contrast%*%partC%*%t(Contrast))
+      fm <- b %*% t(Contrast)
+      Fval <- apply(fm, 1, function(x) as.numeric((t(x) %*% tmp %*% x) / dfnu))
+      Fval <- matrix(Fval,ncol=n.test)
     }
 
     #F1
     if(test.method[1] == 1) {
-      if(subCol) ftest$F1 = apply(Fval.subcol, 2, function(x) x/anovaobj$anova.subcol$S2)
-      else ftest$F1 <- apply(Fval, 2, function(x) x/anovaobj$anova$S2)
-
+      ftest$F1 <- apply(Fval, 2, function(x) x/anovaobj$S2)
     }
+  
     #Fs
-    if( test.method[2] == 1 ) {
-      Fs <- apply(Fval, 2, function(x) x/JSs2)
-      if(subCol) ftest$Fs <- apply(Fval.subcol, 2, function(x) x/JSs2.subcol)
-      else ftest$Fs <- Fs
-    }
-    # Fss
-    if( test.method[3]==1 ){
-      a=(JSs2 + tau_est);
-      if(test.method[2]==0) Fs <- apply(Fval, 2, function(x) x/JSs2)
-      tFss <- apply(Fssval, 2, function(x) x/a)
-      cFss = .5*ncol(b)*log(JSs2/a); 
-      cFss = rep(cFss, n.test); cFss = matrix(cFss, ncol=n.test)
-      ftest$Fss = cFss + .5*(Fs- tFss); 
+    if(test.method[2] == 1) {
+      if(missing(mv)) {
+        mv <- meanvarlog(df.random)
+      }
+      ftest$mv <- mv
+      # JS shrunk variances
+      JSs2 <- JSshrinker(anovaobj$S2, df.random, mv$meanlog, mv$varlog);
+      ftest$Fs <- apply(Fval, 2, function(x) x/JSs2)
     }
   }
-
-  if(model$mixed == 1){# for mixed model
-    if( test.method[3] == 0 ){tau_est = NULL; mean_est = NULL} 
-
+  if(model$mixed == 1) { # for mixed model
     X <- model$X
     XX <- t(X) %*% X
     Z <- model$Z
@@ -459,7 +366,7 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
     # number of random variables (excluding residual)
     nrandom <- length(dimZ)
 
-    if(test.method[2] == 1 | test.method[3] == 1 ) {
+    if(test.method[2] == 1) {
       # calcualate the shrinkage estimator for variance components.
       # This is needed for Fs test
       if(missing(mv)) {
@@ -467,40 +374,15 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
       }
       ftest$mv <- mv
       # JS shrunk variances
-      JSs2 <- JSshrinker(anovaobj$anova$S2, df.random, mv$meanlog, mv$varlog);
-      sg = sqrt(JSs2)
+      JSs2 <- JSshrinker(anovaobj$S2, df.random, mv$meanlog, mv$varlog);
     }
-    if( test.method[3] == 1 ) {
-      b_fss = NULL;
-      if(missing(mean_est)){
-        tau_est = NULL; mean_est = NULL 
-        for(ib in 1:ncol(b)){
-          tFval <- b[,ib]
-          # Fss statistics 
-          m1g=mean(tFval); m2g=mean(tFval^2);  
-          pest=nlminb(0.5, mixture, lower= 10^(-3),upper = 1-10^(-3),
-            xg=tFval,m1g=m1g, m2g=m2g, sg=sg)$par
-          mean_theta_est =  m1g/pest
-          mean_est = c(mean_est, mean_theta_est)
-          b_fss = cbind(b_fss, (tFval - mean_theta_est)) 
-          tau2_theta_est =( (m2g-mean(JSs2))/pest - (mean_theta_est)^2 );
-          tau_est=c(tau_est, max(tau2_theta_est,0))
-        }
-        tau_est = mean(tau_est)
-      }
-      else{
-        for(ib in 1:ncol(b)){
-          tFval <- b[,ib]
-          b_fss = cbind(b_fss, (tFval - mean_est[ib])) 
-        }
-      }
-    }
+
     # loop for all genes
     for(i in 1:ngenes) {
       # make C matrices
-      # C1
+      #C1
       if(test.method[1] == 1) {
-        s2 <- anovaobj$anova$S2[i,]
+        s2 <- anovaobj$S2[i,]
         s0 <- s2[nrandom+1]
         d <- NULL
         for(j in 1:nrandom)
@@ -511,8 +393,9 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
         A <- pinv(A)
         C1 <- s0 * rbind(A[1:k,], D%*%A[(k+1):(k+m),])
       }
+    
       # Cs
-      if(test.method[2] == 1 | test.method[3] == 1) {
+      if(test.method[2] == 1) {
         s2 <- JSs2[i,]
         s0 <- s2[nrandom+1]
         d <- NULL
@@ -524,7 +407,7 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
         A <- pinv(A)
         Cs <- s0 * rbind(A[1:k,], D%*%A[(k+1):(k+m),])
       }
-     
+
       # make F or T test
       bgene <- b[i,]
       if(!is.ftest) { # this is a T-test
@@ -538,19 +421,6 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
       else
         fm <- Contrast %*% bgene
       
-      if( test.method[3] == 1 ){
-        b_fssgene <- b_fss[i,]
-        if(!is.ftest){ # this is a T-test
-          ttest_ss <- function(L) {
-            tmp <- as.numeric(solve(t(L) %*% partC %*% L))
-            fm_fss <- b_fssgene %*% L
-            Fval_fss <- (fm_fss)^2 *tmp
-            Fval_fss
-          }
-        }
-        else fm_fss <- Contrast %*% b_fssgene
-      }
- 
       # F1
       if(test.method[1] == 1) {
         partC <- C1[colidx, colidx]
@@ -559,39 +429,20 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
         else
           ftest$F1[i] <- as.numeric((t(fm) %*% solve(Contrast%*%partC%*%t(Contrast)) %*% fm)
                                     / dfnu)
-      }  
+      }     
       # Fs
       if(test.method[2] == 1) {
         partC <- Cs[colidx, colidx]
-        if(!is.ftest) Fsi <- apply(Contrast, 1, ttest)
+        if(!is.ftest)
+          ftest$Fs[i,] <- apply(Contrast, 1, ttest)
         else
-          Fsi <- as.numeric((t(fm) %*% solve(Contrast%*%partC%*%t(Contrast)) %*% fm)
+          ftest$Fs[i] <- as.numeric((t(fm) %*% solve(Contrast%*%partC%*%t(Contrast)) %*% fm)
                                     / dfnu)
-        ftest$Fs[i,] <- Fsi
       }
-      # Fss
-      if(test.method[3] == 1) {
-        partC <- Cs[colidx, colidx]
-        a=(JSs2[i] + tau_est);
-        if(!is.ftest){
-          if(test.method[2] ==0) Fsi <- apply(Contrast, 1, ttest)
-          tFss <- apply(Contrast, 1, ttest_ss)
-        }
-        else{
-          if(test.method[2] ==0) 
-            Fsi <- as.numeric((t(fm) %*% solve(Contrast%*%partC%*%t(Contrast)) %*% fm)
-                                    / dfnu)
-          tFss <- as.numeric((t(fm_fss) %*% solve(Contrast%*%partC%*%t(Contrast)) %*% fm_fss)
-                                    / dfnu)
-        }
-        cFss = .5*ncol(b)*log(JSs2[i]/a)
-        cFss = rep(cFss, n.test); cFss = matrix(cFss, ncol=n.test)
-        ftest$Fss[i,] = cFss + .5*(Fsi- tFss)
-      } # Fss     
-    } # finish gene loop
-  } # finish mixed model
-  ftest$mean_est = mean_est
-  ftest$tau_est = tau_est
+    }
+    # finish gene loop
+  }
+  
   ftest$dfFtest <- dfFtest
   ftest$dfnu <- dfnu
   ftest$Contrast <- Contrast
@@ -605,9 +456,9 @@ matest.engine <- function(anovaobj, term, mv, test.method, Contrast,
 # function to perform permutation F test
 #
 #######################################################################
-matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, mv,
-                        is.ftest, partC, MME.method, test.method,
-                        shuffle.method, pool.pval, ngenes, mean_est,tau_est,subCol)
+matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast,
+                        mv, is.ftest, partC, MME.method, test.method,
+                        shuffle.method, pool.pval, ngenes)
 {
   # local variables
   # number of contrasts
@@ -626,10 +477,6 @@ matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, mv,
   if(test.method[2] == 1) {
     Pval$Fs$Pmax <- array(0, c(ngenes, nContrast))
     Pval$Fs$Pperm <- array(0, c(ngenes, nContrast))
-  }
-  if(test.method[3] == 1) {
-    Pval$Fss$Pmax <- array(0, c(ngenes, nContrast))
-    Pval$Fss$Pperm <- array(0, c(ngenes, nContrast))
   }
   # prepare permutation 
   if(shuffle.method == "sample"){
@@ -721,9 +568,8 @@ matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, mv,
       covariatet = as.formula(covterm.null)
     }
     anova0 <- fitmaanova(data, formula=as.formula(nullformula), 
-        random = randomt, covariate = covariatet, verbose=FALSE, subCol=subCol)
-    if(subCol) resid0 <- data$data - anova0$anova.subcol$yhat
-    else resid0 <- data$data - anova0$anova$yhat
+        random = randomt, covariate = covariatet, verbose=FALSE, subCol=FobsObj$obsAnova$subCol)
+    resid0 <- data$data - anova0$yhat
     #nresid <- length(resid0) # across
     #nresid <- ncol(resid0) #within
     data.perm <- data
@@ -771,21 +617,18 @@ matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, mv,
       # fit anova model
       data.perm = data ; data.perm$design = design.perm;
       anovaobj.perm <- fitmaanova(data.perm, formula=model$formula, 
-        random=model$random, covariate=model$cov, verbose=FALSE, subCol=subCol)
+        random=model$random, covariate=model$cov, verbose=FALSE, subCol=FobsObj$obsAnova$subCol)
       
     }
     else if(shuffle.method=="resid") {
       # residual shuffling - this is for fixed model
       # global shuffle residual without replacement
       newresid0 = t(apply(resid0, 1, sample))
-      if(subCol) 
-        data.perm$data <- anova0$anova.subcol$yhat + newresid0
-      else
-        data.perm$data <- anova0$anova$yhat + newresid0
+      data.perm$data <- anova0$yhat + newresid0
       # fit anova model
       anovaobj.perm <- fitmaanova(data.perm, formula=model$formula, 
         random=as.formula(random),covariate=as.formula(cov),mamodel = model,
-        verbose=FALSE, subCol=subCol)
+        verbose=FALSE, subCol=FobsObj$obsAnova$subCol)
     }
     # start to do F-test
     # provide partC for fixed model test
@@ -793,17 +636,15 @@ matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast, mv,
       # if this is fixed model, pass in partC
       # so we can save some calculation time
       ftest.perm <- matest.engine(anovaobj.perm, term, mv, test.method,
-            Contrast, is.ftest, partC, verbose=FALSE,  
-            mean_est=mean_est, tau_est=tau_est)
+            Contrast, is.ftest, partC, verbose=FALSE)
     else
       ftest.perm <- matest.engine(anovaobj.perm, term, mv, test.method,
-                    Contrast, is.ftest, verbose=FALSE, 
-                    mean_est = mean_est, tau_est = tau_est)
+                    Contrast, is.ftest, verbose=FALSE)
     
     # update the result
-    ffields <- c("F1","Fs", "Fss")
+    ffields <- c("F1","Fs")
     for(icon in 1:nContrast) { # loop for multiple contrasts
-      for(i in 1:3) { # loop for different F test methods
+      for(i in 1:2) { # loop for different F test methods
         if(test.method[i] == 1) { # if this F test is requested
           fobs <- FobsObj[[ffields[i]]]$Fobs[,icon]
           fstar <- ftest.perm[[ffields[i]]][,icon]

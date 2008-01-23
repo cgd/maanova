@@ -12,8 +12,8 @@ This function use
 }
 \usage{
 summarytable(matestobj, method=c("Fold.change","Pvalperm","adjPvalperm"), 
-     test =c("F1","Fs","Fss"),whichTest=c("F1.Pvalperm","F1.adjPvalperm", 
-         "Fs.Pvalperm","Fs.adjPvalperm", "Fss.Pvalperm","Fss.adjPvalperm"), 
+     test =c("F1","Fs"),whichTest=c("F1.Pvalperm","F1.adjPvalperm", 
+         "Fs.Pvalperm","Fs.adjPvalperm"), 
          threshold, outfile="summarytable.csv")
 }
 \arguments{

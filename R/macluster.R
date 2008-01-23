@@ -15,9 +15,6 @@ macluster <-
   function(anovaobj, term, idx.gene, what=c("gene","sample"),
            method=c("hc", "kmean"), dist.method="correlation",
            hc.method="ward", kmean.ngroups, n.perm=100){
-  subCol = anovaobj$anova$subCol
-  if(subCol) anovaobj = anovaobj$anova.subcol
-  else anovaobj = anovaobj$anova
   probeid = anovaobj$probeid
 
   what <- match.arg(what)

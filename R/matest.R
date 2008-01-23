@@ -18,20 +18,19 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
                    critical=.9, test.type=c("ttest","ftest"),
                    shuffle.method=c("sample", "resid"),
                    MME.method=c("REML","noest","ML"),
-                   test.method=c(1,1,0),pval.pool=TRUE, verbose=TRUE){
+                   test.method=c(1,1),pval.pool=TRUE, verbose=TRUE){
   if( class(data) != "madata" )
     stop("data is not an object of class madata.")
-  if( class(anovaobj$anova) != "maanova" )
+  if( class(anovaobj) != "maanova" )
     stop("anovaobj is not an object of class maanova.")
   if( critical <= 0 || critical >1 ) 
     stop(" Critical value is between 0 to 1: Recommended value =.9")
-  model = anovaobj$anova$model 
-  subCol = anovaobj$anova$subCol
+  model = anovaobj$model 
 
-  if(model$mixed != 0 & test.method[3]==1){
-    cat("Fss is not availble in mixed effect model\n")
-    test.method[3]=0
-  }
+  #if(model$mixed != 0 & test.method[3]==1){
+  #  cat("Fss is not availble in mixed effect model\n")
+  #  test.method[3]=0
+  #}
   if( test.method[1]+test.method[2]==0 ){
     stop("F1 or Fs test should be included in the test statistics\n")
   }
@@ -97,7 +96,7 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
     
     anovaobj <- fitmaanova(data, formula=model$formula, 
       random=as.formula(random),covariate=as.formula(cov),
-      method=MME.method, verbose=FALSE, subCol=subCol)
+      method=MME.method, verbose=FALSE, subCol=anovaobj$subCol)
   }
   #########################################################
   # for contrast matrix - make one if not given,
@@ -145,8 +144,8 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
   mv <- ftest.obs$mv
   dfnu <- ftest.obs$dfnu; dfFtest <- ftest.obs$dfFtest
   partC <- ftest.obs$partC
-  mean_est = ftest.obs$mean_est
-  tau_est = ftest.obs$tau_est
+  #mean_est = ftest.obs$mean_est
+  #tau_est = ftest.obs$tau_est
   # initialize output object
   ftest <- NULL
   # general info in the output object
@@ -157,8 +156,8 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
   ftest$dfnu <- dfnu
   ftest$obsAnova <- anovaobj
   ftest$Contrast <- Contrast
-  ftest$mean_est = ftest.obs$mean_est
-  ftest$tau_est = ftest.obs$tau_est
+  #ftest$mean_est = ftest.obs$mean_est
+  #ftest$tau_est = ftest.obs$tau_est
   ftest$probeid = data$probeid
   if(!is.ftest)
     class(ftest) <- c("matest", "ttest")
@@ -188,14 +187,14 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
   }
 
   #Fss
-  if(test.method[3] == 1) {
-    ftest$Fss$Fobs <- ftest.obs$Fss
-    ftest$Fss$Ptab <- 1 - pf(ftest$Fss$Fobs, dfnu, dfFtest)
-    if(n.perm > 1) {
-      ftest$Fss$Pvalperm <- array(0, c(ngenes, nContrast))
-      ftest$Fss$Pvalmax <- array(0, c(ngenes, nContrast))
-    }
-  }
+  #if(test.method[3] == 1) {
+  #  ftest$Fss$Fobs <- ftest.obs$Fss
+  #  ftest$Fss$Ptab <- 1 - pf(ftest$Fss$Fobs, dfnu, dfFtest)
+  #  if(n.perm > 1) {
+  #    ftest$Fss$Pvalperm <- array(0, c(ngenes, nContrast))
+  #    ftest$Fss$Pvalmax <- array(0, c(ngenes, nContrast))
+  #  }
+  #}
 
 
   # return if no permutation test
@@ -209,7 +208,7 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
   ########################################
   if(verbose)
     cat("Doing permutation. This may take a long time ... \n")
-  sdata=data; 
+  sdata=data;  sS2=anovaobj$S2;
 
   if(critical <1){
     if(nContrast==1){
@@ -219,10 +218,13 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
       tmp=as.matrix(apply(ftest$F1$Fobs, 1, min))
       hsidx= tmp <= qf(critical,ftest$dfnu ,ftest$dfde)
     }
- 
+    if(ncol(sS2)==1) sS2 = matrix(sS2[hsidx==TRUE,], ncol=1)
+    else sS2=sS2[hsidx==TRUE,]
     sdata$n.gene = sum(hsidx)
-    sdata$data = sdata$data[hsidx==1,]; 
-    sdata$cloneid = sdata$cloneid[hsidx==1]
+    sdata$data = sdata$data[hsidx==TRUE,];
+    sdata$metarow = sdata$metarow[hsidx==TRUE]
+    sdata$metacol = sdata$metacol[hsidx==TRUE]
+    sdata$probeid = sdata$probeid[hsidx==TRUE]
     sdata$colmeans = apply(sdata$data, 2, mean)
   }
   # permutation - use MPI cluster if specified
@@ -243,34 +245,33 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
     # as the first argument so I can use clusterApply
     cat(paste("Doing permutation on", nnodes, "cluster nodes ... \n"))
    
-    if(test.method[3]==1 & critical <1){ # trim & Fss 
-      ttest.method = test.method; ttest.method[3]=0
-      pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm, ftest,sdata,
-        model, term,Contrast,mv, is.ftest, partC, MME.method,ttest.method,
-        shuffle.method, pval.pool, ngenes,mean_est, tau_est, subCol)
-
-      ttest.method = test.method; ttest.method[c(1,2)]=0 
-      # no trim using full data get Fss
-      pstar.nodes.fss <- clusterApply(cl, nperm.cluster, matest.perm, 
-       ftest,data, model, term,Contrast, mv, is.ftest, partC, 
-       MME.method, ttest.method, shuffle.method, pval.pool, ngenes,
-                        mean_est, tau_est, subCol=FALSE)
-      pstar.nodes$Fss$Pperm = pstar.nodes.fss$Fss$Pperm
-      pstar.nodes$Fss$Pmax = pstar.nodes.fss$Fss$Pmax
-    }
-    else{ # no trim or no Fss
+    #if(test.method[3]==1 & critical <1){ # trim & Fss 
+    #  ttest.method = test.method; ttest.method[3]=0
+    #  pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm, ftest,sdata,
+    #    model, term,Contrast,mv, is.ftest, partC, MME.method,ttest.method,
+    #    shuffle.method, pval.pool, ngenes,mean_est, tau_est, subCol)
+    #
+    #  ttest.method = test.method; ttest.method[c(1,2)]=0 
+    #  # no trim using full data get Fss
+    #  pstar.nodes.fss <- clusterApply(cl, nperm.cluster, matest.perm, 
+    #   ftest,data, model, term,Contrast, mv, is.ftest, partC, 
+    #   MME.method, ttest.method, shuffle.method, pval.pool, ngenes,
+    #                    mean_est, tau_est, subCol=FALSE)
+    #  pstar.nodes$Fss$Pperm = pstar.nodes.fss$Fss$Pperm
+    #  pstar.nodes$Fss$Pmax = pstar.nodes.fss$Fss$Pmax
+    #}
+    #else{ # no trim or no Fss
       pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm,ftest,sdata,
-        model, term,Contrast, mv, is.ftest, partC, 
-    	MME.method, ttest.method, shuffle.method, pval.pool, ngenes,
-                        mean_est, tau_est, subCol)
-    }
+        model, term,Contrast, sS2, mv, is.ftest, partC, 
+    	MME.method, ttest.method, shuffle.method, pval.pool, ngenes)
+    #}
     # how to display permutation number?
     # after it's done, gather the results from nodes
-    ffields <- c("F1","Fs", "Fss")
+    ffields <- c("F1","Fs")
     for(i in 1:nnodes) {
       if(nperm.cluster[i] > 0) {
         pstar <- pstar.nodes[[i]]
-        for(itest in 1:3) {
+        for(itest in 1:2) {
           if(test.method[itest] == 1){
             ftest[[ffields[itest]]]$Pvalperm <-
               ftest[[ffields[itest]]]$Pvalperm + pstar[[ffields[itest]]]$Pperm
@@ -290,28 +291,27 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
     # original pooling
     ## using subset of data,
     ## It can not handle a situation that one array is toally missing.
-    if(test.method[3]==1 & critical <1){ # trim & Fss 
-      ttest.method=test.method; ttest.method[3]=0
-      pstar <- matest.perm(n.perm, ftest, sdata, model, term,
-        Contrast, mv, is.ftest, partC, MME.method, ttest.method,
-        shuffle.method,pval.pool,ngenes, mean_est, tau_est, subCol)
-     
-      ttest.method=test.method; ttest.method[c(1,2)]=0
-      pstar.fss <- matest.perm(n.perm, ftest, data, model, term,
-        Contrast, mv, is.ftest, partC, MME.method, ttest.method,
-        shuffle.method,pval.pool,ngenes, mean_est, tau_est, subCol)
-      pstar$Fss$Pperm = pstar.fss$Fss$Pperm
-      pstar$Fss$Pmax = pstar.fss$Fss$Pmax
-
-    }
-    else
-      pstar <- matest.perm(n.perm, ftest, sdata, model, term,
+    #if(test.method[3]==1 & critical <1){ # trim & Fss 
+    #  ttest.method=test.method; ttest.method[3]=0
+    #  pstar <- matest.perm(n.perm, ftest, sdata, model, term,
+    #    Contrast, mv, is.ftest, partC, MME.method, ttest.method,
+    #    shuffle.method,pval.pool,ngenes, mean_est, tau_est, subCol)
+    # 
+    #  ttest.method=test.method; ttest.method[c(1,2)]=0
+    #  pstar.fss <- matest.perm(n.perm, ftest, data, model, term,
+    #    Contrast, mv, is.ftest, partC, MME.method, ttest.method,
+    #    shuffle.method,pval.pool,ngenes, mean_est, tau_est, subCol)
+    #  pstar$Fss$Pperm = pstar.fss$Fss$Pperm
+    #  pstar$Fss$Pmax = pstar.fss$Fss$Pmax
+    #}
+    #else
+    pstar <- matest.perm(n.perm, ftest, sdata, model, term,
       Contrast, mv, is.ftest, partC, MME.method, test.method,
-      shuffle.method,pval.pool,ngenes, mean_est, tau_est, subCol)
+      shuffle.method,pval.pool,ngenes)
     
     # update the pvalues
-    ffields <- c("F1","Fs","Fss")
-    for(itest in 1:3) {
+    ffields <- c("F1","Fs")
+    for(itest in 1:2) {
       if(test.method[itest] == 1) {
         ftest[[ffields[itest]]]$Pvalperm <-
           ftest[[ffields[itest]]]$Pvalperm + pstar[[ffields[itest]]]$Pperm
@@ -323,7 +323,7 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
   #finish permutation loop
   
   # calculate the pvalues. Note that the current object contains the "counts"
-  ffields <- c("F1","Fs","Fss")
+  ffields <- c("F1","Fs")
   for(itest in 1:2) {
     if(test.method[itest] == 1) {
       # Pvalperm
@@ -339,20 +339,20 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
         ftest[[ffields[itest]]]$Pvalmax / n.perm
     }
   }
-  if(test.method[3] == 1) {
-    itest = 3
-    # Pvalperm
-    if(pval.pool){
-      ftest[[ffields[itest]]]$Pvalperm <-
-        ftest[[ffields[itest]]]$Pvalperm / (n.perm*data$n.gene)
-    }
-    else
-      ftest[[ffields[itest]]]$Pvalperm <-
-        ftest[[ffields[itest]]]$Pvalperm / n.perm
-    # for Pvalmax
-    ftest[[ffields[itest]]]$Pvalmax <-
-      ftest[[ffields[itest]]]$Pvalmax / n.perm
-  }
+  #if(test.method[3] == 1) {
+  #  itest = 3
+  #  # Pvalperm
+  #  if(pval.pool){
+  #    ftest[[ffields[itest]]]$Pvalperm <-
+  #      ftest[[ffields[itest]]]$Pvalperm / (n.perm*data$n.gene)
+  #  }
+  #  else
+  #    ftest[[ffields[itest]]]$Pvalperm <-
+  #      ftest[[ffields[itest]]]$Pvalperm / n.perm
+  #  # for Pvalmax
+  #  ftest[[ffields[itest]]]$Pvalmax <-
+  #    ftest[[ffields[itest]]]$Pvalmax / n.perm
+  #}
 
   # add some other info to the return object
   ftest$n.perm <- n.perm
