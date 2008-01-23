@@ -23,41 +23,50 @@ library(maanova)
 # Sample <- rep(c(1:9), each=2)
 # designfile <- cbind(design.table, Strain, Sample)
 # abf1 <- read.madata(datafile, designfile=designfile)
+#####################################################
+# another way to read data
+# abf1 <- read.madata("AffyData.txt", designfile="AffyDesign.txt", 
+#	probeid=1, intensity=2)
 
 data(abf1)
 ##############################
 # STEP I: fixed model analysis - skipped
 ##############################
-# make several model objects and fit ANOVA model
+# fit ANOVA model
 # full model
 
-fit.full.fix <- fitmaanova(abf1, formula = ~Strain)
+anova.full.fix <- fitmaanova(madata=abf1, formula=~Strain+Sample)
 
 # F-test on Sample
-ftest.fix = matest(abf1, fit.full.fix, test.method=c(1,1,0),
-    shuffle.method="sample", term="Strain", n.perm= 100)
-idx.fix <- volcano(ftest.fix, title="Volcano Plot - fixed model")
+test.sample.fix <- matest(data=abf1, anovaobj=anova.full.fix, term="Sample", n.perm=500,
+        shuffle.method="sample", test.method=c(1,1))
+idx.fix <- volcano(test.sample.fix, title="Volcano Plot - fixed model", threshold=rep(0.05,2))
 
 ##############################
 # STEP II: mixed model analysis
 ##############################
-# make mixed effect model object, treat Sample as random factor
-fit.full.mix <- fitmaanova(abf1, formula = ~Strain+Sample, 
-    random = ~Sample)
-varplot(fit.full.mix)
+# fit mixed effect model object, treat Sample as random factor
+anova.full.mix <- fitmaanova(madata = abf1,  formula=~Strain+Sample, random=~Sample)
+varplot(anova.full.mix)
 
 # F-test on Strain
-ftest.mix <- matest(abf1, fit.full.mix, term="Strain", n.perm=500)
-
+test.Strain.mix <- matest(abf1, anova.full.mix, term="Strain", n.perm=nperm,
+        test.method=c(1,1))
 # FDR adjustment
-ftest.all = adjPval(ftest.mix, 'jsFDR')
-
-#summary table 
-summarytable(ftest.all, outfile='all.csv')
+library(qvalue)
+test.Strain.mix <- adjPval(test.Strain.mix, method = 'jsFDR')
+summarytable(test.Strain.mix, outfile='all.csv')
 
 # volcano plot
-x11();idx.mix <- volcano(ftest.all,
+x11();idx.mix <- volcano(test.Strain.mix, 
 	title="Volcano Plot - Testing Strain - mixed model",
-	threshold=rep(0.05,3))
+	threshold=rep(0.05,2))
 
+# T-test on Strain
+C <- matrix(c(1,-1,0, 1,0,-1, 0,1,-1),3, byrow=T)
+ttest.strain.mix <- matest(abf1, anova.full.mix, term="Strain", Contrast=C, n.p=nperm, 
+	test.method=rep(1,2))
+#save(ttest.strain.mix, file="ttestmix.RData")
+#load("ttestmix.RData")
+volcano(ttest.strain.mix, threshold=rep(0.05,2))
 
