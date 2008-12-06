@@ -163,7 +163,7 @@ shift <- function(object, lolim, uplim, draw)
     if( draw != "off") { # draw the offset plot
       if( (draw=="screen") & (k!=1) ) {
         # open a window on screen
-        get(getOption("device"))()
+        dev.new()
 #        if(.Platform$GUI == "AQUA")
 #          quartz()
 #        else
@@ -242,7 +242,7 @@ glowess <- function(object, method, f, iter, degree, draw)
     if(draw != "off") {      
       if( (draw=="screen") & (k!=1) ) {
         # open a window on screen
-        get(getOption("device"))()
+        dev.new()
 #        if(.Platform$GUI == "AQUA")
 #          quartz()
 #        else
@@ -310,7 +310,7 @@ rlowess <- function(object, method, grow, gcol, f, iter, degree, draw)
     if(draw!="off") {
       if( (draw=="screen") & (k!=1) ) {
         # open a window on screen
-        get(getOption("device"))()
+        dev.new()
 #    if(.Platform$GUI == "AQUA")
 #          quartz()
 #        else
@@ -369,7 +369,7 @@ linlog <- function(object, cg, cr, draw)
     for(i in 1:object$n.array) {
       if( (draw=="screen") & (i!=1)) {
         # open a window on screen
-        get(getOption("device"))()
+        dev.new()
 #        if(.Platform$GUI == "AQUA")
 #          quartz()
 #        else
@@ -459,7 +459,7 @@ linlogshift <- function(object, lolim, uplim, cg, cr, n.bin, draw)
     if(draw != "off") {
       if( (draw=="screen") & (k!=1)) {
         # open a window on screen
-        get(getOption("device"))()
+        dev.new()
 #        if(.Platform$GUI == "AQUA")
 #          quartz()
 #        else

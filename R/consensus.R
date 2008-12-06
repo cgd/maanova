@@ -531,7 +531,7 @@ plot.consensus.kmean <- function(x, ...)
     nfig.thisplot <- iend - istart + 1
     
     # generate a new figure for each plot
-    get(getOption("device"))()
+    dev.new()
 #    if(.Platform$GUI == "AQUA")
 #      quartz()
 #    else

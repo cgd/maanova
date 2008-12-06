@@ -64,7 +64,7 @@ riplot <-
     array <- 1:object$n.array
   for (i in array) {
     if(onScreen) {
-      get(getOption("device"))()
+      dev.new()
     }
     plot( I[,i], R[,i], xlim=c(min(I),max(I)), ylim=c(-tmp,tmp),
          xlab=xlab, ylab=ylab,col=color, pch=.5, cex=.5,

@@ -51,7 +51,7 @@ gridcheck <- function(rawdata, array1, array2, highlight.flag=TRUE,
     # loop for all arrays
     for (i.array in array1) {
       if(i.array != array1[1]) {
-        get(getOption("device"))()
+        dev.new()
       }
       # setup the layout and margin
       layout(matrix(1:(n.mrow*n.mcol), n.mrow, n.mcol, byrow=TRUE))
@@ -99,7 +99,7 @@ gridcheck <- function(rawdata, array1, array2, highlight.flag=TRUE,
           nplot <- nplot + 1
           if(nplot!=1) {
             # open a window on screen
-            get(getOption("device"))()
+            dev.new()
           }
 
           # setup the layout and margin

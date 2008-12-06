@@ -183,7 +183,7 @@ volcano.ttest <- function(matestobj, threshold, method, title,
     # start to plot
     if(onScreen) {
       # open a window on screen
-      get(getOption("device"))()
+      dev.new()
     }
     # y-axis value
     yvalue <- -log10(p1[,icon])

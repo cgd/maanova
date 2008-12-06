@@ -92,7 +92,7 @@ arrayview <-
     }
     if(onScreen) {
       # open a window on screen
-      get(getOption("device"))()
+      dev.new()
 #      if(.Platform$GUI == "AQUA")
 #        quartz()
 #      else
