@@ -1,6 +1,14 @@
 Library maanova
 ================
 
+Version 1.13.1, Dec 5, 2008
+- did minor documentation updates
+- changed get(getOption("device"))() to dev.new() since getOption breaks in R 2.8
+- removed bad reference to ttest.method in clustering code
+- fixed error in summarytable.R where replicates would cause a failure
+
+---------------------------------------------------
+
 Version 1.5.1, Aug 18, 2007
 
 Modify the function 
