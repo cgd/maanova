@@ -97,7 +97,23 @@ summarytable.ftest <- function(matestobj, method, test, whichTest,
     }
   }
   else warning('No whichTest infomation. Save all');
-  rownames(pval)=id;colnames(pval)=pvalname; 
+  
+  # check to make sure probe count is divisible by num pvalues
+  if((length(id) %% nrow(pval)) != 0)
+  {
+	  stop("bad matest object. probe id count is not divisible by f-test pvalue count");
+  }
+  
+  # if there are replicates we end up with repeat id's. by taking the
+  # modulus we remove the repeats
+  if(length(id) > nrow(pval))
+  {
+	  num_repeats <- length(id) %/% nrow(pval);
+      id <- id[seq(from=1, to=length(id), by=num_repeats)];
+  }
+  
+  rownames(pval)=id;
+  colnames(pval)=pvalname; 
   pval
 }
 
@@ -162,7 +178,23 @@ summarytable.ttest <- function(matestobj,method, test, whichTest,
     }
   }
   else warning('No whichTest infomation. Save all');
-  rownames(pvalall)=id; colnames(pvalall) = name 
+  
+  # check to make sure probe count is divisible by num pvalues
+  if((length(id) %% nrow(pvalall)) != 0)
+  {
+	  stop("bad matest object. probe id count is not divisible by t-test pvalue count");
+  }
+  
+  # if there are replicates we end up with repeat id's. by taking the
+  # modulus we remove the repeats
+  if(length(id) > nrow(pvalall))
+  {
+	  num_repeats <- length(id) %/% nrow(pvalall);
+	  id <- id[seq(from=1, to=length(id), by=num_repeats)];
+  }
+  
+  rownames(pvalall) = id;
+  colnames(pvalall) = name;
   pvalall
 }
 
