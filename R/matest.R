@@ -245,28 +245,9 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
     # as the first argument so I can use clusterApply
     cat(paste("Doing permutation on", nnodes, "cluster nodes ... \n"))
    
-    #if(test.method[3]==1 & critical <1){ # trim & Fss 
-    #  ttest.method = test.method; ttest.method[3]=0
-    #  pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm, ftest,sdata,
-    #    model, term,Contrast,mv, is.ftest, partC, MME.method,ttest.method,
-    #    shuffle.method, pval.pool, ngenes,mean_est, tau_est, subCol)
-    #
-    #  ttest.method = test.method; ttest.method[c(1,2)]=0 
-    #  # no trim using full data get Fss
-    #  pstar.nodes.fss <- clusterApply(cl, nperm.cluster, matest.perm, 
-    #   ftest,data, model, term,Contrast, mv, is.ftest, partC, 
-    #   MME.method, ttest.method, shuffle.method, pval.pool, ngenes,
-    #                    mean_est, tau_est, subCol=FALSE)
-    #  pstar.nodes$Fss$Pperm = pstar.nodes.fss$Fss$Pperm
-    #  pstar.nodes$Fss$Pmax = pstar.nodes.fss$Fss$Pmax
-    #}
-    #else{ # no trim or no Fss
-      pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm,ftest,sdata,
-        model, term,Contrast, sS2, mv, is.ftest, partC, 
-    	MME.method, ttest.method, shuffle.method, pval.pool, ngenes)
-    #}
-    # how to display permutation number?
-    # after it's done, gather the results from nodes
+    pstar.nodes <- clusterApply(cl, nperm.cluster, matest.perm,ftest,sdata,
+        model, term,Contrast, mv, is.ftest, partC, 
+    	MME.method, test.method, shuffle.method, pval.pool, ngenes)
     ffields <- c("F1","Fs")
     for(i in 1:nnodes) {
       if(nperm.cluster[i] > 0) {
@@ -288,23 +269,6 @@ matest <- function(data, anovaobj, term, Contrast, n.perm=1000, nnodes=1,
     stopCluster(cl)
   }
   else { # no cluster, do it on single node
-    # original pooling
-    ## using subset of data,
-    ## It can not handle a situation that one array is toally missing.
-    #if(test.method[3]==1 & critical <1){ # trim & Fss 
-    #  ttest.method=test.method; ttest.method[3]=0
-    #  pstar <- matest.perm(n.perm, ftest, sdata, model, term,
-    #    Contrast, mv, is.ftest, partC, MME.method, ttest.method,
-    #    shuffle.method,pval.pool,ngenes, mean_est, tau_est, subCol)
-    # 
-    #  ttest.method=test.method; ttest.method[c(1,2)]=0
-    #  pstar.fss <- matest.perm(n.perm, ftest, data, model, term,
-    #    Contrast, mv, is.ftest, partC, MME.method, ttest.method,
-    #    shuffle.method,pval.pool,ngenes, mean_est, tau_est, subCol)
-    #  pstar$Fss$Pperm = pstar.fss$Fss$Pperm
-    #  pstar$Fss$Pmax = pstar.fss$Fss$Pmax
-    #}
-    #else
     pstar <- matest.perm(n.perm, ftest, sdata, model, term,
       Contrast, mv, is.ftest, partC, MME.method, test.method,
       shuffle.method,pval.pool,ngenes)
