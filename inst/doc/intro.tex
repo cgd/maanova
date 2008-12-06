@@ -23,8 +23,8 @@ and perform F and T tests for differential expressions.
 \newpage
 \section{Installation}
 \subsection{System requirements}
-This package was developed under {\em R 1.8.0} and updated under {\em R 2.5.1} in the {\em Linux Redhat 8.0} operating system. The programs have been 
-observed to work under {\em Windows NT/98/2000}. The memory requirement
+This package was developed under {\em R 1.8.0} and updated under {\em R 2.8.0}. The programs have been 
+observed to work under {\em Windows XP} and {\em Mac OS X 10.5}. The memory requirement
 depends on the size of the input data but a minimum of 256Mb memory
 is recommended. 
 \subsection{Obtaining R}
@@ -37,19 +37,19 @@ available for Windows, MacOS and many versions of Linux.
 \item Install {\em R/maanova} from Rgui
 \begin{enumerate}
 \item Start Rgui
-\item Select Menu {\tt Packages}, 
-click {\tt Install package from local zip file}. 
-Choose the file \\{\tt maanova\_*.tar.gz} and click 'OK'. 
+\item Select Menu {\tt Packages},
+click {\tt Install package from local zip file}.
+Choose the file \\{\tt maanova\_*.tar.gz} and click 'OK'.
 \end{enumerate}
 \item Install {\em R/maanova} outside Rgui
 \begin{enumerate}
-\item Unzip the {\tt maanova\_*.tar.gz} file into the directory 
-{\tt \$RHOME/library} ({\tt \$RHOME} is something like 
+\item Unzip the {\tt maanova\_*.tar.gz} file into the directory
+{\tt \$RHOME/library} ({\tt \$RHOME} is something like
 {\tt c:/Program Files/R/rw1081}).
-Note that this should create a directory \\{\tt \$RHOME/library/maanova} 
+Note that this should create a directory \\{\tt \$RHOME/library/maanova}
 containing the R source code and the compiled dlls.
 \item Start Rgui.
-\item Type \Rfunction{link.html.help()} to get the help files for 
+\item Type \Rfunction{link.html.help()} to get the help files for
 the maanova package added to the help indices.
 \end{enumerate}
 \end{itemize}
@@ -60,9 +60,9 @@ the maanova package added to the help indices.
 in the standard location such like
 {\tt /usr/lib/R/library}. You will have to
 be the superuser to do this. As a normal user, you can install the
-package in your own local directory. To do this, type 
-\Rfunction{R CMD INSTALL --library=\$LOCALRLIB maanova\_*.tar.gz}, 
-where {\tt \$LOCALRLIB} is something like {\tt /home/user/Rlib/}. Then you 
+package in your own local directory. To do this, type
+\Rfunction{R CMD INSTALL --library=\$LOCALRLIB maanova\_*.tar.gz},
+where {\tt \$LOCALRLIB} is something like {\tt /home/user/Rlib/}. Then you
 will need to create a file {\tt .Renviron} in your home directory to contain
 the line {\tt R\_LIBS=/home/user/Rlib} so that R will know to search for
 packages in that directory.
@@ -82,7 +82,7 @@ a web browser.
 % sample data
 \item Sample data available with the package. Both include subset of original
   data, which can be found at {\tt
-http://www.jax.org/staff/churchill/labsite/software/}. 
+http://research.jax.org/faculty/churchill/software}. 
 \begin{description}
 \item[{\tt abf1}] A 18-array Affymetrix experiment. 
 \item[{\tt kidney}] A 6-array kidney data set from CAMDA (Critical Assessment of Microarray Data Analysis). 
