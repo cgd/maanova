@@ -48,7 +48,7 @@ abline(0,1)
 }
 
 \references{
-  \item O.Troyanskaya, M. Cantor, G. Sherlock, P. Brown, T. Hastie,
+  O.Troyanskaya, M. Cantor, G. Sherlock, P. Brown, T. Hastie,
   R. Tibshirani, D. Botstein, & R. B. Altman. Missing Value estimation
   methods for DNA microarrays. Bioinformatics 17(6):520-525, 2001.
 }

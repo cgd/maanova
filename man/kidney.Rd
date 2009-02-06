@@ -19,12 +19,12 @@ data.
 }
 
 \source{
-  \item http://www.camda.duke.edu
+  \url{http://www.camda.duke.edu}
 }
 \references{
-  \item Prichard CC, Hsu L, Delrow J and Nelson PS (2001),
+  Prichard CC, Hsu L, Delrow J and Nelson PS (2001),
   Project normal: defining normal variance in mouse gene expression,
-  \textit{PNAS}, 98:13266
+  \emph{PNAS}, 98:13266
 }
 
 \examples{
