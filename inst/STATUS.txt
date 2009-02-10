@@ -1,6 +1,14 @@
 Library maanova
 ================
 
+Version 1.13.2 & 1.13.3, Feb 9, 2009
+- fixed issue where random terms were not getting passed to matest
+  permutations when shuffle.method was set to "resid"
+- fixed bad call to "Warning(...)" (should have been "warning(...)")
+- fixed misc other minor documentation and metadata issues
+
+---------------------------------------------------
+
 Version 1.13.1, Dec 5, 2008
 - did minor documentation updates
 - changed get(getOption("device"))() to dev.new() since getOption breaks in R 2.8

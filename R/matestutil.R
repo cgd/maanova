@@ -627,7 +627,7 @@ matest.perm <- function(n.perm, FobsObj, data, model, term, Contrast,
       data.perm$data <- anova0$yhat + newresid0
       # fit anova model
       anovaobj.perm <- fitmaanova(data.perm, formula=model$formula, 
-        random=as.formula(random),covariate=as.formula(cov),mamodel = model,
+        random=model$random,covariate=model$cov,mamodel = model,
         verbose=FALSE, subCol=FobsObj$obsAnova$subCol)
     }
     # start to do F-test

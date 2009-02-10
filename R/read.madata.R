@@ -164,8 +164,9 @@ read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
 
   if(any(is.na(data$data))){
     class(data) <- "madata" ; data = fill.missing(data)
-    Warning(" Data has NA.\n 
-    I fill in the missing using fill.missing(). Otherwise check the raw data, and read it again")
+    warning("the data contains NA values which have been filled in using the fill.missing(...) ",
+            "function. If there should not have been any NA values please check raw data values ",
+            "correct the NA's and re-read the data")
   }
 
   #== get metarow, metacol, row, col for transformation two col only : this is for transformation
