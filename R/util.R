@@ -528,7 +528,7 @@ ma.svd <- function (x, nu = min(n, p), nv = min(n, p), method = c("dgesvd",
 fdr <- function(p, method=c("stepup", "adaptive", "stepdown", "jsFDR"))
 {
   method <- match.arg(method)
-  if( method=="setup" | method =="adaptive" | method=="setdown" ){
+  if( method=="stepup" || method =="adaptive" || method=="stepdown" ){
     m <- length(p)
     tmp <- sort(p, index.return=TRUE)
     sortp <- tmp$x
