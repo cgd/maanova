@@ -61,7 +61,8 @@
   file. Number of rows of this file equals number of arrays times N (the
   number of dyes) (plus one for column header, if design file is a TAB
   delimited file and header = T). The row of design file *MUST* be organized by
-  the order of datafile. For example, if the datafile stores the intensity from
+  the order of datafile unless the matchDataToDesign parameter is set to TRUE.
+  For example, if the datafile stores the intensity from
   array1, array11, array2,..., then the row of designfile must follow this
   order. Number of columns of this file depends on
   the experimental design. For example, you can have "Strain", "Diet", "Sex",
@@ -128,6 +129,11 @@ arrayType=c("oneColor", "twoColor"),header=TRUE, spotflag=FALSE, n.rep=1, avgrep
   \item{intensity}{The start column number of intensity. For the matrix R
   object, it assumes intensity starts from the first column and for TAB
   delimited file, it assumes intensity stars from the second column, as a default.}
+  \item{matchDataToDesign}{Defaults to false. If set to TRUE
+  then the datafile column headers (or colnames(datafile) in the case of a
+  matrix) will be matched up to the design file's Array column. This allows you
+  to ignore the input order of array data as long as the datafile's header
+  values can be matched exactly to the designfile's Array values}
   \item{\dots}{Other gene information in the data file.}
 }
 
