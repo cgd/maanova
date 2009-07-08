@@ -307,7 +307,7 @@ getPval.volcano <- function(matestobj, method, idx)
 ##############################################
 # function to calculate the x-axis value
 # on the volcano plot
-# basic it's from Lb
+# basically it's from Lb
 # If L is one row,it's just Lb
 # IF L has multiple rows, use sqrt((Lb)' * Lb))
 ##############################################
