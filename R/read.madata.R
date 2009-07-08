@@ -12,7 +12,7 @@
 
 read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
   arrayType=c("oneColor", "twoColor"),header=TRUE, spotflag=FALSE, n.rep=1, avgreps=0,
-  log.trans=FALSE, metarow, metacol, row, col, probeid, intensity, ...){
+  log.trans=FALSE, metarow, metacol, row, col, probeid, intensity, matchDataToDesign=FALSE, ...){
 
   #================== make the output object 
   data <- NULL
@@ -30,10 +30,10 @@ read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
   if(missing(designfile))
     stop("You must provide a designfile name or data.frame/matrix object for design file")
 
-  if( class(designfile) == 'character' )
+  if( is(designfile, 'character') )
     design <- read.table(designfile, sep="\t", quote="", header)
-  else if(class(designfile)== 'matrix') design = designfile
-  else if(class(designfile)== 'data.frame') design = designfile
+  else if(is(designfile, 'matrix')) design = designfile
+  else if(is(designfile, 'data.frame')) design = designfile
   else stop("Invalid design file type")
 
   # Array (oneCol), Array, Dye and Sample (twoCol) must be in design 
@@ -60,12 +60,13 @@ read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
   #============================= read data
   if(missing(datafile))
     stop("You must provide a file name or matrix object for data")
-  if( class(datafile) == 'character' ){
+  
+  if(is(datafile, 'character'))
+  {
     rawdata<- as.matrix(read.table(datafile,sep="\t",
        quote="",header, comment.char=""))
     n.row <- nrow(rawdata)
    
-   #=============== probeid 
     if(missing(probeid)){
       probeid = 1
       warning(paste("Assume that the first column is probeid. If you have probeid specify it, otherwise set 'probeid=0' then read the data again\n"))
@@ -83,35 +84,137 @@ read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
       warning(paste("Assume that intensity value is saved from the second column. Otherwise provide 'intensity' (first column storing intensity) information, and read the data again\n"))
     }
   }
-  else{
-    if( class(datafile) == 'matrix' ){
-      n.row <- nrow(datafile); n.col <- ncol(datafile)
-      if(missing(probeid)) probeid = -1
-      if( length(probeid) == n.row ) data$probeid = probeid
-      else{
-        if( probeid <1 ){
-          rname = rownames(datafile)
-          if(length(rname)>0){
-            data$probeid=rname; 
-            cat(paste("Rowname of matrix is used for Probe ID\n"))
-          }
-          else{
-            warning(paste("Datafile does not have rawname. 1 to",n.row,"is used for probeid."))
-            data$probeid <- 1:n.row
-          }
-        }
-        else data$probeid = datafile[,probeid]
-      }      
-      if(missing(intensity)){
-         intensity = 1 
-         cat(paste("Assume that intensity value is saved from the first column. Otherwise provide 'intensity' (first column storing intensity) information, and read the data again\n"))
-      }
-      rawdata = datafile; rm(datafile)
+  else if(is(datafile, 'matrix') || is(datafile, 'ExpressionSet'))
+  {
+    # if it is an expression set just pull out the expression values
+    if(is(datafile, 'ExpressionSet'))
+    {
+      datafile <- exprs(datafile)
     }
-    else
-      stop("Invalid data type. Provide either data file name (tab deliminated format)
-       or matrix object (class(object)==matrix)\n")
+    
+    n.row <- nrow(datafile)
+    n.col <- ncol(datafile)
+    if(missing(probeid)) probeid = -1
+    if( length(probeid) == n.row ) data$probeid = probeid
+    else{
+      if( probeid <1 ){
+        rname = rownames(datafile)
+        if(length(rname)>0){
+          data$probeid=rname; 
+          cat(paste("Rowname of matrix is used for Probe ID\n"))
+        }
+        else{
+          warning(paste("Datafile does not have rawname. 1 to",n.row,"is used for probeid."))
+          data$probeid <- 1:n.row
+        }
+      }
+      else data$probeid = datafile[,probeid]
+    }      
+    if(missing(intensity)){
+       intensity = 1 
+       cat("Assuming that intensity value is saved from the first column. ",
+           "Otherwise provide 'intensity' (first column storing intensity) ",
+           "information, and read the data again")
+    }
+    rawdata = datafile
+    rm(datafile)
   }
+  else
+  {
+    stop("Invalid data type. Provide either data file name (tab deliminated ",
+         "format) or matrix object (class(object)==matrix)")
+  }
+  
+  if(matchDataToDesign)
+  {
+      # try to match up the design file sample ordering with the expression set
+      # ordering (otherwise the user has to do this themselves)
+      if(spotflag)
+      {
+        arrayColSpan <- n.dye + 1
+      }
+      else
+      {
+        arrayColSpan <- n.dye
+      }
+      
+      dataArrayNames <- colnames(rawdata)[seq(intensity, ncol(rawdata), by=arrayColSpan)]
+      designArrayNames <- rle(as.character(design[, "Array"]))$values
+      
+      if(is.null(dataArrayNames) )
+      {
+          stop("matchDataToDesign should be set to FALSE and ",
+               "expression set values should be manually ordered because ",
+               "there are no array names in the data matrix")
+      }
+      else if(any(duplicated(dataArrayNames)))
+      {
+          stop("matchDataToDesign should be set to FALSE and ",
+               "expression set values should be manually ordered because ",
+               "the array names contain duplicates")
+      }
+      else if(any(duplicated(designArrayNames)))
+      {
+          stop("bad design file format. all array duplicates should be in ",
+               "consecutive rows")
+      }
+      else if(length(dataArrayNames) != length(designArrayNames))
+      {
+          stop("expect the number of arrays in the design and input data to ",
+               "match")
+      }
+      else
+      {
+          # use match for the initial reordering values
+          newDataOrdering <- match(designArrayNames, dataArrayNames)
+          if(any(is.na(newDataOrdering)))
+          {
+              stop("failed to match up the following design array names ",
+                   "with data array names: ",
+                   paste(designArrayNames[is.na(newDataOrdering)], sep=" ,"))
+          }
+          
+          # account for the gaps in array column spans
+          if(arrayColSpan > 1)
+          {
+              # we need to swith to 0 based indices for a sec
+              # for this to work well
+              newDataOrdering <- (newDataOrdering - 1) * arrayColSpan
+              tmpOrdering <- c()
+              for(i in 1:length(newDataOrdering))
+              {
+                  for(j in 1:arrayColSpan)
+                  {
+                      tmpOrdering <- c(tmpOrdering, newDataOrdering[i] + j)
+                  }
+              }
+              
+              newDataOrdering <- tmpOrdering
+          }
+          
+          # insert any pre-intensity cols without any reordering
+          if(intensity > 1)
+          {
+             # first shift the other indices to the right to make room
+             newDataOrdering <- newDataOrdering + (intensity - 1)
+             newDataOrdering <- c(1:(intensity - 1), newDataOrdering)
+          }
+          
+          # do a final validity check
+          if((length(newDataOrdering) == ncol(rawdata)) &&
+             all(sort(newDataOrdering) == (1:length(newDataOrdering))))
+          {
+              # finally we can apply the new ordering to the data
+              rawdata <- rawdata[, newDataOrdering]
+          }
+          else
+          {
+              stop("failed to match samples to design. please report this ",
+                   "issue to maanova@jax.org")
+          }
+      }
+  }
+  
   n.row <- nrow(rawdata)
   n.col <- ncol(rawdata)
   n.gene <- n.row/n.rep
@@ -120,7 +223,7 @@ read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
 
   #============================= read covM
   if( !missing(covM) ){
-    if( class(covM) == 'character' ){
+    if( is(covM, 'character') ){
       covm <- as.matrix(read.table(datafile,sep="\t", quote="",header, comment.char=""))
       if( (nrow(covm) != n.row | ncol(covm) != (n.col-intensity+1) ) ) 
         stop("Dimension of Covariate matrix does not match to the that of data matrix.\n
@@ -128,7 +231,7 @@ read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
   have header, and should have row name column.\n")
     }
     else{
-      if( class(covM) == 'matrix' ){
+      if( is(covM, 'matrix') ){
         covm = covM
         if( (nrow(covm) != n.row | ncol(covm) != (n.col-intensity+1)) ) 
           stop("Dimension of Covariate matrix does not match to the that of data matrix \n")
@@ -163,7 +266,8 @@ read.madata <- function(datafile=datafile, designfile=designfile, covM = covM,
   else data$data <- intensitydata
 
   if(any(is.na(data$data))){
-    class(data) <- "madata" ; data = fill.missing(data)
+    class(data) <- "madata"
+    data <- fill.missing(data)
     warning("the data contains NA values which have been filled in using the fill.missing(...) ",
             "function. If there should not have been any NA values please check raw data values ",
             "correct the NA's and re-read the data")
