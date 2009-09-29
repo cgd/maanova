@@ -49,12 +49,12 @@ macluster(anovaobj, term, idx.gene, what = c("gene", "sample"),
   \item{method}{The clustering method. Right now hierarchical clustering
     ("hc") and K-means ("kmean") are available.}
   \item{dist.method}{Distance measure to be used in hierarchical
-    clustering. Besides the methods listed in \code{\link[mva]{dist}},
+    clustering. Besides the methods listed in \code{\link[stats]{dist}},
     there is a new method "correlation" (default). The "correlation"
     distance equals to (1 - $r^2$), where r is the sample correlation
     between observations. }
   \item{hc.method}{The agglomeration method to be used in hierarchical
-    clustering. See \code{\link[mva]{hclust}} for detail.}
+    clustering. See \code{\link[stats]{hclust}} for detail.}
   \item{kmean.ngroups}{The number of groups for K-means cluster.}
   \item{n.perm}{Number of bootstraps. If it is 1, this function will
     cluster the observed data. If it is bigger than 1, a bootstrap
@@ -66,7 +66,7 @@ macluster(anovaobj, term, idx.gene, what = c("gene", "sample"),
 }
 
 \seealso{
-  \code{\link[mva]{hclust}}, \code{\link[mva]{kmeans}},
+  \code{\link[stats]{hclust}}, \code{\link[stats]{kmeans}},
   \code{\link[maanova]{consensus}}
 }
 

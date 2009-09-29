@@ -150,5 +150,6 @@ ftest.pair = matest(abf1, fit.full.mix, Contrast = C,
 }
 
 \seealso{
-  \code{\link[maanova]{makeModel}}, \code{\link[maanova]{fitmaanova}}
+  \code{\link[maanova:maanova-internal]{makeModel}},
+  \code{\link[maanova]{fitmaanova}} 
 }

@@ -53,7 +53,7 @@ gridcheck(rawdata, array1, array2, highlight.flag = TRUE, flag.color = "Red",
   \item{flag.color}{The color for bad spot; default is red.}
   \item{margin}{A numerical vector of the form c(bottom, left, top,
     right) which gives the lines of the margin to be specified on the four
-    sides of the plot. Read \code{\link[base]{par}} for details.}
+    sides of the plot. Read \code{\link[graphics]{par}} for details.}
 }
 
 \note{

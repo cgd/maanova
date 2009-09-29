@@ -60,7 +60,7 @@
   \item{f}{The smoother span. This gives the proportion of points in the
     plot which influence the smooth at each value. Larger values give
     more smoothness. It is equivalent to the "span" parameter in
-    \code{\link[modreg]{loess}}.}
+    \code{\link[stats]{loess}}.}
   \item{iter}{The number of robustifying iterations which should be
     performed. Using smaller values of iter will make lowess run
     faster.}
@@ -133,7 +133,7 @@ graphics.off()
 
 
 \seealso{
-  \code{\link[modreg]{loess}}
+  \code{\link[stats]{loess}}
 }
 
 

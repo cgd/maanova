@@ -36,7 +36,7 @@ varplot(fit.full.mix)}
 
 \seealso{
   \code{\link[maanova]{fitmaanova}},
-  \code{\link[base]{density}}
+  \code{\link[stats]{density}}
 }
 
 \keyword{dplot}

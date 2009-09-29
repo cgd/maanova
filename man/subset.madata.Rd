@@ -15,8 +15,8 @@
 }
 
 \arguments{
-  \item{x}{An object of class \code{madata}. Read
-    \code{\link[maanova]{createData}} for details.}
+  \item{x}{An object of class \code{madata}.}
+    %Read \code{\link[maanova]{createData}} for details.}
   \item{arrays}{A vector specifying which arrays to keep or discard.}
   \item{genes}{A vector specifying which genes to keep or discard.}
   \item{\dots}{Ignored at this point.}

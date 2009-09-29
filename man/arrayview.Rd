@@ -32,9 +32,9 @@ arrayview(object, ratio, array, colormap, onScreen=TRUE, ...)
     valid when \code{ratio} is not provided. Whenever \code{ratio} is
     provided, all columns in ratio will be plotted.}
   \item{colormap}{User specified color map. See
-    \code{\link[base]{colors}} for more detail.}
+    \code{\link[grDevices]{colors}} for more detail.}
   \item{\dots}{Other parameters to be passed to
-    \code{\link[base]{image}}.}
+    \code{\link[graphics]{image}}.}
   \item{onScreen}{A logical value to represent whether to display the
     plots on screen or not. If TRUE, x11() (in Unix/Windows) or
     macintosh (in Mac) will be called inside the function. Otherwise,

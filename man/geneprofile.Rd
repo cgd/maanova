@@ -28,7 +28,7 @@ geneprofile(anovaobj, term, geneidx,
   \item{xlab}{X-axis label.}
   \item{ylab}{Y-axis label.}
   \item{\dots}{Other parameters to be passed to
-    \code{\link[base]{plot}}.}
+    \code{\link[graphics]{plot}}.}
 }
 
 \examples{

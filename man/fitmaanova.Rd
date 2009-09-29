@@ -58,7 +58,8 @@ fitmaanova(madata, formula, random= ~1, covariate = ~1, mamodel,
     ANOVA model formula.}
   \item{covariate}{The formula for covariates. ~1 means no covariates.
     The array specific covariates should be numeric values in the design matrix, 
-    and the gene specific covariates should be read by \code{covM} in  \code{\link[base]{read.madata}}}.
+    and the gene specific covariates should be read by \code{covM} in
+    \code{\link{read.madata}}}. 
   \item{mamodel}{Inside arguments to save the calculation time.}
   \item{inits20}{The initial value for variance components. This should
     be a matrix with number of rows equals to the number of genes and
@@ -182,7 +183,8 @@ fit.cov2 = fitmaanova(data.cov2,formula = ~Strain+Sample+covM, covariate = ~ cov
 }
 
 \seealso{
-  \code{\link[maanova]{makeModel}}, \code{\link[maanova]{matest}}
+  \code{\link[maanova:maanova-internal]{makeModel}},
+  \code{\link[maanova]{matest}} 
 }
 
 \keyword{models}
