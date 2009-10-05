@@ -55,7 +55,7 @@ m <- fom(fit.fix, idx, "Strain", 10)}
 \seealso{
   \code{\link[maanova]{macluster}},
   \code{\link[maanova]{consensus}},
-  \code{\link[mva]{kmeans}}
+  \code{\link[stats]{kmeans}}
 }
 
 \keyword{models}
