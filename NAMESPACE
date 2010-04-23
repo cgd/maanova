@@ -1,0 +1,18 @@
+useDynLib(maanova)
+
+import(methods)
+
+importMethodsFrom(Biobase, exprs)
+
+importFrom(graphics, abline, axis, image, layout, legend, lines, par,
+           plot, points, text, title)
+
+importFrom(grDevices, dev.new, rgb)
+
+importFrom(stats, as.formula, cor, density, dist, dnorm, hclust, IQR,
+           kmeans, loess, loess.control, median, pf, qf, rchisq, runif,
+           sd, terms, var, weighted.mean)
+
+importFrom(utils, read.table, write.csv, write.table)
+
+exportPattern("^[^\\.]")

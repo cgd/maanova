@@ -5,11 +5,12 @@ Author: Hao Wu, modified by Hyuna Yang and Keith Sheppard with ideas from Gary
         Churchill, Katie Kerr and Xiangqin Cui.
 Maintainer: Keith Sheppard <keith.sheppard@jax.org>
 Description: Analysis of N-dye Micro Array experiment using mixed model
-             effect. Containing anlysis of variance, permutation and
+             effect. Containing analysis of variance, permutation and
 	     bootstrap, cluster and consensus tree. 
 License: GPL (>= 2)
 URL: http://research.jax.org/faculty/churchill
 Depends: R (>= 2.7.0)
+Imports: Biobase, graphics, grDevices, methods, stats, utils
 Suggests: qvalue, snow
 Enhances: Rmpi
 biocViews: Microarray, DifferentialExpression, Clustering
